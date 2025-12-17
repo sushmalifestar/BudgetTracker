@@ -1,0 +1,60 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton , IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonModal, IonDatetimeButton, IonText, IonList, IonInput, IonItem, IonLabel} from '@ionic/angular/standalone';
+import { IncomeService } from 'src/app/services/income-service';
+import { Income } from 'src/app/models/income.model';
+//import { IonInput, IonItem } from '@ionic/angular';
+
+@Component({
+  selector: 'app-income',
+  templateUrl: './income.page.html',
+  styleUrls: ['./income.page.scss'],
+  standalone: true,
+  imports: [IonContent, IonHeader, IonTitle,IonText, IonModal, IonCardHeader, IonCardTitle, IonCardContent,IonCard, IonToolbar,IonDatetimeButton, IonLabel, CommonModule, FormsModule,IonButton,IonList, IonItem, IonInput]
+})
+export class IncomePage implements OnInit {
+
+  localIncomeArray: Income[]=[];
+  TotalIncome = 0;
+  isIncomeClicked = false;
+  newlyAddedIncome : Income ={
+    amount : null as any,
+    date : '',
+    source:''
+  }
+
+  constructor( private inservice:IncomeService) {
+    this.localIncomeArray= this.inservice.getIncome();
+    this.TotalIncome= this.inservice.getTotalIncome();
+   }
+
+  ngOnInit() {
+    
+  }
+
+  onAddIncomeClick(){
+    console.log("Add Income button clicked");
+    if(this.isIncomeClicked)
+    this.isIncomeClicked = false;
+    else
+    this.isIncomeClicked=true;
+  }
+
+  onSaveClicked(){
+    console.log("Save button clicked");
+    this.inservice.addIncome({...this.newlyAddedIncome});
+    this.TotalIncome=this.inservice.getTotalIncome();
+    this.isIncomeClicked = false;
+    this.formReset();
+  }
+
+  formReset(){
+    this.newlyAddedIncome.amount=null as any;
+    this.newlyAddedIncome.date='';
+    this.newlyAddedIncome.source='';
+  }
+
+
+}
+

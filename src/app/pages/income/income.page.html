@@ -1,0 +1,88 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Income</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-card>
+
+    <ion-card-header>
+      <ion-card-title>Add Income</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <ion-button expand="block" (click)="onAddIncomeClick()">
+        + Add Income
+      </ion-button>
+
+      <form #incomeForm=ngForm>
+        <div *ngIf="isIncomeClicked">
+          <ion-item>
+            <ion-label position="stacked">Amount</ion-label>
+            <ion-input placeholder="Enter amount" name="amount" required type="number" id="id_amt" #amtCtrl="ngModel"
+              [(ngModel)]="newlyAddedIncome.amount"></ion-input>
+          </ion-item>
+
+          <ion-text color="danger" *ngIf="amtCtrl.invalid && amtCtrl.touched">
+            <small>Amount is required</small>
+          </ion-text>
+
+          <ion-item>
+            <ion-label position="stacked">Source</ion-label>
+            <ion-input placeholder="Enter Source" name="source" required id="id_source" #srcCtrl="ngModel"
+              [(ngModel)]="newlyAddedIncome.source"></ion-input>
+          </ion-item>
+
+          <ion-text color="danger" *ngIf="srcCtrl.invalid && srcCtrl.touched">
+            <small>Source is required</small>
+          </ion-text>
+
+          <ion-item>
+            <ion-label position="stacked">Date</ion-label>
+            <ion-input placeholder="Select Date" name="date" required type="Date" #dateCtrl="ngModel"
+              [(ngModel)]="newlyAddedIncome.date"></ion-input>
+          </ion-item>
+
+          <ion-text color="danger" *ngIf="dateCtrl.invalid && dateCtrl.touched">
+            <small>Date is required</small>
+          </ion-text>
+
+
+          <ion-button expand="block" [disabled]="incomeForm.invalid" (click)="onSaveClicked()">Save</ion-button>
+
+        </div>
+      </form>
+
+    </ion-card-content>
+
+  </ion-card>
+
+
+  <ion-card>
+    <ion-list *ngIf="localIncomeArray.length > 0; else noIncome">
+      <ion-item *ngFor="let income of localIncomeArray">
+        <ion-label>
+          <h2>{{ income.source }}</h2>
+          <p>₹ {{ income.amount   }} | {{   income.date }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  
+    <ng-template #noIncome>
+      <p>No income added yet.</p>
+    </ng-template>
+  </ion-card>
+
+
+  <ion-card>
+    <ion-card-content class="ion-text-center">
+      <h2>Total Income</h2>
+      <h1 style="color: var(--ion-color-success)">₹ {{ TotalIncome }}</h1>
+    </ion-card-content>
+  </ion-card>
+  
+
+</ion-content>

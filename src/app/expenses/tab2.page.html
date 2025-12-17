@@ -1,0 +1,88 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Expenses
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Expenses</ion-title>
+    </ion-toolbar>
+  </ion-header> -->
+
+  <ion-card>
+
+    <ion-card-header>
+      <ion-card-title> Add Expenses</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <ion-button  expand="block" (click)="onAddExpenseClick()">  +   Add Expense</ion-button>
+
+      <form  #ExpenseForm="ngForm">
+
+        <div *ngIf="isExpenseClicked">
+
+        <ion-item>
+          <ion-label position="stacked">Amount</ion-label>
+          <ion-input type="number" required placeholder="Enter amount" name="amount" #amtCtrl="ngModel" [(ngModel)]="expen.amount"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="amtCtrl.invalid && amtCtrl.touched">
+          <small>Amount is required</small>
+        </ion-text>
+
+        <ion-item>
+          <ion-label position="stacked">Category</ion-label>
+          <ion-input required placeholder="Enter Category" name="category" #catCtrl="ngModel" [(ngModel)]="expen.category"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="catCtrl.invalid && catCtrl.touched">
+          <small>Category is required</small>
+        </ion-text>
+
+        <ion-item>
+          <ion-label position="stacked">Date</ion-label>
+          <ion-input type="date" required placeholder="Select Date" name="date" #dateCtrl="ngModel" [(ngModel)]="expen.date"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="dateCtrl.invalid && dateCtrl.touched">
+          <small>Date is required</small>
+        </ion-text>
+
+        <ion-button expand="block" [disabled]="ExpenseForm.invalid" (click)="onSaveClicked()">Save</ion-button>
+
+      </div>
+
+      </form>
+
+    </ion-card-content>
+
+  </ion-card>
+
+
+  <ion-card>
+    <ion-list *ngIf="localExpenseArray.length>0; else noExpense">
+    <ion-item *ngFor ="let ex of localExpenseArray">
+      <ion-label>
+        <h2>{{ex.category}}</h2>
+        <p> ₹ {{ex.amount}}  | {{ex.date}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ng-template #noExpense>
+    <p>No Expense added yet.</p>
+  </ng-template>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-content class="ion-text-center">
+      <h2>Total Expenses</h2>
+      <p style="color: var(--ion-color-danger)"> ₹ {{totalExpenses}}</p>
+    </ion-card-content>
+  </ion-card>
+
+
+</ion-content>
