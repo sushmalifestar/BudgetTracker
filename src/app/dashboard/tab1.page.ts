@@ -13,6 +13,9 @@ import {
   IonCard,
   IonCardHeader,
   IonCardTitle,
+  IonGrid,
+  IonCol,
+  IonRow,
   IonCardContent
 } from '@ionic/angular/standalone';
 import { IncomeService } from '../services/income-service';
@@ -29,6 +32,9 @@ import { ExpenseService } from '../services/expense-service';
     IonCard,
     IonCardHeader,
     IonCardTitle,
+    IonGrid,
+  IonCol,
+  IonRow,
     IonCardContent
   ],
 })

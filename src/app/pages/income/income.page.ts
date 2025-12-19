@@ -16,7 +16,7 @@ import { Income } from 'src/app/models/income.model';
 export class IncomePage implements OnInit {
 
   localIncomeArray: Income[]=[];
-  TotalIncome = 0;
+  totalIncome = 0;
   isIncomeClicked = false;
   newlyAddedIncome : Income ={
     amount : null as any,
@@ -26,7 +26,7 @@ export class IncomePage implements OnInit {
 
   constructor( private inservice:IncomeService) {
     this.localIncomeArray= this.inservice.getIncome();
-    this.TotalIncome= this.inservice.getTotalIncome();
+    this.totalIncome= this.inservice.getTotalIncome();
    }
 
   ngOnInit() {
@@ -44,7 +44,7 @@ export class IncomePage implements OnInit {
   onSaveClicked(){
     console.log("Save button clicked");
     this.inservice.addIncome({...this.newlyAddedIncome});
-    this.TotalIncome=this.inservice.getTotalIncome();
+    this.totalIncome=this.inservice.getTotalIncome();
     this.isIncomeClicked = false;
     this.formReset();
   }

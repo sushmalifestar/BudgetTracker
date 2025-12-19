@@ -1,22 +1,22 @@
+
 :root {
-    /* App background */
-    --ion-background-color: #ACBDAA;
-    --ion-text-color: #1f2937;
-  
-    /* Primary brand color */
-    --ion-color-primary: #4f46e5;
-    --ion-color-primary-contrast: #ffffff;
-  
-    /* Toolbar */
-    --ion-toolbar-background: #1E2D4C;
-    --ion-toolbar-color: #ffffff;
-  
-    /* Tabs */
-    --ion-tab-bar-background: #858585;
-    --ion-tab-bar-color: #1E2D4C;
-    --ion-tab-bar-color-selected: #4f46e5;
-  
-    /* Cards / items */
-    --ion-item-background: #858585;
-  }
-  
+  /* Backgrounds */
+  --ion-background-color: #eef0f6;   /* slightly darker than before */
+  --ion-item-background: #ffffff;
+  --ion-card-background: #ffffff;
+
+  /* Text */
+  --ion-text-color: #1f2937;
+
+  /* Primary Indigo */
+  --ion-color-primary: #4f46e5;
+  --ion-color-primary-rgb: 79, 70, 229;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #4338ca;
+  --ion-color-primary-tint: #6366f1;
+
+  /* Success / Danger */
+  --ion-color-success: #16a34a;
+  --ion-color-danger: #dc2626;
+}

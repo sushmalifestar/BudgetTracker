@@ -31,6 +31,108 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+ion-card {
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  }
+  
+  ion-label {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+.form-item {
+    margin-bottom: 3px;
+  }
+
+  .form-item ion-label {
+    font-size: 22px !important;
+    font-weight: 600;
+  }
+ 
+.validation-text {
+    display: block;
+    font-size: 13px;             
+    padding-left: 16px;           
+    margin-top: 4px;
+    color: #dc2626;               
+  }
+  
+ion-tab-bar {
+    --background: #d4d2f9;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+ion-tab-button ion-label{
+    color:#4f46e5;
+}
+  
+ion-tab-button.tab-selected ion-label{
+    color:green;
+    font-size: 16px;
+    
+}
+
+/* DASHBOARD STYLES */
+
+.balance-card {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #ffffff;
+  }
+  
+  .summary-card {
+    text-align: center;
+  }
+  
+  .income-card h2 {
+    color: #16a34a;
+  }
+  
+  .expense-card h2 {
+    color: #dc2626;
+  }
+  
+  .balance-card .label-text {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 18px;
+  }
+
+  .summary-card .label-text {
+    color: #6b7280;
+    font-size: 18px;
+  }
+
+  .summary-card .amount-text {
+    font-size: 32px;
+    font-weight: 500;
+    margin-top: 6px;
+  }
+  
+  .balance-card .balance-amount {
+    font-size: 32px;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+//   .amount-text {
+//     font-size: 32px;
+//     font-weight: 700;
+//     margin-top: 10px;
+//   }
+  
+  
+
+  
+  
+
+
+  
+ 
+  
+  
+  
+
 /**
  * Ionic Dark Mode
  * -----------------------------------------------------
