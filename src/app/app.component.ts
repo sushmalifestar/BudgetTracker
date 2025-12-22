@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { DataService } from './services/data-service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,11 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
   imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {
-  constructor() {
-    // document.body.classList.remove('dark');
+  constructor(private dataService:DataService) {
+  }
+
+  async ngOnInit(){
+    await this.dataService.initDatabase();
+    await this.dataService.createTables();
   }
 }

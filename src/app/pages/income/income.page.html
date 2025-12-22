@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Income</ion-title>
+    <ion-title class="ion-text-center">BUDGET TRACKER</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -30,16 +30,6 @@
       <form #incomeForm="ngForm" *ngIf="isIncomeClicked">
 
         <ion-item class="form-item">
-
-          <!-- <ion-item>
-            <ion-input 
-            required
-            type="number"
-            label="Amount" labelPlacement="floating" placeholder="Enter amount"
-            [(ngModel)]="newlyAddedIncome.amount"
-            #amtCtrl="ngModel"
-            name="amount"></ion-input>
-          </ion-item> -->
 
           <ion-label position="stacked">Amount</ion-label>
           <ion-input

@@ -1,0 +1,209 @@
+import { Injectable } from '@angular/core';
+import { Capacitor } from '@capacitor/core';
+import {
+  CapacitorSQLite,
+  SQLiteConnection,
+  SQLiteDBConnection
+} from '@capacitor-community/sqlite';
+import { Expense } from '../models/expense.model';
+import { Income } from '../models/income.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DataService {
+
+  private sqlite: SQLiteConnection;
+  private db!: SQLiteDBConnection;
+  private readonly dbName = 'expense_tracker.db';
+
+  private webExpenses: Expense[] = [];
+  private webIncomes: Income[] = [];
+  private dbReady = false;
+  private dbInitializing = false;
+
+  constructor() {
+    this.sqlite = new SQLiteConnection(CapacitorSQLite);
+  }
+
+  async initDatabase() {
+    if (Capacitor.getPlatform() === 'web') {
+      console.warn('SQLite not supported on web');
+      return;
+    }
+
+    if (this.dbReady || this.dbInitializing) {
+      return;
+    }
+
+    this.dbInitializing = true;
+
+    this.db = await this.sqlite.createConnection(
+      this.dbName,
+      false,
+      'no-encryption',
+      1,
+      false
+    );
+
+    await this.db.open();
+    this.dbReady = true;
+    this.dbInitializing = false;
+    console.log('Database opened successfully');
+  }
+
+  async createTables() {
+    if (Capacitor.getPlatform() === 'web') {
+      console.log('Web platform: skipping SQLite table creation');
+      return;
+    }
+
+    const createExpenseTable = `
+      CREATE TABLE IF NOT EXISTS expenses (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        amount REAL NOT NULL,
+        category TEXT NOT NULL,
+        note TEXT,
+        date TEXT NOT NULL,
+        createdAt TEXT NOT NULL
+      );
+    `;
+
+    const createIncomeTable = `
+      CREATE TABLE IF NOT EXISTS incomes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        amount REAL NOT NULL,
+        source TEXT NOT NULL,
+        note TEXT,
+        date TEXT NOT NULL,
+        createdAt TEXT NOT NULL
+      );
+    `;
+
+    await this.db.execute(createExpenseTable);
+    await this.db.execute(createIncomeTable);
+
+    console.log('SQLite tables created');
+  }
+  
+  async addExpense(expense: Expense) {
+
+    if (Capacitor.getPlatform() === 'web') {
+      const newExpense: Expense = {
+        ...expense,
+        id: Date.now(),
+        createdAt: new Date().toISOString()
+      };
+
+      this.webExpenses.push(newExpense);
+      console.log('Expense added (web):', this.webExpenses);
+      return;
+    }
+
+    if (!this.dbReady) {
+      await this.initDatabase();
+      await this.createTables();
+    }
+
+    const query = `
+      INSERT INTO expenses (amount, category, note, date, createdAt)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+
+    const values = [
+      expense.amount,
+      expense.category,
+      expense.note || '',
+      expense.date,
+      new Date().toISOString()
+    ];
+
+    await this.db.run(query, values);
+    console.log('Expense added (SQLite)');
+  }
+
+  async getExpenses(): Promise<Expense[]> {
+
+    if (Capacitor.getPlatform() === 'web') {
+      console.log('Fetching expenses (web):', this.webExpenses);
+      return this.webExpenses;
+    }
+
+    const query = `
+      SELECT id, amount, category, note, date, createdAt
+      FROM expenses
+      ORDER BY date DESC
+    `;
+
+    const result = await this.db.query(query);
+    const rows = (result.values || []) as Expense[];
+
+    console.log('Fetching expenses (SQLite):', rows);
+    return rows;
+  }
+
+  async addIncome(income: Income) {
+
+
+    console.log('STEP 1: addIncome entered');
+
+    if (Capacitor.getPlatform() === 'web') {
+      console.log('STEP 2: web path');
+      const newIncome: Income = {
+        ...income,
+        id: Date.now(),
+        createdAt: new Date().toISOString()
+      };
+
+      this.webIncomes.push(newIncome);
+      console.log('Income added (web):', this.webIncomes);
+      return;
+    }
+
+    console.log('STEP 3: android path BEFORE db.run');
+
+    if (!this.dbReady) {
+      await this.initDatabase();
+      await this.createTables();
+    }
+
+    const query = `
+      INSERT INTO incomes (amount, source, note, date, createdAt)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+
+    const values = [
+      income.amount,
+      income.source,
+      income.note || '',
+      income.date,
+      new Date().toISOString()
+    ];
+
+    await this.db.run(query, values);
+    console.log('Income added (SQLite)');
+
+    console.log('STEP 4: android path AFTER db.run');
+  }
+
+  async getIncomes(): Promise<Income[]> {
+
+    if (Capacitor.getPlatform() === 'web') {
+      console.log('Fetching Income (web):', this.webIncomes);
+      return this.webIncomes;
+    }
+
+    const query = `
+      SELECT id, amount, source, note, date, createdAt
+      FROM incomes
+      ORDER BY date DESC
+    `;
+
+    const result = await this.db.query(query);
+    const rows = (result.values || []) as Income[];
+
+    console.log('Fetching incomes (SQLite):', rows);
+    return rows;
+  }
+
+}

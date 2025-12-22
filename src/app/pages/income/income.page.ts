@@ -25,12 +25,12 @@ export class IncomePage implements OnInit {
   }
 
   constructor( private inservice:IncomeService) {
-    this.localIncomeArray= this.inservice.getIncome();
-    this.totalIncome= this.inservice.getTotalIncome();
+    
    }
 
-  ngOnInit() {
-    
+  async ngOnInit() {
+    this.localIncomeArray= await this.inservice.getIncome();
+    this.totalIncome= await this.inservice.getTotalIncome();
   }
 
   onAddIncomeClick(){
@@ -41,10 +41,11 @@ export class IncomePage implements OnInit {
     this.isIncomeClicked=true;
   }
 
-  onSaveClicked(){
+  async onSaveClicked(){
     console.log("Save button clicked");
-    this.inservice.addIncome({...this.newlyAddedIncome});
-    this.totalIncome=this.inservice.getTotalIncome();
+    await this.inservice.addIncome({...this.newlyAddedIncome});
+    this.totalIncome = await this.inservice.getTotalIncome();
+    this.localIncomeArray= await this.inservice.getIncome();
     this.isIncomeClicked = false;
     this.formReset();
   }

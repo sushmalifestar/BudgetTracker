@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ExpenseService } from '../services/expense-service';
 
-
 @Component({ 
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -16,7 +15,10 @@ import { ExpenseService } from '../services/expense-service';
 export class Tab2Page {
 
   constructor(private expService :ExpenseService ) {
-    this.localExpenseArray = this.expService.getExpenses();
+  }
+
+  async ngOnInit(){
+    this.localExpenseArray = await this.expService.getExpenses();
   }
 
   isExpenseClicked =false;
@@ -27,8 +29,7 @@ export class Tab2Page {
     date :'',
     category: ''
   }
-
-
+  
   onAddExpenseClick(){
     console.log("Add Expense button clicked");
     if(this.isExpenseClicked)
@@ -37,11 +38,12 @@ export class Tab2Page {
     this.isExpenseClicked = true;
   }
 
-  onSaveClicked(){
-    this.expService.addExpense({...this.expen});
+  async onSaveClicked(){
+    await this.expService.addExpense({...this.expen}); 
+    this.localExpenseArray = await this.expService.getExpenses();
+    this.totalExpenses = await this.expService.getTotalExpenses();
     this.resetForm();
     this.isExpenseClicked=false;
-    this.totalExpenses =this.expService.getTotalExpenses();
   }
 
   resetForm(){

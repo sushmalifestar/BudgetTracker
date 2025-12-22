@@ -51,9 +51,9 @@ export class Tab1Page {
     this.calculate();
   }
 
-  calculate() {
-    this.totalIncome = this.inService.getTotalIncome();
-    this.totalExpenses=this.exService.getTotalExpenses();
+  async calculate() {
+    this.totalIncome = await this.inService.getTotalIncome();
+    this.totalExpenses= await this.exService.getTotalExpenses();
     this.balance=this.totalIncome-this.totalExpenses;
   }
 
