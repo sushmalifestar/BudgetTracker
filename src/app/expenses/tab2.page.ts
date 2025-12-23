@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
+  standalone:true,
   imports: [IonHeader, IonToolbar, IonTitle, IonContent,IonItem,IonList, IonText,IonInput,CommonModule,IonButton, IonCard, IonCardContent,IonLabel, IonCardHeader, IonCardTitle, FormsModule]
 })
 export class Tab2Page {
@@ -19,6 +20,7 @@ export class Tab2Page {
 
   async ngOnInit(){
     this.localExpenseArray = await this.expService.getExpenses();
+    this.totalExpenses=await this.expService.getTotalExpenses();
   }
 
   isExpenseClicked =false;
@@ -31,11 +33,7 @@ export class Tab2Page {
   }
   
   onAddExpenseClick(){
-    console.log("Add Expense button clicked");
-    if(this.isExpenseClicked)
-      this.isExpenseClicked= false;
-    else
-    this.isExpenseClicked = true;
+    this.isExpenseClicked = !this.isExpenseClicked;
   }
 
   async onSaveClicked(){

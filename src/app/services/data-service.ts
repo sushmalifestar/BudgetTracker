@@ -7,6 +7,7 @@ import {
 } from '@capacitor-community/sqlite';
 import { Expense } from '../models/expense.model';
 import { Income } from '../models/income.model';
+import { Savings } from '../models/savings.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class DataService {
 
   private webExpenses: Expense[] = [];
   private webIncomes: Income[] = [];
+  private webSavings : Savings[]=[];
   private dbReady = false;
   private dbInitializing = false;
 
@@ -80,8 +82,17 @@ export class DataService {
       );
     `;
 
+    const createSavingsTable =` CREATE TABLE IF NOT EXISTS savings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    amount REAL NOT NULL,
+    type TEXT NOT NULL,
+    note TEXT,
+    date TEXT NOT NULL
+  );`
+
     await this.db.execute(createExpenseTable);
     await this.db.execute(createIncomeTable);
+    await this.db.execute(createSavingsTable);
 
     console.log('SQLite tables created');
   }
@@ -94,22 +105,18 @@ export class DataService {
         id: Date.now(),
         createdAt: new Date().toISOString()
       };
-
       this.webExpenses.push(newExpense);
       console.log('Expense added (web):', this.webExpenses);
       return;
     }
-
     if (!this.dbReady) {
       await this.initDatabase();
       await this.createTables();
     }
-
     const query = `
       INSERT INTO expenses (amount, category, note, date, createdAt)
       VALUES (?, ?, ?, ?, ?)
     `;
-
     const values = [
       expense.amount,
       expense.category,
@@ -117,7 +124,6 @@ export class DataService {
       expense.date,
       new Date().toISOString()
     ];
-
     await this.db.run(query, values);
     console.log('Expense added (SQLite)');
   }
@@ -205,5 +211,45 @@ export class DataService {
     console.log('Fetching incomes (SQLite):', rows);
     return rows;
   }
+
+  async addSavings(saving: Savings): Promise<void> {
+    if (Capacitor.getPlatform() === 'web') {
+      this.webSavings.push(saving);
+      return;
+    }
+  
+    if (!this.dbReady) {
+      await this.initDatabase();
+      await this.createTables();
+    }
+  
+    const query = `
+      INSERT INTO savings (amount, type, note, date)
+      VALUES (?, ?, ?, ?)
+    `;
+  
+    await this.db.run(query, [
+      saving.amount,
+      saving.type,
+      saving.note || '',
+      saving.date
+    ]);
+  }
+
+  async getSavings(): Promise<Savings[]> {
+    if (Capacitor.getPlatform() === 'web') {
+      return this.webSavings;
+    }
+  
+    if (!this.dbReady) {
+      await this.initDatabase();
+      await this.createTables();
+    }
+  
+    const result = await this.db.query(`SELECT * FROM savings ORDER BY date DESC`);
+    return result.values as Savings[];
+  }
+  
+  
 
 }

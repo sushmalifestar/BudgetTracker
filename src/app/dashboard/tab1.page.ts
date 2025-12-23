@@ -20,12 +20,13 @@ import {
 } from '@ionic/angular/standalone';
 import { IncomeService } from '../services/income-service';
 import { ExpenseService } from '../services/expense-service';
-import { DataService } from '../services/data-service';
+import { SavingsService } from '../services/savings-service';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
+  standalone:true,
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonList,
     IonItem,
     CommonModule,
@@ -46,7 +47,11 @@ export class Tab1Page {
   totalSavings=0;
   balance = 0;
 
-  constructor( private inService : IncomeService, private exService: ExpenseService, private router:Router, private dataService: DataService) {
+  constructor( private inService : IncomeService, 
+    private exService: ExpenseService,
+    private savingsService :SavingsService,
+     private router:Router, 
+  ) {
    }
 
    ionViewWillEnter() {
@@ -56,7 +61,8 @@ export class Tab1Page {
   async calculate() {
     this.totalIncome = await this.inService.getTotalIncome();
     this.totalExpenses= await this.exService.getTotalExpenses();
-    this.balance=this.totalIncome-this.totalExpenses;
+    this.totalSavings = await  this.savingsService.getTotalSavings();
+    this.balance=this.totalIncome-this.totalExpenses- this.totalSavings;
   }
 
   goToIncome() {

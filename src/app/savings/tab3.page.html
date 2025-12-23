@@ -11,14 +11,76 @@
     ← Back to Dashboard
   </p>
 
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Savings</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card>
+    <ion-card-content class="ion-text-center">
+      <p>Total Savings</p>
+      <h2 style="color: var(--ion-color-primary)"> ₹ {{totalSavings}}</h2>
+    </ion-card-content>
+  </ion-card>
 
-  <ion-content class="ion-padding">
-    <p>Savings feature coming soon.</p>
-  </ion-content>
+  <ion-card>
+
+    <ion-card-content>
+
+      <ion-button  expand="block" (click)="onAddSavingsClick()">  +   Add Savings</ion-button>
+
+      <form  #SavingsForm="ngForm" *ngIf="isSavingsClicked">
+
+        <ion-item  class="form-item">
+          <ion-label position="stacked">Amount</ion-label>
+          <ion-input type="number" required placeholder="Enter amount" name="amount" #amtCtrl="ngModel" [(ngModel)]="saving.amount"></ion-input>
+        </ion-item>
+        <ion-text class="validation-text" *ngIf="amtCtrl.invalid && amtCtrl.touched">
+          Amount is required
+        </ion-text>
+
+        <ion-item  class="form-item">
+          <ion-label position="stacked">Type</ion-label>
+          <ion-input required placeholder="Enter Type" name="type" #catCtrl="ngModel" [(ngModel)]="saving.type"></ion-input>
+        </ion-item>
+        <ion-text class="validation-text" *ngIf="catCtrl.invalid && catCtrl.touched">
+          Category is required
+        </ion-text>
+
+        <ion-item class="form-item">
+          <ion-label position="stacked">Date</ion-label>
+          <ion-input type="date" required placeholder="Select Date" name="date" #dateCtrl="ngModel" [(ngModel)]="saving.date"></ion-input>
+        </ion-item>
+        <ion-text class="validation-text"*ngIf="dateCtrl.invalid && dateCtrl.touched">
+          Date is required
+        </ion-text>
+
+        <ion-button expand="block" class="ion-margin-top" color="primary"
+         [disabled]="SavingsForm.invalid" (click)="onSaveClicked()"> Save Savings</ion-button>
+
+      </form>
+
+    </ion-card-content>
+
+  </ion-card>
+
+  <ion-card *ngIf="localSavingsArray.length>0">
+
+    <ion-card-header>
+      <ion-card-title>Savings History</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list >
+        <ion-item *ngFor ="let save of localSavingsArray">
+          <ion-label>
+            <h2>{{save.type}}</h2>
+            <p> ₹ {{save.amount}}  | {{save.date}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+    
+  </ion-card>
+  
+  <p *ngIf="localSavingsArray.length === 0" class="ion-text-center">
+    No Savings added yet
+  </p>
+  
 
 </ion-content>

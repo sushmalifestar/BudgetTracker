@@ -1,17 +1,54 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonLabel,IonItem,IonCard,IonCardContent,IonCardHeader,IonList,IonCardTitle, IonText,IonInput,IonButton} from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
+import { SavingsService } from '../services/savings-service';
+import { Savings } from '../models/savings.model';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent],
+  standalone:true,
+  imports: [IonHeader,FormsModule,CommonModule, IonToolbar, IonTitle, IonContent,IonLabel, IonText,IonInput,IonButton,IonItem,IonCard,IonList,IonCardContent,IonCardHeader,IonCardTitle],
 })
 export class Tab3Page {
-  constructor(private router:Router) {}
+  constructor(private router:Router, private savingsService:SavingsService) {}
+
+  isSavingsClicked=false;
+  localSavingsArray : Savings[]=[];
+  totalSavings=0;
+  saving : Savings ={
+      amount :null as any,
+      date :'',
+      type: '',
+    }
+
+  async ngOnInit(){
+    this.localSavingsArray = await this.savingsService.getSavings();
+    this.totalSavings= await this.savingsService.getTotalSavings();
+  }
 
   goToDashboard(){
     this.router.navigate(['tabs/dashboard'])
+  }
+
+  onAddSavingsClick(){
+    this.isSavingsClicked = !this.isSavingsClicked;
+  }
+
+  async onSaveClicked(){
+    await this.savingsService.addSavings({...this.saving}); 
+    this.localSavingsArray = await this.savingsService.getSavings();
+    this.totalSavings = await this.savingsService.getTotalSavings();
+    this.resetForm();
+    this.isSavingsClicked=false;
+  }
+
+  resetForm(){
+    this.saving.amount=null as any;
+    this.saving.type='';
+    this.saving.date='';
   }
 }

@@ -35,11 +35,7 @@ export class IncomePage implements OnInit {
   }
 
   onAddIncomeClick(){
-    console.log("Add Income button clicked");
-    if(this.isIncomeClicked)
-    this.isIncomeClicked = false;
-    else
-    this.isIncomeClicked=true;
+    this.isIncomeClicked = !this.isIncomeClicked;
   }
 
   async onSaveClicked(){
