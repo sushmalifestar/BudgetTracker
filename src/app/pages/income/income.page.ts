@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton , IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonModal, IonDatetimeButton, IonText, IonList, IonInput, IonItem, IonLabel} from '@ionic/angular/standalone';
+import { IonContent, IonButton , IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonText, IonList, IonInput, IonItem, IonLabel} from '@ionic/angular/standalone';
 import { Income } from 'src/app/models/income.model';
-import { Router } from '@angular/router';
 import { IncomeService } from 'src/app/services/incomeServices/income-service';
+import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashboard-link.component';
 
 @Component({
   selector: 'app-income',
   templateUrl: './income.page.html',
   styleUrls: ['./income.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle,IonText, IonModal, IonCardHeader, IonCardTitle, IonCardContent,IonCard, IonToolbar,IonDatetimeButton, IonLabel, CommonModule, FormsModule,IonButton,IonList, IonItem, IonInput]
+  imports: [IonContent,IonText,DashboardLinkComponent, IonCardHeader, IonCardTitle, IonCardContent,IonCard, IonLabel, CommonModule, FormsModule,IonButton,IonList, IonItem, IonInput]
 })
 export class IncomePage implements OnInit {
 
@@ -24,7 +24,7 @@ export class IncomePage implements OnInit {
     source:''
   }
 
-  constructor( private inservice:IncomeService, private router:Router) {
+  constructor( private inservice:IncomeService) {
     
    }
 
@@ -51,10 +51,5 @@ export class IncomePage implements OnInit {
     this.newlyAddedIncome.date='';
     this.newlyAddedIncome.source='';
   }
-
-  goToDashboard(){
-    this.router.navigate(['tabs/dashboard'])
-  }
-
 }
 

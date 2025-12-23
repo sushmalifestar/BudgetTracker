@@ -1,27 +1,41 @@
-<ion-tabs>
-  <ion-tab-bar slot="bottom">
 
-    <ion-tab-button tab="dashboard" href="/tabs/dashboard">
-      <ion-label>Dashboard</ion-label>
-    </ion-tab-button>
+ <ion-header slot="top">
+  <app-app-header></app-app-header>
+ </ion-header>
+  
+<ion-content>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+  
+      <ion-tab-button tab="dashboard" href="/tabs/dashboard">
+        <ion-label>Dashboard</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="income" href="/tabs/income">
+        <ion-label>Income</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="expenses" href="/tabs/expenses">
+        <ion-label>Expenses</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="savings" href="/tabs/savings">
+        <ion-label>Savings</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button tab="settings" href="/tabs/settings">
+        <ion-label>Settings</ion-label>
+      </ion-tab-button>
+  
+    </ion-tab-bar>
+  
+  
+  </ion-tabs>
+</ion-content>
+  
 
-    <ion-tab-button tab="income" href="/tabs/income">
-      <ion-label>Income</ion-label>
-    </ion-tab-button>
 
-    <ion-tab-button tab="expenses" href="/tabs/expenses">
-      <ion-label>Expenses</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="savings" href="/tabs/savings">
-      <ion-label>Savings</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="settings" href="/tabs/settings">
-      <ion-label>Settings</ion-label>
-    </ion-tab-button>
-
-  </ion-tab-bar>
+ 
 
 
-</ion-tabs>
+

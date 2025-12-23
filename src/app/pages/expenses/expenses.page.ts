@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonInput,IonText, IonButton,IonList, IonCard,IonItem, IonCardContent, IonCardHeader, IonCardTitle , IonLabel} from '@ionic/angular/standalone';
+import { IonContent, IonInput,IonText, IonButton,IonList, IonCard,IonItem, IonCardContent, IonCardHeader, IonCardTitle , IonLabel} from '@ionic/angular/standalone';
 import { Expense } from '../../models/expense.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { ExpenseService } from 'src/app/services/expenseServices/expense-service';
+import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashboard-link.component';
 
 @Component({ 
   selector: 'app-expenses',
   templateUrl: 'expenses.page.html',
   styleUrls: ['expenses.page.scss'],
   standalone:true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent,IonItem,IonList, IonText,IonInput,CommonModule,IonButton, IonCard, IonCardContent,IonLabel, IonCardHeader, IonCardTitle, FormsModule]
+  imports: [IonContent,IonItem,IonList,DashboardLinkComponent, IonText,IonInput,CommonModule,IonButton, IonCard, IonCardContent,IonLabel, IonCardHeader, IonCardTitle, FormsModule]
 })
 export class ExpensePage {
 
-  constructor(private expService :ExpenseService, private router:Router ) {
+  constructor(private expService :ExpenseService ) {
   }
 
   async ngOnInit(){
@@ -48,9 +48,5 @@ export class ExpensePage {
     this.expen.amount=null as any;
     this.expen.category='';
     this.expen.date='';
-  }
-
-  goToDashboard(){
-    this.router.navigate(['tabs/dashboard'])
   }
 }

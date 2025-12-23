@@ -79,7 +79,7 @@ ion-tab-button.tab-selected ion-label{
     background: linear-gradient(135deg, #4f46e5, #6366f1);
     color: #ffffff;
   }
-  
+
   .summary-card {
     text-align: center;
     min-height: 110px;     
@@ -90,21 +90,14 @@ ion-tab-button.tab-selected ion-label{
   
   .income-card h2 {
     color: #16a34a;
-    font-size: 18px;
   }
 
-  .income-card  .expense-card p{
-    font-size: 16px;
-  }
-  
   .expense-card h2 {
     color: #dc2626;
-    font-size: 18px;
   }
 
   .savings-card h2{
     color:orangered;
-    font-size: 18px;
   }
   
   .balance-card .label-text {
@@ -129,13 +122,25 @@ ion-tab-button.tab-selected ion-label{
     width: 100%;
   }
   .balance-card {
-    min-height: 120px;
+    min-height: 80px;
   }
   
   .balance-card .balance-amount {
     font-size: 28px;
     font-weight: 600;
     margin-top: 8px;
+  }
+
+  // app-header {
+  //   display: block;
+  // }
+
+  ion-content {
+    --padding-top: 16px;
+  }
+
+  app-header ion-toolbar {
+    margin-bottom: 8px;
   }
 
   

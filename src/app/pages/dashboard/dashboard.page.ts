@@ -1,18 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import {Router} from '@angular/router';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
-  IonList,
-  IonItem,
-  IonLabel,
   IonCard,
-  IonCardHeader,
-  IonCardTitle,
   IonGrid,
   IonCol,
   IonRow,
@@ -27,13 +18,9 @@ import { SavingsService } from 'src/app/services/savingsServices/savings-service
   templateUrl: 'dashboard.page.html',
   styleUrls: ['dashboard.page.scss'],
   standalone:true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonList,
-    IonItem,
+  imports: [IonContent,
     CommonModule,
-    IonLabel,
     IonCard,
-    IonCardHeader,
-    IonCardTitle,
     IonGrid,
   IonCol,
   IonRow,

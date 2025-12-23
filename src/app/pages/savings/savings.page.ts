@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonLabel,IonItem,IonCard,IonCardContent,IonCardHeader,IonList,IonCardTitle, IonText,IonInput,IonButton} from '@ionic/angular/standalone';
-import { Router } from '@angular/router';
+import {  IonContent, IonLabel,IonItem,IonCard,IonCardContent,IonCardHeader,IonList,IonCardTitle, IonText,IonInput,IonButton} from '@ionic/angular/standalone';
 import { Savings } from '../../models/savings.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SavingsService } from 'src/app/services/savingsServices/savings-service';
+import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashboard-link.component';
 
 @Component({
   selector: 'app-savings',
   templateUrl: 'savings.page.html',
   styleUrls: ['savings.page.scss'],
   standalone:true,
-  imports: [IonHeader,FormsModule,CommonModule, IonToolbar, IonTitle, IonContent,IonLabel, IonText,IonInput,IonButton,IonItem,IonCard,IonList,IonCardContent,IonCardHeader,IonCardTitle],
+  imports: [FormsModule,DashboardLinkComponent,CommonModule, IonContent,IonLabel, IonText,IonInput,IonButton,IonItem,IonCard,IonList,IonCardContent,IonCardHeader,IonCardTitle],
 })
 export class SavingsPage {
-  constructor(private router:Router, private savingsService:SavingsService) {}
+  constructor(private savingsService:SavingsService) {}
 
   isSavingsClicked=false;
   localSavingsArray : Savings[]=[];
@@ -28,10 +28,6 @@ export class SavingsPage {
   async ngOnInit(){
     this.localSavingsArray = await this.savingsService.getSavings();
     this.totalSavings= await this.savingsService.getTotalSavings();
-  }
-
-  goToDashboard(){
-    this.router.navigate(['tabs/dashboard'])
   }
 
   onAddSavingsClick(){
