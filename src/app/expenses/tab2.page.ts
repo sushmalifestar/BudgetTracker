@@ -5,6 +5,7 @@ import { Expense } from '../models/expense.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ExpenseService } from '../services/expense-service';
+import { Router } from '@angular/router';
 
 @Component({ 
   selector: 'app-tab2',
@@ -14,7 +15,7 @@ import { ExpenseService } from '../services/expense-service';
 })
 export class Tab2Page {
 
-  constructor(private expService :ExpenseService ) {
+  constructor(private expService :ExpenseService, private router:Router ) {
   }
 
   async ngOnInit(){
@@ -50,5 +51,9 @@ export class Tab2Page {
     this.expen.amount=null as any;
     this.expen.category='';
     this.expen.date='';
+  }
+
+  goToDashboard(){
+    this.router.navigate(['tabs/dashboard'])
   }
 }

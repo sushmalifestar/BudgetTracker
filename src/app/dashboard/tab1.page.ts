@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
+import {Router} from '@angular/router';
 import {
   IonHeader,
   IonToolbar,
@@ -20,6 +21,7 @@ import {
 } from '@ionic/angular/standalone';
 import { IncomeService } from '../services/income-service';
 import { ExpenseService } from '../services/expense-service';
+import { DataService } from '../services/data-service';
 
 @Component({
   selector: 'app-tab1',
@@ -44,7 +46,7 @@ export class Tab1Page {
   totalExpenses = 0;
   balance = 0;
 
-  constructor( private inService : IncomeService, private exService: ExpenseService) {
+  constructor( private inService : IncomeService, private exService: ExpenseService, private router:Router, private dataService: DataService) {
    }
 
    ionViewWillEnter() {
@@ -55,6 +57,14 @@ export class Tab1Page {
     this.totalIncome = await this.inService.getTotalIncome();
     this.totalExpenses= await this.exService.getTotalExpenses();
     this.balance=this.totalIncome-this.totalExpenses;
+  }
+
+  goToIncome() {
+    this.router.navigate(['/tabs/income']);
+  }
+
+  goToExpense() {
+    this.router.navigate(['/tabs/expenses']);
   }
 
 }

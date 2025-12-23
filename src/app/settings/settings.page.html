@@ -1,10 +1,15 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>Settings</ion-title>
+    <ion-title class="ion-text-center">BUDGET TRACKER</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content class="ion-padding">
+
+  <p class="back-link" (click)="goToDashboard()">
+    ← Back to Dashboard
+  </p>
+
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Settings</ion-title>

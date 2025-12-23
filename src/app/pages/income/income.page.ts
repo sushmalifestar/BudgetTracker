@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton , IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonModal, IonDatetimeButton, IonText, IonList, IonInput, IonItem, IonLabel} from '@ionic/angular/standalone';
 import { IncomeService } from 'src/app/services/income-service';
 import { Income } from 'src/app/models/income.model';
+import { Router } from '@angular/router';
 //import { IonInput, IonItem } from '@ionic/angular';
 
 @Component({
@@ -24,7 +25,7 @@ export class IncomePage implements OnInit {
     source:''
   }
 
-  constructor( private inservice:IncomeService) {
+  constructor( private inservice:IncomeService, private router:Router) {
     
    }
 
@@ -56,6 +57,9 @@ export class IncomePage implements OnInit {
     this.newlyAddedIncome.source='';
   }
 
+  goToDashboard(){
+    this.router.navigate(['tabs/dashboard'])
+  }
 
 }
 

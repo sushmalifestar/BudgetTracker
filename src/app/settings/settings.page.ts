@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
@@ -13,7 +14,11 @@ import { ExploreContainerComponent } from '../explore-container/explore-containe
 })
 export class SettingsPage implements OnInit {
 
-  constructor() { }
+  constructor(private router:Router) { }
+
+  goToDashboard(){
+    this.router.navigate(['tabs/dashboard'])
+  }
 
   ngOnInit() {
   }
