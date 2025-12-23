@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Expense } from '../models/expense.model';
-import { DataService } from './data-service';
+import { DataService } from '../dataServices/data-service';
+import { Expense } from 'src/app/models/expense.model';
+
 
 @Injectable({
   providedIn: 'root',

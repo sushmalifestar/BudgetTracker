@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
-import { DataService } from './services/data-service';
+import { DataService } from './services/dataServices/data-service';
 
 @Component({
   selector: 'app-root',

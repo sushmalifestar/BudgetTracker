@@ -9,22 +9,22 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadComponent: () =>
-          import('../dashboard/tab1.page').then((m) => m.Tab1Page),
+          import('../pages/dashboard/dashboard.page').then((m) => m.DashboardPage),
       },
       {
         path: 'expenses',
         loadComponent: () =>
-          import('../expenses/tab2.page').then((m) => m.Tab2Page),
+          import('../pages/expenses/expenses.page').then((m) => m.ExpensePage),
       },
       {
         path: 'savings',
         loadComponent: () =>
-          import('../savings/tab3.page').then((m) => m.Tab3Page),
+          import('../pages/savings/savings.page').then((m) => m.SavingsPage),
       },
       {
         path: 'settings',
         loadComponent:()=>
-          import('../settings/settings.page').then((m)=>m.SettingsPage),
+          import('../pages/settings/settings.page').then((m)=>m.SettingsPage),
 
       },
       {

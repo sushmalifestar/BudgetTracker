@@ -5,9 +5,9 @@ import {
   SQLiteConnection,
   SQLiteDBConnection
 } from '@capacitor-community/sqlite';
-import { Expense } from '../models/expense.model';
-import { Income } from '../models/income.model';
-import { Savings } from '../models/savings.model';
+import { Expense } from '../../models/expense.model';
+import { Income } from '../../models/income.model';
+import { Savings } from '../../models/savings.model';
 
 @Injectable({
   providedIn: 'root'

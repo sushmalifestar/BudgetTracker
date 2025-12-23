@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonLabel,IonItem,IonCard,IonCardContent,IonCardHeader,IonList,IonCardTitle, IonText,IonInput,IonButton} from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
-import { SavingsService } from '../services/savings-service';
-import { Savings } from '../models/savings.model';
+import { Savings } from '../../models/savings.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SavingsService } from 'src/app/services/savingsServices/savings-service';
 
 @Component({
-  selector: 'app-tab3',
-  templateUrl: 'tab3.page.html',
-  styleUrls: ['tab3.page.scss'],
+  selector: 'app-savings',
+  templateUrl: 'savings.page.html',
+  styleUrls: ['savings.page.scss'],
   standalone:true,
   imports: [IonHeader,FormsModule,CommonModule, IonToolbar, IonTitle, IonContent,IonLabel, IonText,IonInput,IonButton,IonItem,IonCard,IonList,IonCardContent,IonCardHeader,IonCardTitle],
 })
-export class Tab3Page {
+export class SavingsPage {
   constructor(private router:Router, private savingsService:SavingsService) {}
 
   isSavingsClicked=false;

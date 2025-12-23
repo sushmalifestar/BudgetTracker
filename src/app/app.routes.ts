@@ -9,8 +9,4 @@ export const routes: Routes = [
     path: 'income',
     loadComponent: () => import('./pages/income/income.page').then( m => m.IncomePage)
   },
-  // {
-  //   path: 'settings',
-  //   loadComponent: () => import('./Settings/settings.page').then( m => m.SettingsPage)
-  // },
 ];
