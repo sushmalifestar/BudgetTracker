@@ -17,6 +17,7 @@
 
  
   <ion-grid>
+
     <ion-row>
       <ion-col size="6">
         <ion-card class="summary-card income-card" button (click)="goToIncome()">
@@ -36,6 +37,18 @@
         </ion-card>
       </ion-col>
     </ion-row>
+
+    <ion-row>
+      <ion-col size="6">
+        <ion-card class="summary-card savings-card" button (click)="goToSavings()">
+          <ion-card-content>
+            <p class="label-text">Savings</p>
+            <h2 class="amount-text">₹ {{ totalSavings }}</h2>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
   </ion-grid>
 
 </ion-content>
