@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {  IonContent, IonLabel,IonItem,IonCard,IonCardContent,IonCardHeader,IonList,IonCardTitle, IonText,IonInput,IonButton} from '@ionic/angular/standalone';
+import {  IonContent, IonLabel,IonItem,IonCard,IonCardContent,IonCardHeader,IonCardTitle, IonText,IonInput,IonButton} from '@ionic/angular/standalone';
 import { Savings } from '../../models/savings.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,7 @@ import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashbo
   templateUrl: 'savings.page.html',
   styleUrls: ['savings.page.scss'],
   standalone:true,
-  imports: [FormsModule,DashboardLinkComponent,CommonModule, IonContent,IonLabel, IonText,IonInput,IonButton,IonItem,IonCard,IonList,IonCardContent,IonCardHeader,IonCardTitle],
+  imports: [FormsModule,DashboardLinkComponent,CommonModule, IonContent,IonLabel, IonText,IonInput,IonButton,IonItem,IonCard,IonCardContent,IonCardHeader,IonCardTitle],
 })
 export class SavingsPage {
   constructor(private savingsService:SavingsService) {}

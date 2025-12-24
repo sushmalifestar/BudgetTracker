@@ -13,21 +13,23 @@
 
     <ion-card-content>
 
-      <ion-button  expand="block" (click)="onAddExpenseClick()">  +   Add Expense</ion-button>
+      <ion-button expand="block" (click)="onAddExpenseClick()"> + Add Expense</ion-button>
 
-      <form  #ExpenseForm="ngForm" *ngIf="isExpenseClicked">
+      <form #ExpenseForm="ngForm" *ngIf="isExpenseClicked">
 
-        <ion-item  class="form-item">
+        <ion-item class="form-item">
           <ion-label position="stacked">Amount</ion-label>
-          <ion-input type="number" required placeholder="Enter amount" name="amount" #amtCtrl="ngModel" [(ngModel)]="expen.amount"></ion-input>
+          <ion-input type="number" required placeholder="Enter amount" name="amount" #amtCtrl="ngModel"
+            [(ngModel)]="expen.amount"></ion-input>
         </ion-item>
         <ion-text class="validation-text" *ngIf="amtCtrl.invalid && amtCtrl.touched">
           Amount is required
         </ion-text>
 
-        <ion-item  class="form-item">
+        <ion-item class="form-item">
           <ion-label position="stacked">Category</ion-label>
-          <ion-input required placeholder="Enter Category" name="category" #catCtrl="ngModel" [(ngModel)]="expen.category"></ion-input>
+          <ion-input required placeholder="Enter Category" name="category" #catCtrl="ngModel"
+            [(ngModel)]="expen.category"></ion-input>
         </ion-item>
         <ion-text class="validation-text" *ngIf="catCtrl.invalid && catCtrl.touched">
           Category is required
@@ -35,14 +37,15 @@
 
         <ion-item class="form-item">
           <ion-label position="stacked">Date</ion-label>
-          <ion-input type="date" required placeholder="Select Date" name="date" #dateCtrl="ngModel" [(ngModel)]="expen.date"></ion-input>
+          <ion-input type="date" required placeholder="Select Date" name="date" #dateCtrl="ngModel"
+            [(ngModel)]="expen.date"></ion-input>
         </ion-item>
-        <ion-text class="validation-text"*ngIf="dateCtrl.invalid && dateCtrl.touched">
+        <ion-text class="validation-text" *ngIf="dateCtrl.invalid && dateCtrl.touched">
           Date is required
         </ion-text>
 
-        <ion-button expand="block" class="ion-margin-top" color="primary"
-         [disabled]="ExpenseForm.invalid" (click)="onSaveClicked()"> Save Expenses</ion-button>
+        <ion-button expand="block" class="ion-margin-top" color="primary" [disabled]="ExpenseForm.invalid"
+          (click)="onSaveClicked()"> Save Expenses</ion-button>
 
       </form>
 
@@ -57,16 +60,26 @@
     </ion-card-header>
 
     <ion-card-content>
-      <ion-list >
-        <ion-item *ngFor ="let ex of localExpenseArray">
-          <ion-label>
-            <h2>{{ex.category}}</h2>
-            <p> ₹ {{ex.amount}}  | {{ex.date}}</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
+
+      <ion-card class="transaction-card expense-card" *ngFor="let expense of localExpenseArray">
+
+        <ion-card-content class="transaction-content">
+
+          <div class="left">
+            <p class="title">{{ expense.category }}</p>
+            <p class="date">{{ expense.date }}</p>
+          </div>
+
+          <div class="right">
+            <p class="amount">₹ {{ expense.amount }}</p>
+          </div>
+
+        </ion-card-content>
+
+      </ion-card>
+
     </ion-card-content>
-    
+
   </ion-card>
 
   <p *ngIf="localExpenseArray.length === 0" class="ion-text-center">

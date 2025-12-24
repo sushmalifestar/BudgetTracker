@@ -72,7 +72,6 @@ ion-tab-button ion-label{
 ion-tab-button.tab-selected ion-label{
     color:green;
     font-size: 16px;
-    
 }
 
 .balance-card {
@@ -86,18 +85,13 @@ ion-tab-button.tab-selected ion-label{
   display: flex;
   align-items: center;
   justify-content: center;
-  }
-  
-  .income-card h2 {
-    color: #16a34a;
+  cursor: pointer;
+  transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
   }
 
-  .expense-card h2 {
-    color: #dc2626;
-  }
-
-  .savings-card h2{
-    color:orangered;
+  .summary-card:active{
+    transform: scale(0.96);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   }
   
   .balance-card .label-text {
@@ -124,24 +118,74 @@ ion-tab-button.tab-selected ion-label{
   .balance-card {
     min-height: 80px;
   }
-  
-  .balance-card .balance-amount {
-    font-size: 28px;
-    font-weight: 600;
-    margin-top: 8px;
-  }
-
-  // app-header {
-  //   display: block;
-  // }
 
   ion-content {
     --padding-top: 16px;
   }
 
-  app-header ion-toolbar {
-    margin-bottom: 8px;
+  .transaction-card {
+    margin: 10px 16px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb; 
   }
+  
+  
+  .transaction-content {
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .transaction-content .left .title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827; 
+  }
+  
+  .transaction-content .left .date {
+    font-size: 13px;
+    color: #9ca3af;
+    margin-top: 4px;
+  }
+  
+  .transaction-content .title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .transaction-content .right .amount {
+    font-size: 20px;
+    font-weight: 500;
+    color: #15803d;
+  }
+
+  .expense-card .right .amount {
+    color: #b91c1c;
+  }
+
+  .savings-card .right .amount {
+    color: #1d4ed8;
+  }
+
+  .income-card h2 {
+    color: #16a34a;
+  }
+
+  .expense-card h2 {
+    color: #dc2626;
+  }
+
+  .savings-card h2{
+    color:#2563eb;
+  }
+  
+  
+  
+  
 
   
 

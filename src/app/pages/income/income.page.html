@@ -11,14 +11,12 @@
     </ion-card-content>
   </ion-card>
 
-  
+
   <ion-card>
 
     <ion-card-content>
 
-      <ion-button
-        expand="block"
-        (click)="onAddIncomeClick()">
+      <ion-button expand="block" (click)="onAddIncomeClick()">
         + Add Income
       </ion-button>
 
@@ -27,52 +25,34 @@
         <ion-item class="form-item">
 
           <ion-label position="stacked">Amount</ion-label>
-          <ion-input
-            required
-            type="number"
-            placeholder="Enter amount"
-            [(ngModel)]="newlyAddedIncome.amount"
-            #amtCtrl="ngModel"
-            name="amount">
+          <ion-input required type="number" placeholder="Enter amount" [(ngModel)]="newlyAddedIncome.amount"
+            #amtCtrl="ngModel" name="amount">
           </ion-input>
         </ion-item>
-        <ion-text  class="validation-text" *ngIf="amtCtrl.invalid && amtCtrl.touched">
-        Amount is required
+        <ion-text class="validation-text" *ngIf="amtCtrl.invalid && amtCtrl.touched">
+          Amount is required
         </ion-text>
 
         <ion-item class=" form-item">
           <ion-label position="stacked">Source</ion-label>
-          <ion-input
-            required
-            placeholder="Salary / Business"
-            [(ngModel)]="newlyAddedIncome.source"
-            #srcCtrl="ngModel"
+          <ion-input required placeholder="Salary / Business" [(ngModel)]="newlyAddedIncome.source" #srcCtrl="ngModel"
             name="source">
           </ion-input>
         </ion-item>
         <ion-text class="validation-text" *ngIf="srcCtrl.invalid && srcCtrl.touched">
-         Source is required
+          Source is required
         </ion-text>
 
-        <ion-item class="form-item" >
+        <ion-item class="form-item">
           <ion-label position="stacked">Date</ion-label>
-          <ion-input
-            required
-            type="date"
-            [(ngModel)]="newlyAddedIncome.date"
-            #dateCtrl="ngModel"
-            name="date">
+          <ion-input required type="date" [(ngModel)]="newlyAddedIncome.date" #dateCtrl="ngModel" name="date">
           </ion-input>
         </ion-item>
         <ion-text class="validation-text" *ngIf="dateCtrl.invalid && dateCtrl.touched">
           Date is required
         </ion-text>
 
-        <ion-button
-          expand="block"
-          class="ion-margin-top"
-          color="primary"
-          [disabled]="incomeForm.invalid"
+        <ion-button expand="block" class="ion-margin-top" color="primary" [disabled]="incomeForm.invalid"
           (click)="onSaveClicked()">
           Save Income
         </ion-button>
@@ -89,14 +69,26 @@
     </ion-card-header>
 
     <ion-card-content>
-      <ion-list>
-        <ion-item *ngFor="let income of localIncomeArray">
-          <ion-label>
-            <h2>{{ income.source }}</h2>
-            <p>₹ {{ income.amount }} • {{ income.date }}</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
+
+      <ion-card class="transaction-card income-card" *ngFor="let income of localIncomeArray">
+
+        <ion-card-content class="transaction-content">
+
+          <div class="left">
+            <p class="title">{{ income.source }}</p>
+            <p class="date">{{ income.date }}</p>
+          </div>
+
+          <div class="right">
+            <p class="amount">₹ {{ income.amount }}</p>
+          </div>
+
+        </ion-card-content>
+
+      </ion-card>
+
+
+
     </ion-card-content>
   </ion-card>
 

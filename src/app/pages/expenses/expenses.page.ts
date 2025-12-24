@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonContent, IonInput,IonText, IonButton,IonList, IonCard,IonItem, IonCardContent, IonCardHeader, IonCardTitle , IonLabel} from '@ionic/angular/standalone';
+import { IonContent, IonInput,IonText, IonButton, IonCard,IonItem, IonCardContent, IonCardHeader, IonCardTitle , IonLabel} from '@ionic/angular/standalone';
 import { Expense } from '../../models/expense.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,7 @@ import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashbo
   templateUrl: 'expenses.page.html',
   styleUrls: ['expenses.page.scss'],
   standalone:true,
-  imports: [IonContent,IonItem,IonList,DashboardLinkComponent, IonText,IonInput,CommonModule,IonButton, IonCard, IonCardContent,IonLabel, IonCardHeader, IonCardTitle, FormsModule]
+  imports: [IonContent,IonItem,DashboardLinkComponent, IonText,IonInput,CommonModule,IonButton, IonCard, IonCardContent,IonLabel, IonCardHeader, IonCardTitle, FormsModule]
 })
 export class ExpensePage {
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonButton , IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonText, IonList, IonInput, IonItem, IonLabel} from '@ionic/angular/standalone';
+import { IonContent, IonButton , IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonText, IonInput, IonItem, IonLabel} from '@ionic/angular/standalone';
 import { Income } from 'src/app/models/income.model';
 import { IncomeService } from 'src/app/services/incomeServices/income-service';
 import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashboard-link.component';
@@ -11,7 +11,7 @@ import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashbo
   templateUrl: './income.page.html',
   styleUrls: ['./income.page.scss'],
   standalone: true,
-  imports: [IonContent,IonText,DashboardLinkComponent, IonCardHeader, IonCardTitle, IonCardContent,IonCard, IonLabel, CommonModule, FormsModule,IonButton,IonList, IonItem, IonInput]
+  imports: [IonContent,IonText,DashboardLinkComponent, IonCardHeader, IonCardTitle, IonCardContent,IonCard, IonLabel, CommonModule, FormsModule,IonButton, IonItem, IonInput]
 })
 export class IncomePage implements OnInit {
 
