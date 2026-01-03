@@ -21,6 +21,10 @@ export class ExpenseService {
     return this.dataService.addExpense(expense);
   }
 
+  deleteExpense(expense:number):Promise<void>{
+    return this.dataService.deleteExpense(expense)
+  }
+
   async getTotalExpenses():Promise< number >{
     const expenses = await this.getExpenses();
     return expenses.reduce(

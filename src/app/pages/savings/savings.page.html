@@ -52,31 +52,21 @@
 
   </ion-card>
 
-  <ion-card *ngIf="localSavingsArray.length>0">
+  <ion-card class="transaction-card" button="false" *ngFor="let saving of localSavingsArray">
 
-    <ion-card-header>
-      <ion-card-title>Savings History</ion-card-title>
-    </ion-card-header>
+    <ion-card-content class="transaction-content">
+      <div class="left">
+        <p class="title">{{ saving.type }}</p>
+        <p class="date">{{ saving.date }}</p>
+      </div>
 
-    <ion-card-content>
-
-      <ion-card class="transaction-card savings-card" *ngFor="let saving of localSavingsArray">
-
-        <ion-card-content class="transaction-content">
-
-          <div class="left">
-            <p class="title">{{ saving.type }}</p>
-            <p class="date">{{ saving.date }}</p>
-          </div>
-
-          <div class="right">
-            <p class="amount">₹ {{ saving.amount }}</p>
-          </div>
-
-        </ion-card-content>
-
-      </ion-card>
-
+      <div class="right">
+        <p class="amount">₹ {{ saving.amount }}</p>
+        <ion-button fill="clear" size="small" color="danger" class="delete-btn" (click)="onDeleteClick(saving)"
+          (mousedown)="$event.stopPropagation()" (touchstart)="$event.stopPropagation()">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
 
     </ion-card-content>
 
@@ -85,6 +75,5 @@
   <p *ngIf="localSavingsArray.length === 0" class="ion-text-center">
     No Savings added yet
   </p>
-
 
 </ion-content>

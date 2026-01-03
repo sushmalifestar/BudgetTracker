@@ -1,0 +1,44 @@
+.transaction-card {
+    margin: 12px 0;          
+}
+  
+  .transaction-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+  }
+  
+  .delete-btn {
+    --padding-start: 4px;
+    --padding-end: 4px;
+    min-width: auto;
+  }
+  
+  .left .title {
+    font-weight: 500;
+  }
+  
+  .left .date {
+    font-size: 12px;
+    color: #777;
+  }
+  
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .amount {
+    font-weight: 600;
+    color: var(--ion-color-success);
+  }
+  
+  .delete-icon {
+    font-size: 20px;
+    color: var(--ion-color-danger);
+    cursor: pointer;
+    opacity: 1; 
+  }
+  

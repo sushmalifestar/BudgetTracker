@@ -53,34 +53,26 @@
 
   </ion-card>
 
-  <ion-card *ngIf="localExpenseArray.length>0">
+  <ion-card class="transaction-card" button="false" *ngFor="let expense of localExpenseArray">
 
-    <ion-card-header>
-      <ion-card-title>Expense History</ion-card-title>
-    </ion-card-header>
+    <ion-card-content class="transaction-content">
+      <div class="left">
+        <p class="title">{{ expense.category }}</p>
+        <p class="date">{{ expense.date }}</p>
+      </div>
 
-    <ion-card-content>
-
-      <ion-card class="transaction-card expense-card" *ngFor="let expense of localExpenseArray">
-
-        <ion-card-content class="transaction-content">
-
-          <div class="left">
-            <p class="title">{{ expense.category }}</p>
-            <p class="date">{{ expense.date }}</p>
-          </div>
-
-          <div class="right">
-            <p class="amount">₹ {{ expense.amount }}</p>
-          </div>
-
-        </ion-card-content>
-
-      </ion-card>
+      <div class="right">
+        <p class="amount">₹ {{ expense.amount }}</p>
+        <ion-button fill="clear" size="small" color="danger" class="delete-btn" (click)="onDeleteClick(expense)"
+          (mousedown)="$event.stopPropagation()" (touchstart)="$event.stopPropagation()">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
 
     </ion-card-content>
 
   </ion-card>
+
 
   <p *ngIf="localExpenseArray.length === 0" class="ion-text-center">
     No Expense added yet

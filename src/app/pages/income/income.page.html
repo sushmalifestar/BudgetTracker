@@ -11,7 +11,6 @@
     </ion-card-content>
   </ion-card>
 
-
   <ion-card>
 
     <ion-card-content>
@@ -62,34 +61,25 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-card class="transaction-card" button="false" *ngFor="let income of localIncomeArray">
 
-  <ion-card *ngIf="localIncomeArray.length > 0">
-    <ion-card-header>
-      <ion-card-title>Income History</ion-card-title>
-    </ion-card-header>
+    <ion-card-content class="transaction-content">
+      <div class="left">
+        <p class="title">{{ income.source }}</p>
+        <p class="date">{{ income.date }}</p>
+      </div>
 
-    <ion-card-content>
+      <div class="right">
+        <p class="amount">₹ {{ income.amount }}</p>
+        <ion-button fill="clear" size="small" color="danger" class="delete-btn" (click)="onDeleteClick(income)"
+          (mousedown)="$event.stopPropagation()" (touchstart)="$event.stopPropagation()">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
 
-      <ion-card class="transaction-card income-card" *ngFor="let income of localIncomeArray">
-
-        <ion-card-content class="transaction-content">
-
-          <div class="left">
-            <p class="title">{{ income.source }}</p>
-            <p class="date">{{ income.date }}</p>
-          </div>
-
-          <div class="right">
-            <p class="amount">₹ {{ income.amount }}</p>
-          </div>
-
-        </ion-card-content>
-
-      </ion-card>
-
-
+      </div>
 
     </ion-card-content>
+
   </ion-card>
 
   <p *ngIf="localIncomeArray.length === 0" class="ion-text-center">

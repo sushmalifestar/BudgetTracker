@@ -148,13 +148,60 @@ export class DataService {
     return rows;
   }
 
+  async deleteIncome (id:number){
+
+    if (Capacitor.getPlatform() === 'web'){
+      this.webIncomes = this.webIncomes.filter(income => income.id !== id);
+      return;
+    }
+
+    if (!this.dbReady) {
+      await this.initDatabase();
+      await this.createTables();
+    }
+
+    const query = `DELETE FROM incomes WHERE id = ?`;
+    await this.db.run(query ,[id]);
+
+  }
+
+  async deleteExpense (id:number){
+
+    if(Capacitor.getPlatform() === 'web'){
+      this.webExpenses=this.webExpenses.filter(expense => expense.id !== id);
+      return;
+    }
+
+    if (!this.dbReady) {
+      await this.initDatabase();
+      await this.createTables();
+    }
+
+    const query = `DELETE FROM expenses WHERE id = ?`;
+    await this.db.run(query ,[id]);
+
+  }
+
+  async deleteSaving (id:number){
+
+    if(Capacitor.getPlatform() === 'web'){
+      this.webSavings = this.webSavings.filter(saving => saving.id !== id);
+      return;
+    }
+
+    if (!this.dbReady) {
+      await this.initDatabase();
+      await this.createTables();
+    }
+
+    const query = `DELETE FROM savings WHERE id = ?`;
+    await this.db.run(query ,[id]);
+
+  }
+
   async addIncome(income: Income) {
 
-
-    console.log('STEP 1: addIncome entered');
-
     if (Capacitor.getPlatform() === 'web') {
-      console.log('STEP 2: web path');
       const newIncome: Income = {
         ...income,
         id: Date.now(),
@@ -250,6 +297,4 @@ export class DataService {
     return result.values as Savings[];
   }
   
-  
-
 }

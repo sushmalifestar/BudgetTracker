@@ -19,6 +19,10 @@ export class SavingsService {
     return this.dataService.addSavings(saving);
   }
 
+  deleteSaving(saving:number): Promise<void>{
+    return this.dataService.deleteSaving(saving);
+  }
+
   async getTotalSavings(): Promise<number> {
     const savings = await this.getSavings();
     return savings.reduce(
