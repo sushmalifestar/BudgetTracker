@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonButton , IonCard,IonIcon, IonCardTitle,IonCardHeader, IonItemSliding, IonItemOption, IonItemOptions, IonCardContent, IonText, IonInput, IonItem, IonLabel} from '@ionic/angular/standalone';
+import { IonContent, IonButton , IonCard,IonIcon,IonCheckbox, IonCardTitle,IonCardHeader, IonItemSliding, IonItemOption, IonItemOptions, IonCardContent, IonText, IonInput, IonItem, IonLabel} from '@ionic/angular/standalone';
 import { Income } from 'src/app/models/income.model';
 import { IncomeService } from 'src/app/services/incomeServices/income-service';
 import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashboard-link.component';
@@ -14,7 +14,7 @@ import { trashOutline } from 'ionicons/icons';
   templateUrl: './income.page.html',
   styleUrls: ['./income.page.scss'],
   standalone: true,
-  imports: [IonContent,IonText,DashboardLinkComponent,IonIcon,IonCardTitle,IonCardHeader, IonItemSliding, IonItemOption, IonItemOptions, IonCardContent,IonCard, IonLabel, CommonModule, FormsModule,IonButton, IonItem, IonInput]
+  imports: [IonContent,IonText,DashboardLinkComponent,IonCheckbox,IonIcon,IonCardTitle,IonCardHeader, IonItemSliding, IonItemOption, IonItemOptions, IonCardContent,IonCard, IonLabel, CommonModule, FormsModule,IonButton, IonItem, IonInput]
 })
 export class IncomePage implements OnInit {
 
@@ -26,6 +26,9 @@ export class IncomePage implements OnInit {
     date : '',
     source:''
   }
+  isBulkDeleteMode = false;
+  selectedIncomeIds: number[] = [];
+
 
   constructor( private inservice:IncomeService, private alertCtrl:AlertController) {
     addIcons({ trashOutline });
@@ -80,12 +83,75 @@ export class IncomePage implements OnInit {
     await alert.present();
   }
 
-  
   async deleteIncome(id: number) {
     await this.inservice.deleteIncome(id);
     this.localIncomeArray = await this.inservice.getIncome();
     this.totalIncome = await this.inservice.getTotalIncome();
   }
+
+  enableBulkDeleteMode() {
+    this.isBulkDeleteMode = true;
+    this.selectedIncomeIds = [];
+  }
+  
+  cancelBulkDeleteMode() {
+    this.isBulkDeleteMode = false;
+    this.selectedIncomeIds = [];
+  }
+
+  onIncomeSelectionChange(id: number, event: any) {
+    const checked = event.detail.checked;
+  
+    if (checked) {
+      if (!this.selectedIncomeIds.includes(id)) {
+        this.selectedIncomeIds.push(id);
+      }
+    } else {
+      this.selectedIncomeIds = this.selectedIncomeIds.filter(
+        selectedId => selectedId !== id
+      );
+    }
+  
+    console.log('Selected incomes:', this.selectedIncomeIds);
+  }
+
+  async confirmBulkDelete() {
+    const count = this.selectedIncomeIds.length;
+  
+    const alert = await this.alertCtrl.create({
+      header: 'Delete Incomes',
+      message: `Delete ${count} selected income transaction(s)?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.bulkDeleteIncomes();
+            return true;
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+
+  async bulkDeleteIncomes() {
+    for (const id of this.selectedIncomeIds) {
+      await this.inservice.deleteIncome(id);
+    }
+    this.localIncomeArray = await this.inservice.getIncome();
+    this.totalIncome = await this.inservice.getTotalIncome();
+    this.cancelBulkDeleteMode();
+  }
+  
+  
+  
+  
   
 
 }

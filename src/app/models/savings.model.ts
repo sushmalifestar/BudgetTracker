@@ -4,4 +4,5 @@ export interface Savings {
     type: string; 
     note?: string;
     date: string;
+    createdAt?: string;
   }

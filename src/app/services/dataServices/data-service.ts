@@ -261,7 +261,12 @@ export class DataService {
 
   async addSavings(saving: Savings): Promise<void> {
     if (Capacitor.getPlatform() === 'web') {
-      this.webSavings.push(saving);
+      const newSaving : Savings ={
+        ...saving,
+        id : Date.now(),
+        createdAt: new Date(). toISOString()
+      };
+      this.webSavings.push(newSaving);
       return;
     }
   

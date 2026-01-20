@@ -1,44 +1,126 @@
 .transaction-card {
-    margin: 12px 0;          
+  margin: 12px 0;          
 }
-  
-  .transaction-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 16px;
-  }
-  
-  .delete-btn {
-    --padding-start: 4px;
-    --padding-end: 4px;
-    min-width: auto;
-  }
-  
-  .left .title {
-    font-weight: 500;
-  }
-  
-  .left .date {
-    font-size: 12px;
-    color: #777;
-  }
-  
-  .right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  
-  .amount {
-    font-weight: 600;
-    color: var(--ion-color-success);
-  }
-  
-  .delete-icon {
-    font-size: 20px;
-    color: var(--ion-color-danger);
-    cursor: pointer;
-    opacity: 1; 
-  }
-  
+
+.transaction-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;      
+}
+
+.transaction-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-btn {
+  --padding-start: 4px;
+  --padding-end: 4px;
+  min-width: auto;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.left {
+  display: flex;
+  align-items: center; 
+  gap: 12px;
+}
+
+.left ion-checkbox {
+  margin: 0;             
+  --size: 18px;         
+}
+
+.amount {
+  font-size: 18px;      // ⬆ increase size
+  font-weight: 700;     // bolder
+  color: var(--ion-color-success);
+  white-space: nowrap;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;  // 👈 key spacing
+}
+
+.title {
+  font-weight: 700;
+  margin: 0;
+  font-size: 18px;
+}
+
+.date {
+  font-size: 12px;
+  color: var(--ion-color-medium);
+  margin: 0;
+  opacity: 0.8;
+}
+
+.bulk-trigger {
+  display: flex;
+  justify-content: flex-end;
+  margin: 8px 4px 12px;
+}
+
+.bulk-action-card {
+  margin-bottom: 12px;
+  border-left: 4px solid var(--ion-color-primary);
+}
+
+.bulk-action-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+}
+
+.bulk-title {
+  font-weight: 600;
+  color: var(--ion-color-primary);
+}
+
+.bulk-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ion-color-primary);
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.action-link:hover {
+  background-color: rgba(var(--ion-color-primary-rgb), 0.1);
+}
+
+.action-link.cancel {
+  color: var(--ion-color-medium);
+}
+
+.action-link.cancel:hover {
+  background-color: rgba(var(--ion-color-medium-rgb), 0.15);
+}
+
+.action-link.primary {
+  color: var(--ion-color-primary);
+}
+
+.action-link.primary:hover {
+  background-color: rgba(var(--ion-color-primary-rgb), 0.12);
+}
+
+

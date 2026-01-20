@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {  IonContent, IonLabel,IonItem,IonCard, IonIcon, IonCardContent,IonCardHeader,IonCardTitle, IonText,IonInput,IonButton} from '@ionic/angular/standalone';
+import {  IonContent, IonLabel,IonItem,IonCard, IonIcon,IonCheckbox, IonCardContent,IonCardHeader,IonCardTitle, IonText,IonInput,IonButton} from '@ionic/angular/standalone';
 import { Savings } from '../../models/savings.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ import { trashOutline } from 'ionicons/icons';
   templateUrl: 'savings.page.html',
   styleUrls: ['savings.page.scss'],
   standalone:true,
-  imports: [FormsModule,DashboardLinkComponent,CommonModule,IonIcon, IonContent,IonLabel, IonText,IonInput,IonButton,IonItem,IonCard,IonCardContent,IonCardHeader,IonCardTitle],
+  imports: [FormsModule,DashboardLinkComponent,CommonModule,IonIcon,IonCheckbox, IonContent,IonLabel, IonText,IonInput,IonButton,IonItem,IonCard,IonCardContent,IonCardHeader,IonCardTitle],
 })
 export class SavingsPage {
   constructor(private savingsService:SavingsService, private alertCtrl:AlertController) {
@@ -29,6 +29,8 @@ export class SavingsPage {
       date :'',
       type: '',
     }
+    isBulkDeleteMode = false;
+  selectedSavingsIds: number[] = [];
 
   async ngOnInit(){
     this.localSavingsArray = await this.savingsService.getSavings();
@@ -82,6 +84,66 @@ export class SavingsPage {
     await this.savingsService.deleteSaving(id);
     this.localSavingsArray = await this.savingsService.getSavings();
     this.totalSavings = await this.savingsService.getTotalSavings();
+  }
+
+  enableBulkDeleteMode() {
+    this.isBulkDeleteMode = true;
+    this.selectedSavingsIds = [];
+  }
+  
+  cancelBulkDeleteMode() {
+    this.isBulkDeleteMode = false;
+    this.selectedSavingsIds = [];
+  }
+
+  onSavingSelectionChange(id: number, event: any) {
+    const checked = event.detail.checked;
+  
+    if (checked) {
+      if (!this.selectedSavingsIds.includes(id)) {
+        this.selectedSavingsIds.push(id);
+      }
+    } else {
+      this.selectedSavingsIds = this.selectedSavingsIds.filter(
+        selectedId => selectedId !== id
+      );
+    }
+  
+    console.log('Selected Savings:', this.selectedSavingsIds);
+  }
+
+  async confirmBulkDelete() {
+    const count = this.selectedSavingsIds.length;
+  
+    const alert = await this.alertCtrl.create({
+      header: 'Delete Savings',
+      message: `Delete ${count} selected Saving transaction(s)?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.bulkDeleteSavings();
+            return true;
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+
+  async bulkDeleteSavings() {
+    for (const id of this.selectedSavingsIds) {
+      await this.savingsService.deleteSaving(id);
+    }
+    this.localSavingsArray = await this.savingsService.getSavings();
+    this.totalSavings = await this.savingsService.getTotalSavings();
+    this.cancelBulkDeleteMode();
   }
 
 }

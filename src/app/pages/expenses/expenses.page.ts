@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonContent, IonInput,IonText, IonButton, IonIcon, IonCard,IonItem, IonCardContent, IonCardHeader, IonCardTitle , IonLabel} from '@ionic/angular/standalone';
+import { IonContent, IonInput,IonText, IonButton, IonIcon,IonCheckbox, IonCard,IonItem, IonCardContent, IonCardHeader, IonCardTitle , IonLabel} from '@ionic/angular/standalone';
 import { Expense } from '../../models/expense.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ import { trashOutline } from 'ionicons/icons';
   templateUrl: 'expenses.page.html',
   styleUrls: ['expenses.page.scss'],
   standalone:true,
-  imports: [IonContent,IonItem,DashboardLinkComponent,IonIcon, IonText,IonInput,CommonModule,IonButton, IonCard, IonCardContent,IonLabel, IonCardHeader, IonCardTitle, FormsModule]
+  imports: [IonContent,IonItem,DashboardLinkComponent,IonIcon,IonCheckbox, IonText,IonInput,CommonModule,IonButton, IonCard, IonCardContent,IonLabel, IonCardHeader, IonCardTitle, FormsModule]
 })
 export class ExpensePage {
 
@@ -35,6 +35,8 @@ export class ExpensePage {
     date :'',
     category: ''
   }
+  isBulkDeleteMode = false;
+  selectedExpenseIds: number[] = [];
   
   onAddExpenseClick(){
     this.isExpenseClicked = !this.isExpenseClicked;
@@ -83,6 +85,66 @@ export class ExpensePage {
     await this.expService.deleteExpense(id);
     this.localExpenseArray = await this.expService.getExpenses();
     this.totalExpenses = await this.expService.getTotalExpenses();
+  }
+
+  enableBulkDeleteMode() {
+    this.isBulkDeleteMode = true;
+    this.selectedExpenseIds = [];
+  }
+  
+  cancelBulkDeleteMode() {
+    this.isBulkDeleteMode = false;
+    this.selectedExpenseIds = [];
+  }
+
+  onExpensesSelectionChange(id: number, event: any) {
+    const checked = event.detail.checked;
+  
+    if (checked) {
+      if (!this.selectedExpenseIds.includes(id)) {
+        this.selectedExpenseIds.push(id);
+      }
+    } else {
+      this.selectedExpenseIds = this.selectedExpenseIds.filter(
+        selectedId => selectedId !== id
+      );
+    }
+  
+    console.log('Selected Expenses:', this.selectedExpenseIds);
+  }
+
+  async confirmBulkDelete() {
+    const count = this.selectedExpenseIds.length;
+  
+    const alert = await this.alertCtrl.create({
+      header: 'Delete Expenses',
+      message: `Delete ${count} selected expense transaction(s)?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.bulkDeleteExpenses();
+            return true;
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+  }
+
+  async bulkDeleteExpenses() {
+    for (const id of this.selectedExpenseIds) {
+      await this.expService.deleteExpense(id);
+    }
+    this.localExpenseArray = await this.expService.getExpenses();
+    this.totalExpenses = await this.expService.getTotalExpenses();
+    this.cancelBulkDeleteMode();
   }
 
 }

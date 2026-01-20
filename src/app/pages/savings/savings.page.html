@@ -52,18 +52,55 @@
 
   </ion-card>
 
+  <div class="bulk-trigger">
+    <ion-text class="action-link primary" *ngIf="!isBulkDeleteMode && localSavingsArray.length > 0"
+      (click)="enableBulkDeleteMode()">
+      Delete multiple
+    </ion-text>
+  </div>
+
+  <!-- Bulk action bar (BULK MODE ONLY) -->
+  <ion-card *ngIf="isBulkDeleteMode" class="bulk-action-card">
+
+    <ion-card-content class="bulk-action-content">
+      <ion-text class="bulk-title">
+        Select Savings to delete
+      </ion-text>
+
+      <div class="bulk-actions">
+        <ion-button fill="outline" color="primary" size="small" [disabled]="selectedSavingsIds.length === 0"
+          (click)="confirmBulkDelete()">
+          Delete Selected
+        </ion-button>
+      </div>
+
+
+      <ion-text class="action-link cancel" (click)="cancelBulkDeleteMode()">
+        Cancel
+      </ion-text>
+
+    </ion-card-content>
+
+  </ion-card>
+
+
   <ion-card class="transaction-card" button="false" *ngFor="let saving of localSavingsArray">
 
-    <ion-card-content class="transaction-content">
+    <ion-card-content class="transaction-row">
       <div class="left">
-        <p class="title">{{ saving.type }}</p>
-        <p class="date">{{ saving.date }}</p>
+        <ion-checkbox *ngIf="isBulkDeleteMode" (ionChange)="saving.id && onSavingSelectionChange(saving.id, $event)">
+        </ion-checkbox>
+        <div class="details">
+          <p class="title">{{ saving.type }}</p>
+          <p class="date">{{ saving.date }}</p>
+        </div>
       </div>
 
       <div class="right">
         <p class="amount">₹ {{ saving.amount }}</p>
-        <ion-button fill="clear" size="small" color="danger" class="delete-btn" (click)="onDeleteClick(saving)"
-          (mousedown)="$event.stopPropagation()" (touchstart)="$event.stopPropagation()">
+        <ion-button *ngIf="!isBulkDeleteMode" fill="clear" size="small" color="danger" class="delete-btn"
+          (click)="onDeleteClick(saving)" (mousedown)="$event.stopPropagation()"
+          (touchstart)="$event.stopPropagation()">
           <ion-icon name="trash-outline"></ion-icon>
         </ion-button>
       </div>
