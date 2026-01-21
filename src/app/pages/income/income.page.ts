@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonButton , IonCard,IonIcon,IonCheckbox, IonCardTitle,IonCardHeader, IonItemSliding, IonItemOption, IonItemOptions, IonCardContent, IonText, IonInput, IonItem, IonLabel} from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonCard, IonIcon, IonCheckbox, IonCardTitle, IonCardHeader, IonItemSliding, IonItemOption, IonItemOptions, IonCardContent, IonText, IonInput, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { Income } from 'src/app/models/income.model';
 import { IncomeService } from 'src/app/services/incomeServices/income-service';
 import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashboard-link.component';
@@ -14,48 +14,48 @@ import { trashOutline } from 'ionicons/icons';
   templateUrl: './income.page.html',
   styleUrls: ['./income.page.scss'],
   standalone: true,
-  imports: [IonContent,IonText,DashboardLinkComponent,IonCheckbox,IonIcon,IonCardTitle,IonCardHeader, IonItemSliding, IonItemOption, IonItemOptions, IonCardContent,IonCard, IonLabel, CommonModule, FormsModule,IonButton, IonItem, IonInput]
+  imports: [IonContent, IonText, DashboardLinkComponent, IonCheckbox, IonIcon, IonCardTitle, IonCardHeader, IonItemSliding, IonItemOption, IonItemOptions, IonCardContent, IonCard, IonLabel, CommonModule, FormsModule, IonButton, IonItem, IonInput]
 })
 export class IncomePage implements OnInit {
 
-  localIncomeArray: Income[]=[];
+  localIncomeArray: Income[] = [];
   totalIncome = 0;
   isIncomeClicked = false;
-  newlyAddedIncome : Income ={
-    amount : null as any,
-    date : '',
-    source:''
+  newlyAddedIncome: Income = {
+    amount: null as any,
+    date: '',
+    source: ''
   }
   isBulkDeleteMode = false;
   selectedIncomeIds: number[] = [];
 
 
-  constructor( private inservice:IncomeService, private alertCtrl:AlertController) {
+  constructor(private inservice: IncomeService, private alertCtrl: AlertController) {
     addIcons({ trashOutline });
-   }
-
-  async ngOnInit() {
-    this.localIncomeArray= await this.inservice.getIncome();
-    this.totalIncome= await this.inservice.getTotalIncome();
   }
 
-  onAddIncomeClick(){
+  async ngOnInit() {
+    this.localIncomeArray = await this.inservice.getIncome();
+    this.totalIncome = await this.inservice.getTotalIncome();
+  }
+
+  onAddIncomeClick() {
     this.isIncomeClicked = !this.isIncomeClicked;
   }
 
-  async onSaveClicked(){
+  async onSaveClicked() {
     console.log("Save button clicked");
-    await this.inservice.addIncome({...this.newlyAddedIncome});
+    await this.inservice.addIncome({ ...this.newlyAddedIncome });
     this.totalIncome = await this.inservice.getTotalIncome();
-    this.localIncomeArray= await this.inservice.getIncome();
+    this.localIncomeArray = await this.inservice.getIncome();
     this.isIncomeClicked = false;
     this.formReset();
   }
 
-  formReset(){
-    this.newlyAddedIncome.amount=null as any;
-    this.newlyAddedIncome.date='';
-    this.newlyAddedIncome.source='';
+  formReset() {
+    this.newlyAddedIncome.amount = null as any;
+    this.newlyAddedIncome.date = '';
+    this.newlyAddedIncome.source = '';
   }
 
   async onDeleteClick(income: any) {
@@ -79,7 +79,7 @@ export class IncomePage implements OnInit {
         }
       ]
     });
-  
+
     await alert.present();
   }
 
@@ -93,7 +93,7 @@ export class IncomePage implements OnInit {
     this.isBulkDeleteMode = true;
     this.selectedIncomeIds = [];
   }
-  
+
   cancelBulkDeleteMode() {
     this.isBulkDeleteMode = false;
     this.selectedIncomeIds = [];
@@ -101,7 +101,7 @@ export class IncomePage implements OnInit {
 
   onIncomeSelectionChange(id: number, event: any) {
     const checked = event.detail.checked;
-  
+
     if (checked) {
       if (!this.selectedIncomeIds.includes(id)) {
         this.selectedIncomeIds.push(id);
@@ -111,13 +111,13 @@ export class IncomePage implements OnInit {
         selectedId => selectedId !== id
       );
     }
-  
+
     console.log('Selected incomes:', this.selectedIncomeIds);
   }
 
   async confirmBulkDelete() {
     const count = this.selectedIncomeIds.length;
-  
+
     const alert = await this.alertCtrl.create({
       header: 'Delete Incomes',
       message: `Delete ${count} selected income transaction(s)?`,
@@ -136,7 +136,7 @@ export class IncomePage implements OnInit {
         }
       ]
     });
-  
+
     await alert.present();
   }
 
@@ -148,11 +148,30 @@ export class IncomePage implements OnInit {
     this.totalIncome = await this.inservice.getTotalIncome();
     this.cancelBulkDeleteMode();
   }
-  
-  
-  
-  
-  
+
+  get isAllIncomeSelected(): boolean {
+    return (
+      this.localIncomeArray.length > 0 &&
+      this.selectedIncomeIds.length === this.localIncomeArray.length
+    );
+  }
+
+  onToggleSelectAllIncome(event: any) {
+    const checked = event.detail.checked;
+
+    if (checked) {
+      this.selectedIncomeIds = this.localIncomeArray
+        .filter(i => i.id !== undefined)
+        .map(i => i.id as number);
+    } else {
+      this.selectedIncomeIds = [];
+    }
+  }
+
+
+
+
+
 
 }
 

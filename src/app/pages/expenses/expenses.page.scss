@@ -41,7 +41,7 @@
 .amount {
   font-size: 18px;      // ⬆ increase size
   font-weight: 700;     // bolder
-  color: var(--ion-color-success);
+  color: var(--ion-color-danger);
   white-space: nowrap;
 }
 
@@ -82,11 +82,6 @@
   padding: 8px 12px;
 }
 
-.bulk-title {
-  font-weight: 600;
-  color: var(--ion-color-primary);
-}
-
 .bulk-actions {
   display: flex;
   align-items: center;
@@ -123,4 +118,14 @@
   background-color: rgba(var(--ion-color-primary-rgb), 0.12);
 }
 
+.select-all-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; // 👈 controls space cleanly
+}
+
+.select-all-text {
+  font-size: 14px;
+  color: #444;
+}
 

@@ -63,14 +63,17 @@
   <ion-card *ngIf="isBulkDeleteMode" class="bulk-action-card">
 
     <ion-card-content class="bulk-action-content">
-      <ion-text class="bulk-title">
-        Select Savings to delete
-      </ion-text>
+
+      <div class="select-all-container">
+        <ion-checkbox [checked]="isAllSavingsSelected" (ionChange)="onToggleSelectAllSavings($event)">
+        </ion-checkbox>
+        <span class="select-all-text">Select all</span>
+      </div>
 
       <div class="bulk-actions">
         <ion-button fill="outline" color="primary" size="small" [disabled]="selectedSavingsIds.length === 0"
           (click)="confirmBulkDelete()">
-          Delete Selected
+          Delete
         </ion-button>
       </div>
 
@@ -88,7 +91,7 @@
 
     <ion-card-content class="transaction-row">
       <div class="left">
-        <ion-checkbox *ngIf="isBulkDeleteMode" (ionChange)="saving.id && onSavingSelectionChange(saving.id, $event)">
+        <ion-checkbox *ngIf="isBulkDeleteMode" [checked]="selectedSavingsIds.includes(saving.id!)"  (ionChange)="saving.id && onSavingSelectionChange(saving.id, $event)">
         </ion-checkbox>
         <div class="details">
           <p class="title">{{ saving.type }}</p>

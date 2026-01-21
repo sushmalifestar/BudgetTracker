@@ -146,4 +146,24 @@ export class SavingsPage {
     this.cancelBulkDeleteMode();
   }
 
+  
+  get isAllSavingsSelected(): boolean {
+    return (
+      this.localSavingsArray.length > 0 &&
+      this.selectedSavingsIds.length === this.localSavingsArray.length
+    );
+  }
+
+  onToggleSelectAllSavings(event: any) {
+    const checked = event.detail.checked;
+
+    if (checked) {
+      this.selectedSavingsIds = this.localSavingsArray
+        .filter(i => i.id !== undefined)
+        .map(i => i.id as number);
+    } else {
+      this.selectedSavingsIds = [];
+    }
+  }
+
 }

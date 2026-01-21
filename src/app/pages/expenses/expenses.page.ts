@@ -147,4 +147,23 @@ export class ExpensePage {
     this.cancelBulkDeleteMode();
   }
 
+  get isAllExpensesSelected(): boolean {
+    return (
+      this.localExpenseArray.length > 0 &&
+      this.selectedExpenseIds.length === this.localExpenseArray.length
+    );
+  }
+
+  onToggleSelectAllExpenses(event: any) {
+    const checked = event.detail.checked;
+
+    if (checked) {
+      this.selectedExpenseIds = this.localExpenseArray
+        .filter(i => i.id !== undefined)
+        .map(i => i.id as number);
+    } else {
+      this.selectedExpenseIds = [];
+    }
+  }
+
 }
