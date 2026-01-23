@@ -14,7 +14,7 @@
 
       <ion-button expand="block" (click)="onAddSavingsClick()"> + Add Savings</ion-button>
 
-      <form #SavingsForm="ngForm" *ngIf="isSavingsClicked">
+      <!-- <form #SavingsForm="ngForm" *ngIf="isSavingsClicked">
 
         <ion-item class="form-item">
           <ion-label position="stacked">Amount</ion-label>
@@ -49,7 +49,12 @@
         <ion-button expand="block" class="ion-margin-top" color="primary" [disabled]="SavingsForm.invalid"
           (click)="onSaveClicked()"> Save Savings</ion-button>
 
-      </form>
+      </form> -->
+
+      <app-transaction-form *ngIf="isFormOpen" [model]="model" submitLabel="Save Saving"
+        (save)="onSaveClicked()" (cancel)="onCancelForm()">
+      </app-transaction-form>
+
 
     </ion-card-content>
 
@@ -97,7 +102,7 @@
         <ion-checkbox *ngIf="isBulkDeleteMode" [checked]="selectedSavingsIds.includes(saving.id!)"  (ionChange)="saving.id && onSavingSelectionChange(saving.id, $event)">
         </ion-checkbox>
         <div class="details">
-          <p class="title">{{ saving.type }}</p>
+          <p class="title">{{ saving.source }}</p>
           <p class="date">{{ saving.date }}</p>
         </div>
       </div>

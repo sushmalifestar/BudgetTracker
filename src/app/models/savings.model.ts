@@ -1,7 +1,7 @@
 export interface Savings {
     id?: number;
     amount: number;
-    type: string; 
+    source: string; 
     note?: string;
     date: string;
     createdAt?: string;

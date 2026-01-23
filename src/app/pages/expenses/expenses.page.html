@@ -15,7 +15,7 @@
 
       <ion-button expand="block" (click)="onAddExpenseClick()"> + Add Expense</ion-button>
 
-      <form #ExpenseForm="ngForm" *ngIf="isExpenseClicked">
+      <!-- <form #ExpenseForm="ngForm" *ngIf="isExpenseClicked">
 
         <ion-item class="form-item">
           <ion-label position="stacked">Amount</ion-label>
@@ -50,7 +50,11 @@
         <ion-button expand="block" class="ion-margin-top" color="primary" [disabled]="ExpenseForm.invalid"
           (click)="onSaveClicked()"> Save Expenses</ion-button>
 
-      </form>
+      </form> -->
+
+      <app-transaction-form *ngIf="isFormOpen" [model]="model" submitLabel="Save Expense"
+      (save)="onSaveClicked()" (cancel)="onCancelForm()">
+    </app-transaction-form>
 
     </ion-card-content>
 
@@ -99,7 +103,7 @@
           (ionChange)="expense.id && onExpensesSelectionChange(expense.id, $event)">
         </ion-checkbox>
         <div class="details">
-          <p class="title">{{ expense.category }}</p>
+          <p class="title">{{ expense.source }}</p>
           <p class="date">{{ expense.date }}</p>
         </div>
 

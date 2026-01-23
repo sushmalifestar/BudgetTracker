@@ -119,7 +119,7 @@ export class DataService {
     `;
     const values = [
       expense.amount,
-      expense.category,
+      expense.source,
       expense.note || '',
       expense.date,
       new Date().toISOString()
@@ -282,7 +282,7 @@ export class DataService {
   
     await this.db.run(query, [
       saving.amount,
-      saving.type,
+      saving.source,
       saving.note || '',
       saving.date
     ]);

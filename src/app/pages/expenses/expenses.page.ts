@@ -8,17 +8,21 @@ import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashbo
 import { AlertController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { trashOutline } from 'ionicons/icons';
+import { TransactionFormComponent } from
+  'src/app/components/transaction-form/transaction-form.component';
+  import { TransactionPageBase } from 'src/app/shared/transaction-page.base';
 
 @Component({ 
   selector: 'app-expenses',
   templateUrl: 'expenses.page.html',
   styleUrls: ['expenses.page.scss'],
   standalone:true,
-  imports: [IonContent,IonItem,DashboardLinkComponent,IonIcon,IonCheckbox, IonText,IonInput,CommonModule,IonButton, IonCard, IonCardContent,IonLabel, IonCardHeader, IonCardTitle, FormsModule]
+  imports: [IonContent, TransactionFormComponent, IonItem,DashboardLinkComponent,IonIcon,IonCheckbox, IonText,IonInput,CommonModule,IonButton, IonCard, IonCardContent,IonLabel, IonCardHeader, IonCardTitle, FormsModule]
 })
-export class ExpensePage {
+export class ExpensePage extends TransactionPageBase {
 
   constructor(private expService :ExpenseService, private alertCtrl:AlertController ) {
+    super();
     addIcons({ trashOutline });
   }
 
@@ -27,35 +31,46 @@ export class ExpensePage {
     this.totalExpenses=await this.expService.getTotalExpenses();
   }
 
-  isExpenseClicked =false;
+  // isExpenseClicked =false;
   localExpenseArray : Expense[]=[];
   totalExpenses=0;
-  expen : Expense ={
-    amount :null as any,
-    date :'',
-    category: ''
-  }
+  // newlyAddedExpense : Expense ={
+  //   amount :null as any,
+  //   date :'',
+  //   source: ''
+  // }
   isBulkDeleteMode = false;
   selectedExpenseIds: number[] = [];
-  amountLimitExceeded=false;
+  // amountLimitExceeded=false;
   
   onAddExpenseClick(){
-    this.isExpenseClicked = !this.isExpenseClicked;
+    this.openForm();
+  }
+
+  onCancelForm() {
+    this.closeForm();
   }
 
   async onSaveClicked(){
-    await this.expService.addExpense({...this.expen}); 
+    if (this.model.amount === null) {
+      return;
+    }
+    await this.expService.addExpense({
+      amount: this.model.amount,
+    date: this.model.date,
+    source: this.model.source
+    }); 
     this.localExpenseArray = await this.expService.getExpenses();
     this.totalExpenses = await this.expService.getTotalExpenses();
     this.resetForm();
-    this.isExpenseClicked=false;
+    this.closeForm();
   }
 
-  resetForm(){
-    this.expen.amount=null as any;
-    this.expen.category='';
-    this.expen.date='';
-  }
+  // resetForm(){
+  //   this.newlyAddedExpense.amount=null as any;
+  //   this.newlyAddedExpense.source='';
+  //   this.newlyAddedExpense.date='';
+  // }
 
   async onDeleteClick(expense: any) {
 
@@ -167,21 +182,21 @@ export class ExpensePage {
     }
   }
 
-  onAmountInput(event: any) {
-    const value = event.target.value;
+  // onAmountInput(event: any) {
+  //   const value = event.target.value;
   
-    if (!value){
-      this.amountLimitExceeded = false;
-      return;
-    } 
-    const digitsOnly = value.toString().replace(/\D/g, '');
+  //   if (!value){
+  //     this.amountLimitExceeded = false;
+  //     return;
+  //   } 
+  //   const digitsOnly = value.toString().replace(/\D/g, '');
   
-    if (digitsOnly.length > 10) {
-      event.target.value = digitsOnly.slice(0, 10);
-      this.amountLimitExceeded = true;
-    } else {
-      this.amountLimitExceeded = false;
-    }
-  }
+  //   if (digitsOnly.length > 10) {
+  //     event.target.value = digitsOnly.slice(0, 10);
+  //     this.amountLimitExceeded = true;
+  //   } else {
+  //     this.amountLimitExceeded = false;
+  //   }
+  // }
 
 }

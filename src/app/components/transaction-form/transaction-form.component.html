@@ -1,0 +1,46 @@
+<form #transactionForm="ngForm" (ngSubmit)="onSubmit()">
+
+  <ion-item class="form-item">
+    <ion-label position="stacked">Amount</ion-label>
+    <ion-input required type="number" placeholder="Enter amount" #amtCtrl="ngModel" inputmode="numeric" 
+    [(ngModel)]="model.amount" name="amount"
+      (ionInput)="onAmountInput($event)">
+    </ion-input>
+  </ion-item>
+  <ion-text class="validation-text" *ngIf="amtCtrl.invalid && amtCtrl.touched">
+    Amount is required
+  </ion-text>
+  <ion-text color="danger" *ngIf="amountLimitExceeded">
+    <small>Amount cannot exceed 10 digits</small>
+  </ion-text>
+
+  <ion-item class="form-item">
+    <ion-label position="stacked">Source</ion-label>
+    <ion-input required placeholder="Salary / Business" type="text" [(ngModel)]="model.source"
+    #srcCtrl="ngModel" name="source">
+    </ion-input>
+  </ion-item>
+  <ion-text class="validation-text" *ngIf="srcCtrl.invalid && srcCtrl.touched">
+    Source is required
+  </ion-text>
+
+  <ion-item class="form-item">
+    <ion-label position="stacked">Date</ion-label>
+    <ion-input required type="date" [(ngModel)]="model.date" #dateCtrl="ngModel" name="date">
+    </ion-input>
+  </ion-item>
+  <ion-text class="validation-text" *ngIf="dateCtrl.invalid && dateCtrl.touched">
+    Date is required
+  </ion-text>
+
+  <div class="form-actions">
+    <ion-button expand="block" type="submit" color="primary" [disabled]="transactionForm.invalid">
+      {{ submitLabel }}
+    </ion-button>
+
+    <ion-button *ngIf="showCancel" expand="block" fill="clear" color="medium" type="button" (click)="onCancel()">
+      Cancel
+    </ion-button>
+  </div>
+
+</form>

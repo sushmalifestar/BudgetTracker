@@ -8,30 +8,34 @@ import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashbo
 import { AlertController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { trashOutline } from 'ionicons/icons';
+import { TransactionFormComponent } from
+  'src/app/components/transaction-form/transaction-form.component';
+  import { TransactionPageBase } from 'src/app/shared/transaction-page.base';
 
 @Component({
   selector: 'app-savings',
   templateUrl: 'savings.page.html',
   styleUrls: ['savings.page.scss'],
   standalone:true,
-  imports: [FormsModule,DashboardLinkComponent,CommonModule,IonIcon,IonCheckbox, IonContent,IonLabel, IonText,IonInput,IonButton,IonItem,IonCard,IonCardContent,IonCardHeader,IonCardTitle],
+  imports: [FormsModule, TransactionFormComponent, DashboardLinkComponent,CommonModule,IonIcon,IonCheckbox, IonContent,IonLabel, IonText,IonInput,IonButton,IonItem,IonCard,IonCardContent,IonCardHeader,IonCardTitle],
 })
-export class SavingsPage {
+export class SavingsPage extends TransactionPageBase {
   constructor(private savingsService:SavingsService, private alertCtrl:AlertController) {
+    super();
     addIcons({ trashOutline });
   }
 
-  isSavingsClicked=false;
+  // isSavingsClicked=false;
   localSavingsArray : Savings[]=[];
   totalSavings=0;
-  saving : Savings ={
-      amount :null as any,
-      date :'',
-      type: '',
-    }
+  // newlyAddedSaving : Savings ={
+  //     amount :null as any,
+  //     date :'',
+  //     source: '',
+  //   }
     isBulkDeleteMode = false;
   selectedSavingsIds: number[] = [];
-  amountLimitExceeded=false;
+  // amountLimitExceeded=false;
 
   async ngOnInit(){
     this.localSavingsArray = await this.savingsService.getSavings();
@@ -39,22 +43,33 @@ export class SavingsPage {
   }
 
   onAddSavingsClick(){
-    this.isSavingsClicked = !this.isSavingsClicked;
+    this.openForm();
+  }
+
+  onCancelForm() {
+    this.closeForm();
   }
 
   async onSaveClicked(){
-    await this.savingsService.addSavings({...this.saving}); 
+    if (this.model.amount === null) {
+      return;
+    }
+    await this.savingsService.addSavings({
+      amount: this.model.amount,
+    date: this.model.date,
+    source: this.model.source
+    }); 
     this.localSavingsArray = await this.savingsService.getSavings();
     this.totalSavings = await this.savingsService.getTotalSavings();
     this.resetForm();
-    this.isSavingsClicked=false;
+    this.closeForm();
   }
 
-  resetForm(){
-    this.saving.amount=null as any;
-    this.saving.type='';
-    this.saving.date='';
-  }
+  // resetForm(){
+  //   this.newlyAddedSaving.amount=null as any;
+  //   this.newlyAddedSaving.source='';
+  //   this.newlyAddedSaving.date='';
+  // }
 
   async onDeleteClick(saving: any) {
 
@@ -167,21 +182,21 @@ export class SavingsPage {
     }
   }
 
-  onAmountInput(event: any) {
-    const value = event.target.value;
+  // onAmountInput(event: any) {
+  //   const value = event.target.value;
   
-    if (!value){
-      this.amountLimitExceeded = false;
-      return;
-    } 
-    const digitsOnly = value.toString().replace(/\D/g, '');
+  //   if (!value){
+  //     this.amountLimitExceeded = false;
+  //     return;
+  //   } 
+  //   const digitsOnly = value.toString().replace(/\D/g, '');
   
-    if (digitsOnly.length > 10) {
-      event.target.value = digitsOnly.slice(0, 10);
-      this.amountLimitExceeded = true;
-    } else {
-      this.amountLimitExceeded = false;
-    }
-  }
+  //   if (digitsOnly.length > 10) {
+  //     event.target.value = digitsOnly.slice(0, 10);
+  //     this.amountLimitExceeded = true;
+  //   } else {
+  //     this.amountLimitExceeded = false;
+  //   }
+  // }
 
 }

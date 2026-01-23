@@ -8,30 +8,34 @@ import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashbo
 import { AlertController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { trashOutline } from 'ionicons/icons';
+import { TransactionFormComponent } from
+  'src/app/components/transaction-form/transaction-form.component';
+import { TransactionPageBase } from 'src/app/shared/transaction-page.base';
+
 
 @Component({
   selector: 'app-income',
   templateUrl: './income.page.html',
   styleUrls: ['./income.page.scss'],
   standalone: true,
-  imports: [IonContent, IonText, DashboardLinkComponent, IonCheckbox, IonIcon, IonCardTitle, IonCardHeader, IonItemSliding, IonItemOption, IonItemOptions, IonCardContent, IonCard, IonLabel, CommonModule, FormsModule, IonButton, IonItem, IonInput]
+  imports: [IonContent, TransactionFormComponent, IonText, DashboardLinkComponent, IonCheckbox, IonIcon, IonCardTitle, IonCardHeader, IonItemSliding, IonItemOption, IonItemOptions, IonCardContent, IonCard, IonLabel, CommonModule, FormsModule, IonButton, IonItem, IonInput]
 })
-export class IncomePage implements OnInit {
+export class IncomePage extends TransactionPageBase implements OnInit {
 
   localIncomeArray: Income[] = [];
   totalIncome = 0;
-  isIncomeClicked = false;
-  newlyAddedIncome: Income = {
-    amount: null as any,
-    date: '',
-    source: ''
-  }
+  // isIncomeClicked = false;
+  // newlyAddedIncome: Income = {
+  //   amount: null as any,
+  //   date: '',
+  //   source: ''
+  // }
   isBulkDeleteMode = false;
   selectedIncomeIds: number[] = [];
-  amountLimitExceeded=false;
-
+  // amountLimitExceeded=false;
 
   constructor(private inservice: IncomeService, private alertCtrl: AlertController) {
+    super();
     addIcons({ trashOutline });
   }
 
@@ -41,29 +45,36 @@ export class IncomePage implements OnInit {
   }
 
   onAddIncomeClick() {
-    this.isIncomeClicked = !this.isIncomeClicked;
+    this.openForm();
   }
 
+  onCancelForm() {
+    this.closeForm();
+  }
+  
   async onSaveClicked() {
-    console.log("Save button clicked");
-    if (
-      !this.newlyAddedIncome.amount ||
-      this.newlyAddedIncome.amount <= 0
-    ) {
+    if (this.model.amount === null) {
       return;
     }
-    await this.inservice.addIncome({ ...this.newlyAddedIncome });
-    this.totalIncome = await this.inservice.getTotalIncome();
+    await this.inservice.addIncome({ 
+      amount: this.model.amount,
+    date: this.model.date,
+    source: this.model.source
+     });
+  
     this.localIncomeArray = await this.inservice.getIncome();
-    this.isIncomeClicked = false;
-    this.formReset();
+    this.totalIncome = await this.inservice.getTotalIncome();
+  
+    this.resetForm();
+    this.closeForm();
   }
+  
 
-  formReset() {
-    this.newlyAddedIncome.amount = null as any;
-    this.newlyAddedIncome.date = '';
-    this.newlyAddedIncome.source = '';
-  }
+  // formReset() {
+  //   this.newlyAddedIncome.amount = null as any;
+  //   this.newlyAddedIncome.date = '';
+  //   this.newlyAddedIncome.source = '';
+  // }
 
   async onDeleteClick(income: any) {
 
@@ -175,22 +186,22 @@ export class IncomePage implements OnInit {
     }
   }
 
-  onAmountInput(event: any) {
-    const value = event.target.value;
+  // onAmountInput(event: any) {
+  //   const value = event.target.value;
   
-    if (!value){
-      this.amountLimitExceeded = false;
-      return;
-    } 
-    const digitsOnly = value.toString().replace(/\D/g, '');
+  //   if (!value){
+  //     this.amountLimitExceeded = false;
+  //     return;
+  //   } 
+  //   const digitsOnly = value.toString().replace(/\D/g, '');
   
-    if (digitsOnly.length > 10) {
-      event.target.value = digitsOnly.slice(0, 10);
-      this.amountLimitExceeded = true;
-    } else {
-      this.amountLimitExceeded = false;
-    }
-  }
+  //   if (digitsOnly.length > 10) {
+  //     event.target.value = digitsOnly.slice(0, 10);
+  //     this.amountLimitExceeded = true;
+  //   } else {
+  //     this.amountLimitExceeded = false;
+  //   }
+  // }
 
 
 
