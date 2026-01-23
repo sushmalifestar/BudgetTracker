@@ -9,3 +9,38 @@ ion-toolbar {
     font-weight: 600;
     font-size: 24px;
   }
+
+.summary-card .amount-text {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  font-size: 22px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.summary-card .amount-text .currency {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.summary-card .amount-text .value {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.income-text {
+  color: #16a34a;
+}
+
+.expense-text {
+  color: #dc2626;
+}
+
+.savings-text {
+  color:#2563eb;
+}
+
+
+

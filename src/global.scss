@@ -108,9 +108,9 @@ ion-tab-button.tab-selected ion-label{
     font-size: 26px;
     font-weight: 500;
     margin-top: 6px;
-    white-space: nowrap;       
-  overflow: hidden;          
-  text-overflow: ellipsis;
+  //   white-space: nowrap;       
+  // overflow: hidden;          
+  // text-overflow: ellipsis;
   }
   .summary-card ion-card-content {
     width: 100%;
@@ -163,25 +163,25 @@ ion-tab-button.tab-selected ion-label{
     color: #15803d;
   }
 
-  .expense-card .right .amount {
-    color: #b91c1c;
-  }
+  // .expense-card .right .amount {
+  //   color: #b91c1c;
+  // }
 
-  .savings-card .right .amount {
-    color: #1d4ed8;
-  }
+  // .savings-card .right .amount {
+  //   color: #1d4ed8;
+  // }
 
-  .income-card h2 {
-    color: #16a34a;
-  }
+  // .income-card h2 {
+  //   color: #16a34a;
+  // }
 
-  .expense-card h2 {
-    color: #dc2626;
-  }
+  // .expense-card h2 {
+  //   color: #dc2626;
+  // }
 
-  .savings-card h2{
-    color:#2563eb;
-  }
+  // .savings-card h2{
+  //   color:#2563eb;
+  // }
   
   
   

@@ -31,6 +31,7 @@ export class SavingsPage {
     }
     isBulkDeleteMode = false;
   selectedSavingsIds: number[] = [];
+  amountLimitExceeded=false;
 
   async ngOnInit(){
     this.localSavingsArray = await this.savingsService.getSavings();
@@ -163,6 +164,23 @@ export class SavingsPage {
         .map(i => i.id as number);
     } else {
       this.selectedSavingsIds = [];
+    }
+  }
+
+  onAmountInput(event: any) {
+    const value = event.target.value;
+  
+    if (!value){
+      this.amountLimitExceeded = false;
+      return;
+    } 
+    const digitsOnly = value.toString().replace(/\D/g, '');
+  
+    if (digitsOnly.length > 10) {
+      event.target.value = digitsOnly.slice(0, 10);
+      this.amountLimitExceeded = true;
+    } else {
+      this.amountLimitExceeded = false;
     }
   }
 

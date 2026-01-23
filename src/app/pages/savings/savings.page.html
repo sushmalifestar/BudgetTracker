@@ -18,8 +18,11 @@
 
         <ion-item class="form-item">
           <ion-label position="stacked">Amount</ion-label>
-          <ion-input type="number" required placeholder="Enter amount" name="amount" #amtCtrl="ngModel"
+          <ion-input type="number" required placeholder="Enter amount" (ionInput)="onAmountInput($event)" name="amount" #amtCtrl="ngModel"
             [(ngModel)]="saving.amount"></ion-input>
+            <ion-text color="danger" *ngIf="amountLimitExceeded">
+              <small>Amount cannot exceed 10 digits</small>
+            </ion-text>
         </ion-item>
         <ion-text class="validation-text" *ngIf="amtCtrl.invalid && amtCtrl.touched">
           Amount is required

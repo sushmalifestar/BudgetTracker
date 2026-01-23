@@ -4,7 +4,11 @@
   <ion-card class="balance-card">
     <ion-card-content class="ion-text-center">
       <p class="label-text">Current Balance</p>
-      <h1 class="balance-amount">₹ {{ balance }}</h1>
+      <!-- <h1 class="balance-amount truncate-amount">₹ {{ formatAmount(balance) }}</h1> -->
+      <div class="amount-text">
+        <span class="currency">₹</span>
+        <span class="value">{{ formatAmount(balance) }}</span>
+      </div>
     </ion-card-content>
   </ion-card>
 
@@ -15,7 +19,10 @@
         <ion-card class="summary-card income-card" button (click)="goToIncome()">
           <ion-card-content>
             <p class="label-text">Income</p>
-            <h2 class="amount-text">₹ {{ totalIncome }}</h2>
+            <div class="amount-text income-text">
+              <span class="currency">₹</span>
+              <span class="value">{{ formatAmount(totalIncome) }}</span>
+            </div>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -24,7 +31,10 @@
         <ion-card class="summary-card expense-card " button (click)="goToExpense()">
           <ion-card-content>
             <p class="label-text">Expenses</p>
-            <h2 class="amount-text">₹ {{ totalExpenses }}</h2>
+            <div class="amount-text expense-text">
+              <span class="currency">₹</span>
+              <span class="value">{{ formatAmount(totalExpenses) }}</span>
+            </div>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -35,7 +45,10 @@
         <ion-card class="summary-card savings-card" button (click)="goToSavings()">
           <ion-card-content>
             <p class="label-text">Savings</p>
-            <h2 class="amount-text">₹ {{ totalSavings }}</h2>
+            <div class="amount-text savings-text">
+              <span class="currency">₹</span>
+              <span class="value">{{ formatAmount(totalSavings) }}</span>
+            </div>
           </ion-card-content>
         </ion-card>
       </ion-col>

@@ -46,9 +46,24 @@ export class DashboardPage {
   }
 
   async calculate() {
-    this.totalIncome = await this.inService.getTotalIncome();
-    this.totalExpenses= await this.exService.getTotalExpenses();
-    this.totalSavings = await  this.savingsService.getTotalSavings();
+    this.totalIncome = Number(await this.inService.getTotalIncome());
+    this.totalExpenses= Number(await this.exService.getTotalExpenses());
+    this.totalSavings = Number( await  this.savingsService.getTotalSavings());
+
+//     const rawIncome = await this.inService.getTotalIncome();
+// console.log('RAW INCOME FROM SERVICE:', rawIncome, typeof rawIncome);
+
+//     this.totalIncome = Number(
+//       String(await this.inService.getTotalIncome()).replace(/,/g, '')
+//     );
+  
+//     this.totalExpenses = Number(
+//       String(await this.exService.getTotalExpenses()).replace(/,/g, '')
+//     );
+  
+//     this.totalSavings = Number(
+//       String(await this.savingsService.getTotalSavings()).replace(/,/g, '')
+//     );
     this.balance=this.totalIncome-this.totalExpenses- this.totalSavings;
   }
 
@@ -61,6 +76,18 @@ export class DashboardPage {
   }
   goToSavings(){
     this.router.navigate(['/tabs/savings'])
+  }
+
+  formatAmount(amount: number): string {
+    if (amount >= 10000000) {
+      return (amount / 10000000).toFixed(2).replace(/\.00$/, '') + ' Cr';
+    }
+  
+    if (amount >= 100000) {
+      return (amount / 100000).toFixed(2).replace(/\.00$/, '') + ' L';
+    }
+  
+    return amount.toLocaleString('en-IN');
   }
 
 }
