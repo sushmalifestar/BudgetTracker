@@ -13,44 +13,7 @@
 
     <ion-card-content>
 
-      <ion-button expand="block" (click)="onAddExpenseClick()"> + Add Expense</ion-button>
-
-      <!-- <form #ExpenseForm="ngForm" *ngIf="isExpenseClicked">
-
-        <ion-item class="form-item">
-          <ion-label position="stacked">Amount</ion-label>
-          <ion-input type="number" required placeholder="Enter amount" (ionInput)="onAmountInput($event)" name="amount" #amtCtrl="ngModel"
-            [(ngModel)]="expen.amount"></ion-input>
-            <ion-text color="danger" *ngIf="amountLimitExceeded">
-              <small>Amount cannot exceed 10 digits</small>
-            </ion-text>
-        </ion-item>
-        <ion-text class="validation-text" *ngIf="amtCtrl.invalid && amtCtrl.touched">
-          Amount is required
-        </ion-text>
-
-        <ion-item class="form-item">
-          <ion-label position="stacked">Category</ion-label>
-          <ion-input required placeholder="Enter Category" name="category" #catCtrl="ngModel"
-            [(ngModel)]="expen.category"></ion-input>
-        </ion-item>
-        <ion-text class="validation-text" *ngIf="catCtrl.invalid && catCtrl.touched">
-          Category is required
-        </ion-text>
-
-        <ion-item class="form-item">
-          <ion-label position="stacked">Date</ion-label>
-          <ion-input type="date" required placeholder="Select Date" name="date" #dateCtrl="ngModel"
-            [(ngModel)]="expen.date"></ion-input>
-        </ion-item>
-        <ion-text class="validation-text" *ngIf="dateCtrl.invalid && dateCtrl.touched">
-          Date is required
-        </ion-text>
-
-        <ion-button expand="block" class="ion-margin-top" color="primary" [disabled]="ExpenseForm.invalid"
-          (click)="onSaveClicked()"> Save Expenses</ion-button>
-
-      </form> -->
+      <ion-button expand="block" (click)="onAddExpenseClick()"> + Add Expense</ion-button>   
 
       <app-transaction-form *ngIf="isFormOpen" [model]="model" submitLabel="Save Expense"
       (save)="onSaveClicked()" (cancel)="onCancelForm()">
@@ -67,7 +30,6 @@
     </ion-text>
   </div>
 
-  <!-- Bulk action bar (BULK MODE ONLY) -->
   <ion-card *ngIf="isBulkDeleteMode" class="bulk-action-card">
 
     <ion-card-content class="bulk-action-content">
@@ -93,15 +55,17 @@
 
   </ion-card>
 
-
   <ion-card class="transaction-card" button="false" *ngFor="let expense of localExpenseArray">
 
     <ion-card-content class="transaction-row">
+
       <div class="left">
+
         <ion-checkbox *ngIf="isBulkDeleteMode"
         [checked]="selectedExpenseIds.includes(expense.id!)"
           (ionChange)="expense.id && onExpensesSelectionChange(expense.id, $event)">
         </ion-checkbox>
+
         <div class="details">
           <p class="title">{{ expense.source }}</p>
           <p class="date">{{ expense.date }}</p>
@@ -110,12 +74,14 @@
       </div>
 
       <div class="right">
+
         <p class="amount">₹ {{ expense.amount }}</p>
         <ion-button *ngIf="!isBulkDeleteMode" fill="clear" size="small" color="danger" class="delete-btn"
           (click)="onDeleteClick(expense)" (mousedown)="$event.stopPropagation()"
           (touchstart)="$event.stopPropagation()">
           <ion-icon name="trash-outline"></ion-icon>
         </ion-button>
+        
       </div>
 
     </ion-card-content>

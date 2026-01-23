@@ -19,48 +19,6 @@
         + Add Income
       </ion-button>
 
-      <!-- <form #incomeForm="ngForm" *ngIf="isIncomeClicked">
-
-        <ion-item class="form-item">
-
-          <ion-label position="stacked">Amount</ion-label>
-          <ion-input required type="number" placeholder="Enter amount" (ionInput)="onAmountInput($event)" [(ngModel)]="newlyAddedIncome.amount"
-            #amtCtrl="ngModel" name="amount">
-          </ion-input>
-          <ion-text color="danger" *ngIf="amountLimitExceeded">
-            <small>Amount cannot exceed 10 digits</small>
-          </ion-text>
-        </ion-item>
-        <ion-text class="validation-text" *ngIf="amtCtrl.invalid && amtCtrl.touched">
-          Amount is required
-        </ion-text>
-
-        <ion-item class=" form-item">
-          <ion-label position="stacked">Source</ion-label>
-          <ion-input required placeholder="Salary / Business" [(ngModel)]="newlyAddedIncome.source" #srcCtrl="ngModel"
-            name="source">
-          </ion-input>
-        </ion-item>
-        <ion-text class="validation-text" *ngIf="srcCtrl.invalid && srcCtrl.touched">
-          Source is required
-        </ion-text>
-
-        <ion-item class="form-item">
-          <ion-label position="stacked">Date</ion-label>
-          <ion-input required type="date" [(ngModel)]="newlyAddedIncome.date" #dateCtrl="ngModel" name="date">
-          </ion-input>
-        </ion-item>
-        <ion-text class="validation-text" *ngIf="dateCtrl.invalid && dateCtrl.touched">
-          Date is required
-        </ion-text>
-
-        <ion-button expand="block" class="ion-margin-top" color="primary" [disabled]="incomeForm.invalid"
-          (click)="onSaveClicked()">
-          Save Income
-        </ion-button>
-
-      </form> -->
-
       <app-transaction-form *ngIf="isFormOpen" [model]="model" submitLabel="Save Income"
         (save)="onSaveClicked()" (cancel)="onCancelForm()">
       </app-transaction-form>
@@ -76,7 +34,6 @@
     </ion-text>
   </div>
 
-  <!-- Bulk action bar (BULK MODE ONLY) -->
   <ion-card *ngIf="isBulkDeleteMode" class="bulk-action-card">
 
     <ion-card-content class="bulk-action-content">
@@ -101,7 +58,6 @@
     </ion-card-content>
 
   </ion-card>
-
 
   <ion-card class="transaction-card" button="false" *ngFor="let income of localIncomeArray">
 

@@ -39,8 +39,8 @@
 }
 
 .amount {
-  font-size: 18px;      // ⬆ increase size
-  font-weight: 700;     // bolder
+  font-size: 18px;      
+  font-weight: 700;     
   color: var(--ion-color-primary);
   white-space: nowrap;
 }
@@ -48,7 +48,7 @@
 .details {
   display: flex;
   flex-direction: column;
-  gap: 4px;  // 👈 key spacing
+  gap: 4px; 
 }
 
 .title {
@@ -121,7 +121,7 @@
 .select-all-container {
   display: flex;
   align-items: center;
-  gap: 8px; // 👈 controls space cleanly
+  gap: 8px; 
 }
 
 .select-all-text {

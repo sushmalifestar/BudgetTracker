@@ -12,7 +12,6 @@ import { TransactionFormComponent } from
   'src/app/components/transaction-form/transaction-form.component';
 import { TransactionPageBase } from 'src/app/shared/transaction-page.base';
 
-
 @Component({
   selector: 'app-income',
   templateUrl: './income.page.html',
@@ -24,15 +23,8 @@ export class IncomePage extends TransactionPageBase implements OnInit {
 
   localIncomeArray: Income[] = [];
   totalIncome = 0;
-  // isIncomeClicked = false;
-  // newlyAddedIncome: Income = {
-  //   amount: null as any,
-  //   date: '',
-  //   source: ''
-  // }
   isBulkDeleteMode = false;
   selectedIncomeIds: number[] = [];
-  // amountLimitExceeded=false;
 
   constructor(private inservice: IncomeService, private alertCtrl: AlertController) {
     super();
@@ -68,13 +60,6 @@ export class IncomePage extends TransactionPageBase implements OnInit {
     this.resetForm();
     this.closeForm();
   }
-  
-
-  // formReset() {
-  //   this.newlyAddedIncome.amount = null as any;
-  //   this.newlyAddedIncome.date = '';
-  //   this.newlyAddedIncome.source = '';
-  // }
 
   async onDeleteClick(income: any) {
 
@@ -185,25 +170,6 @@ export class IncomePage extends TransactionPageBase implements OnInit {
       this.selectedIncomeIds = [];
     }
   }
-
-  // onAmountInput(event: any) {
-  //   const value = event.target.value;
-  
-  //   if (!value){
-  //     this.amountLimitExceeded = false;
-  //     return;
-  //   } 
-  //   const digitsOnly = value.toString().replace(/\D/g, '');
-  
-  //   if (digitsOnly.length > 10) {
-  //     event.target.value = digitsOnly.slice(0, 10);
-  //     this.amountLimitExceeded = true;
-  //   } else {
-  //     this.amountLimitExceeded = false;
-  //   }
-  // }
-
-
 
 }
 
