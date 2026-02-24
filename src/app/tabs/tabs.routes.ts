@@ -23,15 +23,20 @@ export const routes: Routes = [
       },
       {
         path: 'settings',
-        loadComponent:()=>
-          import('../pages/settings/settings.page').then((m)=>m.SettingsPage),
+        loadComponent: () =>
+          import('../pages/settings/settings.page').then((m) => m.SettingsPage),
 
       },
       {
         path: 'income',
-        loadComponent:()=>
-          import('../pages/income/income.page').then((m)=>m.IncomePage),
+        loadComponent: () =>
+          import('../pages/income/income.page').then((m) => m.IncomePage),
 
+      },
+      {
+        path: 'statement',
+        loadComponent: () =>
+          import('../pages/statement/statement.page').then(m => m.StatementPage)
       },
       {
         path: '',

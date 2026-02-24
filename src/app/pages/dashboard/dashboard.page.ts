@@ -78,6 +78,11 @@ export class DashboardPage {
     this.router.navigate(['/tabs/savings'])
   }
 
+  goToStatement() {
+    this.router.navigate(['/tabs/statement']);
+  }
+  
+
   formatAmount(amount: number): string {
     if (amount >= 10000000) {
       return (amount / 10000000).toFixed(2).replace(/\.00$/, '') + ' Cr';
