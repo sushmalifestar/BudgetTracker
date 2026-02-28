@@ -30,5 +30,9 @@ export class SavingsService {
       0
     );
   }
+
+  updateSaving(id: number, saving: Savings): Promise<void> {
+    return this.dataService.updateSaving(id, saving);
+  }
   
 }

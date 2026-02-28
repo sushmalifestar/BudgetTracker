@@ -7,7 +7,7 @@ import { ExpenseService } from 'src/app/services/expenseServices/expense-service
 import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashboard-link.component';
 import { AlertController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { trashOutline } from 'ionicons/icons';
+import { trashOutline, createOutline } from 'ionicons/icons';
 import { TransactionFormComponent } from
   'src/app/components/transaction-form/transaction-form.component';
   import { TransactionPageBase } from 'src/app/shared/transaction-page.base';
@@ -21,38 +21,57 @@ import { TransactionFormComponent } from
 })
 export class ExpensePage extends TransactionPageBase {
 
-  constructor(private expService :ExpenseService, private alertCtrl:AlertController ) {
-    super();
-    addIcons({ trashOutline });
-  }
-
-  async ngOnInit(){
-    this.localExpenseArray = await this.expService.getExpenses();
-    this.totalExpenses=await this.expService.getTotalExpenses();
-  }
-
   localExpenseArray : Expense[]=[];
   totalExpenses=0;
   isBulkDeleteMode = false;
   selectedExpenseIds: number[] = [];
-  
+  selectedExpense: Expense | null = null;
+  isEditMode = false;
+
+  constructor(private expService :ExpenseService, private alertCtrl:AlertController ) {
+    super();
+    addIcons({ trashOutline , createOutline });
+  }
+
+  async ngOnInit(){
+  }
+
+  async loadExpenseData() {
+    this.localExpenseArray = await this.expService.getExpenses();
+    this.totalExpenses=await this.expService.getTotalExpenses();
+  }
+
   onAddExpenseClick(){
     this.openForm();
+  }
+
+  ionViewWillEnter() {
+    this.loadExpenseData();
   }
 
   onCancelForm() {
     this.closeForm();
   }
 
-  async onSaveClicked(){
-    if (this.model.amount === null) {
+  async onSaveClicked(formData: any){
+    if (formData === null) {
       return;
     }
+  
+  if (this.isEditMode && this.selectedExpense) {
+
+    await this.expService.updateExpense(
+      this.selectedExpense.id!,
+      formData
+    );
+
+  } else {
     await this.expService.addExpense({
-      amount: this.model.amount,
-    date: this.model.date,
-    source: this.model.source
+      amount: formData.amount,
+    date: formData.date,
+    source: formData.source
     }); 
+  }
     this.localExpenseArray = await this.expService.getExpenses();
     this.totalExpenses = await this.expService.getTotalExpenses();
     this.resetForm();
@@ -168,5 +187,18 @@ export class ExpensePage extends TransactionPageBase {
       this.selectedExpenseIds = [];
     }
   }
+
+
+    onEditClick(expense: Expense) {
+      console.log('Editing expense:', expense);
+      this.selectedExpense = expense;
+      this.isEditMode = true;
+  
+      this.model.amount = expense.amount;
+      this.model.date = expense.date;
+      this.model.source = expense.source;
+  
+      this.openForm();
+    }
 
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {  IonContent, IonLabel,IonItem,IonCard, IonIcon,IonCheckbox, IonCardContent,IonCardHeader,IonCardTitle, IonText,IonInput,IonButton} from '@ionic/angular/standalone';
+import { IonContent, IonLabel, IonItem, IonCard, IonIcon, IonCheckbox, IonCardContent, IonCardHeader, IonCardTitle, IonText, IonInput, IonButton } from '@ionic/angular/standalone';
 import { Savings } from '../../models/savings.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -7,51 +7,70 @@ import { SavingsService } from 'src/app/services/savingsServices/savings-service
 import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashboard-link.component';
 import { AlertController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { trashOutline } from 'ionicons/icons';
+import { trashOutline, createOutline } from 'ionicons/icons';
 import { TransactionFormComponent } from
   'src/app/components/transaction-form/transaction-form.component';
-  import { TransactionPageBase } from 'src/app/shared/transaction-page.base';
+import { TransactionPageBase } from 'src/app/shared/transaction-page.base';
 
 @Component({
   selector: 'app-savings',
   templateUrl: 'savings.page.html',
   styleUrls: ['savings.page.scss'],
-  standalone:true,
-  imports: [FormsModule, TransactionFormComponent, DashboardLinkComponent,CommonModule,IonIcon,IonCheckbox, IonContent,IonLabel, IonText,IonInput,IonButton,IonItem,IonCard,IonCardContent,IonCardHeader,IonCardTitle],
+  standalone: true,
+  imports: [FormsModule, TransactionFormComponent, DashboardLinkComponent, CommonModule, IonIcon, IonCheckbox, IonContent, IonLabel, IonText, IonInput, IonButton, IonItem, IonCard, IonCardContent, IonCardHeader, IonCardTitle],
 })
 export class SavingsPage extends TransactionPageBase {
-  constructor(private savingsService:SavingsService, private alertCtrl:AlertController) {
-    super();
-    addIcons({ trashOutline });
-  }
-
-  localSavingsArray : Savings[]=[];
-  totalSavings=0;
-    isBulkDeleteMode = false;
+  
+  localSavingsArray: Savings[] = [];
+  totalSavings = 0;
+  isBulkDeleteMode = false;
   selectedSavingsIds: number[] = [];
+  selectedSaving: Savings | null = null;
+  isEditMode = false;
 
-  async ngOnInit(){
-    this.localSavingsArray = await this.savingsService.getSavings();
-    this.totalSavings= await this.savingsService.getTotalSavings();
+  constructor(private savingsService: SavingsService, private alertCtrl: AlertController) {
+    super();
+    addIcons({ trashOutline ,createOutline });
   }
 
-  onAddSavingsClick(){
+  async ngOnInit() {
+  }
+
+  async loadSavingData() {
+    this.localSavingsArray = await this.savingsService.getSavings();
+    this.totalSavings = await this.savingsService.getTotalSavings();
+  }
+
+  onAddSavingsClick() {
     this.openForm();
+  }
+
+  ionViewWillEnter() {
+    this.loadSavingData();
   }
 
   onCancelForm() {
     this.closeForm();
   }
 
-  async onSaveClicked(){
-    if (this.model.amount === null) {
+  async onSaveClicked(formData: any) {
+    if (formData === null) {
       return;
     }
+    if (this.isEditMode && this.selectedSaving) {
+
+      await this.savingsService.updateSaving(
+        this.selectedSaving.id!,
+        formData
+      );
+  
+    } else {
     await this.savingsService.addSavings({
-      amount: this.model.amount,
-    date: this.model.date,
-    source: this.model.source
-    }); 
+      amount: formData.amount,
+      date: formData.date,
+      source: formData.source
+    });
+  }
     this.localSavingsArray = await this.savingsService.getSavings();
     this.totalSavings = await this.savingsService.getTotalSavings();
     this.resetForm();
@@ -79,10 +98,10 @@ export class SavingsPage extends TransactionPageBase {
         }
       ]
     });
-  
+
     await alert.present();
   }
-  
+
   async deleteSaving(id: number) {
     await this.savingsService.deleteSaving(id);
     this.localSavingsArray = await this.savingsService.getSavings();
@@ -93,7 +112,7 @@ export class SavingsPage extends TransactionPageBase {
     this.isBulkDeleteMode = true;
     this.selectedSavingsIds = [];
   }
-  
+
   cancelBulkDeleteMode() {
     this.isBulkDeleteMode = false;
     this.selectedSavingsIds = [];
@@ -101,7 +120,7 @@ export class SavingsPage extends TransactionPageBase {
 
   onSavingSelectionChange(id: number, event: any) {
     const checked = event.detail.checked;
-  
+
     if (checked) {
       if (!this.selectedSavingsIds.includes(id)) {
         this.selectedSavingsIds.push(id);
@@ -111,13 +130,13 @@ export class SavingsPage extends TransactionPageBase {
         selectedId => selectedId !== id
       );
     }
-  
+
     console.log('Selected Savings:', this.selectedSavingsIds);
   }
 
   async confirmBulkDelete() {
     const count = this.selectedSavingsIds.length;
-  
+
     const alert = await this.alertCtrl.create({
       header: 'Delete Savings',
       message: `Delete ${count} selected Saving transaction(s)?`,
@@ -136,7 +155,7 @@ export class SavingsPage extends TransactionPageBase {
         }
       ]
     });
-  
+
     await alert.present();
   }
 
@@ -167,5 +186,17 @@ export class SavingsPage extends TransactionPageBase {
       this.selectedSavingsIds = [];
     }
   }
+
+  onEditClick(saving: Savings) {
+        console.log("Edit button is clicked");
+        this.selectedSaving = saving;
+        this.isEditMode = true;
+    
+        this.model.amount = saving.amount;
+        this.model.date = saving.date;
+        this.model.source = saving.source;
+    
+        this.openForm();
+      }
 
 }

@@ -32,5 +32,9 @@ export class ExpenseService {
       0
     );
   }
+
+  updateExpense(id: number, expense: Expense): Promise<void> {
+    return this.dataService.updateExpense(id, expense);
+  }
   
 }

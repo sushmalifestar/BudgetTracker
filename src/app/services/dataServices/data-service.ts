@@ -20,7 +20,7 @@ export class DataService {
 
   private webExpenses: Expense[] = [];
   private webIncomes: Income[] = [];
-  private webSavings : Savings[]=[];
+  private webSavings: Savings[] = [];
   private dbReady = false;
   private dbInitializing = false;
 
@@ -82,7 +82,7 @@ export class DataService {
       );
     `;
 
-    const createSavingsTable =` CREATE TABLE IF NOT EXISTS savings (
+    const createSavingsTable = ` CREATE TABLE IF NOT EXISTS savings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     amount REAL NOT NULL,
     type TEXT NOT NULL,
@@ -96,7 +96,9 @@ export class DataService {
 
     console.log('SQLite tables created');
   }
-  
+
+  // ############## EXPENSES ###############
+
   async addExpense(expense: Expense) {
 
     if (Capacitor.getPlatform() === 'web') {
@@ -142,33 +144,22 @@ export class DataService {
     `;
 
     const result = await this.db.query(query);
+
     const rows = (result.values || []) as Expense[];
-
-    console.log('Fetching expenses (SQLite):', rows);
-    return rows;
+    return (result.values || []).map((row: any) => ({
+      id: row.id,
+      amount: row.amount,
+      source: row.category,
+      note: row.note,
+      date: row.date,
+      createdAt: row.createdAt
+    }));
   }
 
-  async deleteIncome (id:number){
+  async deleteExpense(id: number) {
 
-    if (Capacitor.getPlatform() === 'web'){
-      this.webIncomes = this.webIncomes.filter(income => income.id !== id);
-      return;
-    }
-
-    if (!this.dbReady) {
-      await this.initDatabase();
-      await this.createTables();
-    }
-
-    const query = `DELETE FROM incomes WHERE id = ?`;
-    await this.db.run(query ,[id]);
-
-  }
-
-  async deleteExpense (id:number){
-
-    if(Capacitor.getPlatform() === 'web'){
-      this.webExpenses=this.webExpenses.filter(expense => expense.id !== id);
+    if (Capacitor.getPlatform() === 'web') {
+      this.webExpenses = this.webExpenses.filter(expense => expense.id !== id);
       return;
     }
 
@@ -178,14 +169,21 @@ export class DataService {
     }
 
     const query = `DELETE FROM expenses WHERE id = ?`;
-    await this.db.run(query ,[id]);
+    await this.db.run(query, [id]);
 
   }
 
-  async deleteSaving (id:number){
+  async updateExpense(id: number, updatedData: Expense) {
 
-    if(Capacitor.getPlatform() === 'web'){
-      this.webSavings = this.webSavings.filter(saving => saving.id !== id);
+    if (Capacitor.getPlatform() === 'web') {
+      const index = this.webExpenses.findIndex(i => i.id === id);
+
+      if (index !== -1) {
+        this.webExpenses[index] = {
+          ...this.webExpenses[index],
+          ...updatedData
+        };
+      }
       return;
     }
 
@@ -194,10 +192,26 @@ export class DataService {
       await this.createTables();
     }
 
-    const query = `DELETE FROM savings WHERE id = ?`;
-    await this.db.run(query ,[id]);
+    const query = `
+      UPDATE expenses
+      SET amount = ?, category  = ?, note = ?, date = ?
+      WHERE id = ?
+    `;
 
+    const values = [
+      updatedData.amount,
+      updatedData.source,
+      updatedData.note || '',
+      updatedData.date,
+      id
+    ];
+
+    await this.db.run(query, values);
   }
+
+
+  // ############## INCOME ###############
+
 
   async addIncome(income: Income) {
 
@@ -259,27 +273,82 @@ export class DataService {
     return rows;
   }
 
-  async addSavings(saving: Savings): Promise<void> {
+  async deleteIncome(id: number) {
+
     if (Capacitor.getPlatform() === 'web') {
-      const newSaving : Savings ={
-        ...saving,
-        id : Date.now(),
-        createdAt: new Date(). toISOString()
-      };
-      this.webSavings.push(newSaving);
+      this.webIncomes = this.webIncomes.filter(income => income.id !== id);
       return;
     }
-  
+
     if (!this.dbReady) {
       await this.initDatabase();
       await this.createTables();
     }
-  
+
+    const query = `DELETE FROM incomes WHERE id = ?`;
+    await this.db.run(query, [id]);
+
+  }
+
+  async updateIncome(id: number, updatedData: Income) {
+
+    if (Capacitor.getPlatform() === 'web') {
+      const index = this.webIncomes.findIndex(i => i.id === id);
+
+      if (index !== -1) {
+        this.webIncomes[index] = {
+          ...this.webIncomes[index],
+          ...updatedData
+        };
+      }
+      return;
+    }
+
+    if (!this.dbReady) {
+      await this.initDatabase();
+      await this.createTables();
+    }
+
+    const query = `
+      UPDATE incomes
+      SET amount = ?, source = ?, note = ?, date = ?
+      WHERE id = ?
+    `;
+
+    const values = [
+      updatedData.amount,
+      updatedData.source,
+      updatedData.note || '',
+      updatedData.date,
+      id
+    ];
+
+    await this.db.run(query, values);
+  }
+
+  //  ############## SAVINGS ###############
+
+  async addSavings(saving: Savings): Promise<void> {
+    if (Capacitor.getPlatform() === 'web') {
+      const newSaving: Savings = {
+        ...saving,
+        id: Date.now(),
+        createdAt: new Date().toISOString()
+      };
+      this.webSavings.push(newSaving);
+      return;
+    }
+
+    if (!this.dbReady) {
+      await this.initDatabase();
+      await this.createTables();
+    }
+
     const query = `
       INSERT INTO savings (amount, type, note, date)
       VALUES (?, ?, ?, ?)
     `;
-  
+
     await this.db.run(query, [
       saving.amount,
       saving.source,
@@ -292,14 +361,77 @@ export class DataService {
     if (Capacitor.getPlatform() === 'web') {
       return this.webSavings;
     }
-  
+
     if (!this.dbReady) {
       await this.initDatabase();
       await this.createTables();
     }
-  
-    const result = await this.db.query(`SELECT * FROM savings ORDER BY date DESC`);
-    return result.values as Savings[];
+
+    const result = await this.db.query(
+      `SELECT id, amount, type, note, date FROM savings ORDER BY date DESC`
+    );
+
+    return (result.values || []).map((row: any) => ({
+      id: row.id,
+      amount: row.amount,
+      source: row.type,
+      note: row.note,
+      date: row.date
+    }));
   }
-  
+
+  async deleteSaving(id: number) {
+
+    if (Capacitor.getPlatform() === 'web') {
+      this.webSavings = this.webSavings.filter(saving => saving.id !== id);
+      return;
+    }
+
+    if (!this.dbReady) {
+      await this.initDatabase();
+      await this.createTables();
+    }
+
+    const query = `DELETE FROM savings WHERE id = ?`;
+    await this.db.run(query, [id]);
+
+  }
+
+  async updateSaving(id: number, updatedData: Savings) {
+
+    if (Capacitor.getPlatform() === 'web') {
+      const index = this.webSavings.findIndex(i => i.id === id);
+
+      if (index !== -1) {
+        this.webSavings[index] = {
+          ...this.webSavings[index],
+          ...updatedData
+        };
+      }
+      return;
+    }
+
+    if (!this.dbReady) {
+      await this.initDatabase();
+      await this.createTables();
+    }
+
+    const query = `
+      UPDATE savings
+      SET amount = ?, type  = ?, note = ?, date = ?
+      WHERE id = ?
+    `;
+
+    const values = [
+      updatedData.amount,
+      updatedData.source,
+      updatedData.note || '',
+      updatedData.date,
+      id
+    ];
+
+    await this.db.run(query, values);
+  }
+
+
 }

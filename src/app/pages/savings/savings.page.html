@@ -14,8 +14,8 @@
 
       <ion-button expand="block" (click)="onAddSavingsClick()"> + Add Savings</ion-button>
 
-            <app-transaction-form *ngIf="isFormOpen" [model]="model" submitLabel="Save Saving"
-        (save)="onSaveClicked()" (cancel)="onCancelForm()">
+            <app-transaction-form *ngIf="isFormOpen" [model]="model" [submitLabel]="isEditMode ? 'Update Saving' : 'Save Saving'"
+        (save)="onSaveClicked($event)" (cancel)="onCancelForm()">
       </app-transaction-form>
 
     </ion-card-content>
@@ -68,6 +68,12 @@
 
       <div class="right">
         <p class="amount">₹ {{ saving.amount }}</p>
+
+        <ion-button *ngIf="!isBulkDeleteMode" fill="clear" size="small" color="primary" class="edit-btn"
+        (click)="onEditClick(saving)" (mousedown)="$event.stopPropagation()" (touchstart)="$event.stopPropagation()">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-button>
+
         <ion-button *ngIf="!isBulkDeleteMode" fill="clear" size="small" color="danger" class="delete-btn"
           (click)="onDeleteClick(saving)" (mousedown)="$event.stopPropagation()"
           (touchstart)="$event.stopPropagation()">

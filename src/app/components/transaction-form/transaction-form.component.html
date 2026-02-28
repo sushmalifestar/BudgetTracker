@@ -3,7 +3,7 @@
   <ion-item class="form-item">
     <ion-label position="stacked">Amount</ion-label>
     <ion-input required type="number" placeholder="Enter amount" #amtCtrl="ngModel" inputmode="numeric" 
-    [(ngModel)]="model.amount" name="amount"
+    [(ngModel)]="localModel.amount" name="amount"
       (ionInput)="onAmountInput($event)">
     </ion-input>
   </ion-item>
@@ -16,7 +16,7 @@
 
   <ion-item class="form-item">
     <ion-label position="stacked">Source</ion-label>
-    <ion-input required placeholder="Salary / Business" type="text" [(ngModel)]="model.source"
+    <ion-input required placeholder="Salary / Business" type="text" [(ngModel)]="localModel.source"
     #srcCtrl="ngModel" name="source">
     </ion-input>
   </ion-item>
@@ -26,7 +26,7 @@
 
   <ion-item class="form-item">
     <ion-label position="stacked">Date</ion-label>
-    <ion-input required type="date" [(ngModel)]="model.date" #dateCtrl="ngModel" name="date">
+    <ion-input required type="date" [(ngModel)]="localModel.date" #dateCtrl="ngModel" name="date">
     </ion-input>
   </ion-item>
   <ion-text class="validation-text" *ngIf="dateCtrl.invalid && dateCtrl.touched">

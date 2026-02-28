@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TransactionDraft } from 'src/app/models/transaction.model';
 import {
   IonInput,
   IonItem,
@@ -24,14 +25,12 @@ import {
   templateUrl: './transaction-form.component.html',
   styleUrls: ['./transaction-form.component.scss']
 })
-export class TransactionFormComponent {
+export class TransactionFormComponent implements OnChanges  {
   
-  @Input() model!: {
-    amount: number | null;
-    date: string;
-    source: string;
-  };
+  @Input() model!: TransactionDraft;
   
+  localModel!:TransactionDraft;
+
   @Input() submitLabel = 'Save';
   @Input() showCancel = true;
   
@@ -40,6 +39,11 @@ export class TransactionFormComponent {
 
   amountLimitExceeded = false;
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['model'] && this.model) {
+      this.localModel = { ...this.model }; 
+    }
+  }
 
   onAmountInput(event: any) {
     const value = event.target.value;
@@ -59,17 +63,14 @@ export class TransactionFormComponent {
   }
 
   onSubmit() {
-    if (!this.model.amount || this.model.amount <= 0) {
+    if (!this.localModel.amount || this.localModel.amount <= 0) {
       return;
     }
-    this.save.emit(this.model);
+    this.save.emit(this.localModel);
   }
   
   onCancel() {
     this.cancel.emit();
   }
-  
-  
-  
 
 }

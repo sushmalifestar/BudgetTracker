@@ -23,14 +23,6 @@ deleteIncome(id:number): Promise<void>{
   return this.dataService.deleteIncome(id)
 }
 
-// async getTotalIncome(): Promise<number> {
-//   const incomes = await this.getIncome();
-//   return incomes.reduce(
-//     (total, income) => total + Number(income.amount) ,
-//     0
-//   );
-// }
-
 async getTotalIncome(): Promise<number> {
 
   console.log("Hi Sushma");
@@ -50,5 +42,8 @@ async getTotalIncome(): Promise<number> {
   );
 }
 
+updateIncome(id: number, income: Income): Promise<void> {
+  return this.dataService.updateIncome(id, income);
+}
 
 }

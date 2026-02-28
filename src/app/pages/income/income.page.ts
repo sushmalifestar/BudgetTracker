@@ -7,7 +7,7 @@ import { IncomeService } from 'src/app/services/incomeServices/income-service';
 import { DashboardLinkComponent } from 'src/app/components/dashboard-link/dashboard-link.component';
 import { AlertController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { trashOutline } from 'ionicons/icons';
+import { trashOutline, createOutline } from 'ionicons/icons';
 import { TransactionFormComponent } from
   'src/app/components/transaction-form/transaction-form.component';
 import { TransactionPageBase } from 'src/app/shared/transaction-page.base';
@@ -25,13 +25,18 @@ export class IncomePage extends TransactionPageBase implements OnInit {
   totalIncome = 0;
   isBulkDeleteMode = false;
   selectedIncomeIds: number[] = [];
+  selectedIncome: Income | null = null;
+  isEditMode = false;
 
   constructor(private inservice: IncomeService, private alertCtrl: AlertController) {
     super();
-    addIcons({ trashOutline });
+    addIcons({ trashOutline, createOutline });
   }
 
   async ngOnInit() {
+  }
+
+  async loadIncomeData() {
     this.localIncomeArray = await this.inservice.getIncome();
     this.totalIncome = await this.inservice.getTotalIncome();
   }
@@ -40,23 +45,39 @@ export class IncomePage extends TransactionPageBase implements OnInit {
     this.openForm();
   }
 
+  ionViewWillEnter() {
+    this.loadIncomeData();
+  }
+
   onCancelForm() {
     this.closeForm();
   }
-  
-  async onSaveClicked() {
-    if (this.model.amount === null) {
+
+  async onSaveClicked(formData: any) {
+    if (formData === null) {
       return;
     }
-    await this.inservice.addIncome({ 
-      amount: this.model.amount,
-    date: this.model.date,
-    source: this.model.source
-     });
+    if (this.isEditMode && this.selectedIncome) {
+
+      await this.inservice.updateIncome(
+        this.selectedIncome.id!,
+        formData
+      );
   
+    } else {
+    await this.inservice.addIncome({
+      amount: formData.amount,
+      date: formData.date,
+      source: formData.source
+    });
+  }
+
     this.localIncomeArray = await this.inservice.getIncome();
     this.totalIncome = await this.inservice.getTotalIncome();
-  
+
+    this.isEditMode = false;
+  this.selectedIncome = null;
+
     this.resetForm();
     this.closeForm();
   }
@@ -169,6 +190,19 @@ export class IncomePage extends TransactionPageBase implements OnInit {
     } else {
       this.selectedIncomeIds = [];
     }
+  }
+
+
+  onEditClick(income: Income) {
+    console.log("Edit button is clicked");
+    this.selectedIncome = income;
+    this.isEditMode = true;
+
+    this.model.amount = income.amount;
+    this.model.date = income.date;
+    this.model.source = income.source;
+
+    this.openForm();
   }
 
 }
