@@ -1,5 +1,5 @@
 {
-  "name": "ExpenseTracker",
+  "name": "expensetracker",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
@@ -62,5 +62,16 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.9.0"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "main": "karma.conf.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sushmalifestar/BudgetTracker.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sushmalifestar/BudgetTracker/issues"
+  }
 }

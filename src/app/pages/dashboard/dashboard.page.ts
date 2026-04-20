@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import {
   IonContent,
   IonCard,
@@ -12,59 +12,46 @@ import {
 import { ExpenseService } from 'src/app/services/expenseServices/expense-service';
 import { IncomeService } from 'src/app/services/incomeServices/income-service';
 import { SavingsService } from 'src/app/services/savingsServices/savings-service';
+import { FormatAmountPipe } from 'src/app/pipes/format-amount-pipe';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: 'dashboard.page.html',
   styleUrls: ['dashboard.page.scss'],
-  standalone:true,
+  standalone: true,
   imports: [IonContent,
     CommonModule,
     IonCard,
     IonGrid,
-  IonCol,
-  IonRow,
-    IonCardContent
+    IonCol,
+    IonRow,
+    IonCardContent,
+    FormatAmountPipe
   ],
 })
 export class DashboardPage {
 
   totalIncome = 0;
   totalExpenses = 0;
-  totalSavings=0;
+  totalSavings = 0;
   balance = 0;
 
-  constructor( private inService : IncomeService, 
+  constructor(private inService: IncomeService,
     private exService: ExpenseService,
-    private savingsService :SavingsService,
-     private router:Router, 
+    private savingsService: SavingsService,
+    private router: Router,
   ) {
-   }
+  }
 
-   ionViewWillEnter() {
+  ionViewWillEnter() {
     this.calculate();
   }
 
   async calculate() {
     this.totalIncome = Number(await this.inService.getTotalIncome());
-    this.totalExpenses= Number(await this.exService.getTotalExpenses());
-    this.totalSavings = Number( await  this.savingsService.getTotalSavings());
-
-//     const rawIncome = await this.inService.getTotalIncome();
-// console.log('RAW INCOME FROM SERVICE:', rawIncome, typeof rawIncome);
-
-//     this.totalIncome = Number(
-//       String(await this.inService.getTotalIncome()).replace(/,/g, '')
-//     );
-  
-//     this.totalExpenses = Number(
-//       String(await this.exService.getTotalExpenses()).replace(/,/g, '')
-//     );
-  
-//     this.totalSavings = Number(
-//       String(await this.savingsService.getTotalSavings()).replace(/,/g, '')
-//     );
-    this.balance=this.totalIncome-this.totalExpenses- this.totalSavings;
+    this.totalExpenses = Number(await this.exService.getTotalExpenses());
+    this.totalSavings = Number(await this.savingsService.getTotalSavings());
+    this.balance = this.totalIncome - this.totalExpenses - this.totalSavings;
   }
 
   goToIncome() {
@@ -74,24 +61,14 @@ export class DashboardPage {
   goToExpense() {
     this.router.navigate(['/tabs/expenses']);
   }
-  goToSavings(){
+  goToSavings() {
     this.router.navigate(['/tabs/savings'])
   }
 
   goToStatement() {
     this.router.navigate(['/tabs/statement']);
   }
-  
-  formatAmount(amount: number): string {
-    if (amount >= 10000000) {
-      return (amount / 10000000).toFixed(2).replace(/\.00$/, '') + ' Cr';
-    }
-  
-    if (amount >= 100000) {
-      return (amount / 100000).toFixed(2).replace(/\.00$/, '') + ' L';
-    }
-  
-    return amount.toLocaleString('en-IN');
-  }
+
+
 
 }

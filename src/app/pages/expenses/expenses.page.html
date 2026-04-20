@@ -68,7 +68,7 @@
 
         <div class="details">
           <p class="title">{{ expense.source }}</p>
-          <p class="date">{{ expense.date }}</p>
+          <p class="date">{{ expense.date | date:'mediumDate' }}</p>
         </div>
 
       </div>
