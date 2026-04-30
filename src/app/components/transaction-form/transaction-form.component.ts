@@ -93,7 +93,6 @@ export class TransactionFormComponent implements OnChanges  {
 
 }
 
-
 export function positiveAmountValidator(control: AbstractControl): ValidationErrors | null {
 
   const value = control.value;
@@ -116,6 +115,7 @@ export function noFutureDateValidator(control: AbstractControl): ValidationError
   const selectedDate = new Date(value);
   const today = new Date();
 
+  selectedDate.setHours(0, 0, 0, 0);
   today.setHours(0,0,0,0);
 
   if (selectedDate > today) {

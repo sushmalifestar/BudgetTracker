@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonContent, IonInput,IonText, IonButton, IonIcon,IonCheckbox, IonCard,IonItem, IonCardContent, IonCardHeader, IonCardTitle , IonLabel} from '@ionic/angular/standalone';
+import { IonContent, IonInput, IonText, IonButton, IonIcon, IonCheckbox, IonCard, IonItem, IonCardContent, IonCardHeader, IonCardTitle, IonLabel } from '@ionic/angular/standalone';
 import { Expense } from '../../models/expense.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -10,39 +10,41 @@ import { addIcons } from 'ionicons';
 import { trashOutline, createOutline } from 'ionicons/icons';
 import { TransactionFormComponent } from
   'src/app/components/transaction-form/transaction-form.component';
-  import { TransactionPageBase } from 'src/app/shared/transaction-page.base';
+import { TransactionPageBase } from 'src/app/shared/transaction-page.base';
 
-@Component({ 
+@Component({
   selector: 'app-expenses',
   templateUrl: 'expenses.page.html',
   styleUrls: ['expenses.page.scss'],
-  standalone:true,
-  imports: [IonContent, TransactionFormComponent, IonItem,DashboardLinkComponent,IonIcon,IonCheckbox, IonText,IonInput,CommonModule,IonButton, IonCard, IonCardContent,IonLabel, IonCardHeader, IonCardTitle, FormsModule]
+  standalone: true,
+  imports: [IonContent, TransactionFormComponent, IonItem, DashboardLinkComponent, IonIcon, IonCheckbox, IonText, IonInput, CommonModule, IonButton, IonCard, IonCardContent, IonLabel, IonCardHeader, IonCardTitle, FormsModule]
 })
 export class ExpensePage extends TransactionPageBase {
 
-  localExpenseArray : Expense[]=[];
-  totalExpenses=0;
+  localExpenseArray: Expense[] = [];
+  totalExpenses = 0;
   isBulkDeleteMode = false;
   selectedExpenseIds: number[] = [];
   selectedExpense: Expense | null = null;
   isEditMode = false;
 
-  constructor(private expService :ExpenseService, private alertCtrl:AlertController ) {
+  constructor(private expService: ExpenseService, private alertCtrl: AlertController) {
     super();
-    addIcons({ trashOutline , createOutline });
+    addIcons({ trashOutline, createOutline });
   }
 
-  async ngOnInit(){
+  async ngOnInit() {
   }
 
   async loadExpenseData() {
     this.localExpenseArray = await this.expService.getExpenses();
-    this.totalExpenses=await this.expService.getTotalExpenses();
+    this.totalExpenses = await this.expService.getTotalExpenses();
   }
 
-  onAddExpenseClick(){
+  onAddExpenseClick() {
+    console.log("inside add expense click")
     this.openForm();
+    this.isEditMode = false;
   }
 
   ionViewWillEnter() {
@@ -53,25 +55,29 @@ export class ExpensePage extends TransactionPageBase {
     this.closeForm();
   }
 
-  async onSaveClicked(formData: any){
+  async onSaveClicked(formData: any) {
     if (formData === null) {
       return;
     }
-  
-  if (this.isEditMode && this.selectedExpense) {
 
-    await this.expService.updateExpense(
-      this.selectedExpense.id!,
-      formData
-    );
+    if (this.isEditMode && this.selectedExpense) {
 
-  } else {
-    await this.expService.addExpense({
-      amount: formData.amount,
-    date: formData.date,
-    source: formData.source
-    }); 
-  }
+      await this.expService.updateExpense(
+        this.selectedExpense.id!,
+        formData
+      );
+      await this.loadExpenseData();
+
+    } else {
+      console.log("inside else")
+      console.log(formData)
+      await this.expService.addExpense({
+        amount: formData.amount,
+        date: formData.date,
+        source: formData.source
+      });
+    }
+
     this.localExpenseArray = await this.expService.getExpenses();
     this.totalExpenses = await this.expService.getTotalExpenses();
     this.resetForm();
@@ -80,7 +86,6 @@ export class ExpensePage extends TransactionPageBase {
 
   async onDeleteClick(expense: any) {
 
-    console.log('CONFIRM DELETE CLICKED', expense.id);
     const alert = await this.alertCtrl.create({
       header: 'Delete Expense',
       message: 'Are you sure you want to delete this expense?',
@@ -99,10 +104,10 @@ export class ExpensePage extends TransactionPageBase {
         }
       ]
     });
-  
+
     await alert.present();
   }
-  
+
   async deleteExpense(id: number) {
     await this.expService.deleteExpense(id);
     this.localExpenseArray = await this.expService.getExpenses();
@@ -113,7 +118,7 @@ export class ExpensePage extends TransactionPageBase {
     this.isBulkDeleteMode = true;
     this.selectedExpenseIds = [];
   }
-  
+
   cancelBulkDeleteMode() {
     this.isBulkDeleteMode = false;
     this.selectedExpenseIds = [];
@@ -121,7 +126,7 @@ export class ExpensePage extends TransactionPageBase {
 
   onExpensesSelectionChange(id: number, event: any) {
     const checked = event.detail.checked;
-  
+
     if (checked) {
       if (!this.selectedExpenseIds.includes(id)) {
         this.selectedExpenseIds.push(id);
@@ -131,13 +136,13 @@ export class ExpensePage extends TransactionPageBase {
         selectedId => selectedId !== id
       );
     }
-  
+
     console.log('Selected Expenses:', this.selectedExpenseIds);
   }
 
   async confirmBulkDelete() {
     const count = this.selectedExpenseIds.length;
-  
+
     const alert = await this.alertCtrl.create({
       header: 'Delete Expenses',
       message: `Delete ${count} selected expense transaction(s)?`,
@@ -156,7 +161,7 @@ export class ExpensePage extends TransactionPageBase {
         }
       ]
     });
-  
+
     await alert.present();
   }
 
@@ -188,17 +193,16 @@ export class ExpensePage extends TransactionPageBase {
     }
   }
 
+  onEditClick(expense: Expense) {
+    console.log('Editing expense:', expense);
+    this.selectedExpense = expense;
+    this.isEditMode = true;
 
-    onEditClick(expense: Expense) {
-      console.log('Editing expense:', expense);
-      this.selectedExpense = expense;
-      this.isEditMode = true;
-  
-      this.model.amount = expense.amount;
-      this.model.date = expense.date;
-      this.model.source = expense.source;
-  
-      this.openForm();
-    }
+    this.model.amount = expense.amount;
+    this.model.date = expense.date.split('T')[0];
+    this.model.source = expense.source;
+
+    this.openForm();
+  }
 
 }

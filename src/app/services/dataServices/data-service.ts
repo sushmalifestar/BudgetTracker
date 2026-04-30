@@ -8,6 +8,9 @@ import {
 import { Expense } from '../../models/expense.model';
 import { Income } from '../../models/income.model';
 import { Savings } from '../../models/savings.model';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +27,7 @@ export class DataService {
   private dbReady = false;
   private dbInitializing = false;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.sqlite = new SQLiteConnection(CapacitorSQLite);
   }
 
@@ -132,27 +135,17 @@ export class DataService {
 
   async getExpenses(): Promise<Expense[]> {
 
-    if (Capacitor.getPlatform() === 'web') {
-      console.log('Fetching expenses (web):', this.webExpenses);
-      return this.webExpenses;
-    }
-
-    const query = `
-      SELECT id, amount, category, note, date, createdAt
-      FROM expenses
-      ORDER BY date DESC
-    `;
-
-    const result = await this.db.query(query);
-
-    const rows = (result.values || []) as Expense[];
-    return (result.values || []).map((row: any) => ({
+    const res: any = await firstValueFrom(
+      this.http.get('http://localhost:3000/expenses')
+    );
+  
+    return res.data.map((row: any) => ({
       id: row.id,
       amount: row.amount,
-      source: row.category,
-      note: row.note,
-      date: row.date,
-      createdAt: row.createdAt
+      source: row.title,  
+      note: row.note || '',
+      date: row.date || '',
+      createdAt: row.createdAt || ''
     }));
   }
 

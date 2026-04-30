@@ -7,7 +7,7 @@
       <!-- <h1 class="balance-amount truncate-amount">₹ {{ formatAmount(balance) }}</h1> -->
       <div class="amount-text">
         <span class="currency">₹</span>
-        <span class="value">{{ balance | FormatAmountPipe }}</span>
+        <span class="value">{{ balance | formatAmount }}</span>
       </div>
     </ion-card-content>
   </ion-card>
@@ -21,7 +21,7 @@
             <p class="label-text">Income</p>
             <div class="amount-text income-text">
               <span class="currency">₹</span>
-              <span class="value">{{ totalIncome | FormatAmountPipe }}</span>
+              <span class="value">{{ totalIncome | formatAmount }}</span>
             </div>
           </ion-card-content>
         </ion-card>
@@ -33,7 +33,7 @@
             <p class="label-text">Expenses</p>
             <div class="amount-text expense-text">
               <span class="currency">₹</span>
-              <span class="value">{{ totalExpenses | FormatAmountPipe }}</span>
+              <span class="value">{{ totalExpenses | formatAmount }}</span>
             </div>
           </ion-card-content>
         </ion-card>
@@ -47,7 +47,7 @@
             <p class="label-text">Savings</p>
             <div class="amount-text savings-text">
               <span class="currency">₹</span>
-              <span class="value">{{ totalSavings | FormatAmountPipe }}</span>
+              <span class="value">{{ totalSavings | formatAmount }}</span>
             </div>
           </ion-card-content>
         </ion-card>

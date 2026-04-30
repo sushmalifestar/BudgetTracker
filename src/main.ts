@@ -5,10 +5,12 @@ import { IonicModule } from '@ionic/angular';
 import { importProvidersFrom } from '@angular/core';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
-
+import { provideHttpClient } from '@angular/common/http';
+  
 bootstrapApplication(AppComponent, {
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+    provideHttpClient(),
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     importProvidersFrom(IonicModule.forRoot())
