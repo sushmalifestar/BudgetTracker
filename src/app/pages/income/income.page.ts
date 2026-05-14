@@ -37,12 +37,15 @@ export class IncomePage extends TransactionPageBase implements OnInit {
   }
 
   async loadIncomeData() {
+
     this.localIncomeArray = await this.inservice.getIncome();
+    console.log(this.localIncomeArray)
     this.totalIncome = await this.inservice.getTotalIncome();
   }
 
   onAddIncomeClick() {
     this.openForm();
+    this.isEditMode = false;
   }
 
   ionViewWillEnter() {
@@ -63,6 +66,7 @@ export class IncomePage extends TransactionPageBase implements OnInit {
         this.selectedIncome.id!,
         formData
       );
+      await this.loadIncomeData();
   
     } else {
     await this.inservice.addIncome({
@@ -74,17 +78,12 @@ export class IncomePage extends TransactionPageBase implements OnInit {
 
     this.localIncomeArray = await this.inservice.getIncome();
     this.totalIncome = await this.inservice.getTotalIncome();
-
-    this.isEditMode = false;
-  this.selectedIncome = null;
-
     this.resetForm();
     this.closeForm();
   }
 
   async onDeleteClick(income: any) {
 
-    console.log('CONFIRM DELETE CLICKED', income.id);
     const alert = await this.alertCtrl.create({
       header: 'Delete Income',
       message: 'Are you sure you want to delete this income?',
@@ -108,6 +107,7 @@ export class IncomePage extends TransactionPageBase implements OnInit {
   }
 
   async deleteIncome(id: number) {
+    console.log("inside delete of income page")
     await this.inservice.deleteIncome(id);
     this.localIncomeArray = await this.inservice.getIncome();
     this.totalIncome = await this.inservice.getTotalIncome();

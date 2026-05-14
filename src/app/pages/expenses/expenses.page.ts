@@ -69,8 +69,6 @@ export class ExpensePage extends TransactionPageBase {
       await this.loadExpenseData();
 
     } else {
-      console.log("inside else")
-      console.log(formData)
       await this.expService.addExpense({
         amount: formData.amount,
         date: formData.date,

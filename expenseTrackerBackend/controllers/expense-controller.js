@@ -1,9 +1,9 @@
 let expenses = [
   {
-    id: 1,
-    title: 'Food',
-    amount: 200,
-    date: new Date().toISOString()
+        id: 1,
+        title: 'Food',
+        amount: 200,
+        date: new Date().toISOString()
   },
   {
     id: 2,
@@ -32,15 +32,10 @@ let expenses = [
   // };
 
   exports.addExpense = (req, res) => {
-    //console.log (" Inside add expense controller");
-    //console.log(req);
-    //console.log("POST BODY" ,req.body)
+  
     const { title, amount, date} = req.body;
     
-    
-  
     if (!title || !amount) {
-      //console.log("inside title and amount required IF condition")
       return res.status(400).json({
         success: false,
         message: 'Title and amount are required'
@@ -53,8 +48,6 @@ let expenses = [
       amount,
       date
     };
-
-    //console.log(newExpense)
   
     expenses.push(newExpense);
   

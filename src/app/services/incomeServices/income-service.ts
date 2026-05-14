@@ -1,49 +1,61 @@
 import { Injectable } from '@angular/core';
 import { DataService } from '../dataServices/data-service';
 import { Income } from 'src/app/models/income.model';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IncomeService {
 
-  constructor(private dataService:DataService){}
+  private baseUrl = 'http://localhost:3000/income';
+
+  constructor(private http: HttpClient){}
   
-private incomeArray:Income[]=[]
+// private incomeArray:Income[]=[]
 
-getIncome():Promise<Income[]>{
-return this.dataService.getIncomes();
+async getIncome():Promise<Income[]>{
+const res: any = await firstValueFrom(this.http.get(this.baseUrl));
+return res.data.map((row:any)=>({
+  id: row.id,
+  amount: row.amount,
+  source: row.source,   
+  note: row.note || '',
+  date: row.date || '',
+  createdAt: row.createdAt || ''
+}))
 }
 
-addIncome(income:Income): Promise<void> {
-return this.dataService.addIncome(income);
+async addIncome(income:Income): Promise<void> {
+await firstValueFrom(this.http.post(this.baseUrl,{
+  source:income.source,
+  date: income.date,
+  amount: income.amount
+}))
 }
 
-deleteIncome(id:number): Promise<void>{
-  return this.dataService.deleteIncome(id)
+async updateIncome(id: number, income: Income): Promise<void> {
+  await firstValueFrom(this.http.put(`${this.baseUrl}/${id}`, {
+        source: income.source,
+        amount: income.amount,
+        note: income.note,
+        date: income.date
+      }))
+}
+
+async deleteIncome(id:number): Promise<void>{
+  console.log("inside delete in frontend service")
+  await firstValueFrom(this.http.delete(`${this.baseUrl}/${id}`))
 }
 
 async getTotalIncome(): Promise<number> {
 
-  console.log("Hi Sushma");
   const incomes = await this.getIncome();
-
-  incomes.forEach(i => {
-    console.log(
-      'AMOUNT:', i.amount,
-      'TYPE:', typeof i.amount,
-      'NUMBER:', Number(i.amount)
-    );
-  });
-
   return incomes.reduce(
     (total, income) => total + Number(income.amount),
     0
   );
-}
-
-updateIncome(id: number, income: Income): Promise<void> {
-  return this.dataService.updateIncome(id, income);
 }
 
 }

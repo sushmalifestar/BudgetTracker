@@ -56,7 +56,6 @@ export class ExpenseService {
         date: expense.date
       })
     );
-    console.log('UPDATE RESPONSE:', res); 
   }
 
   async getTotalExpenses(): Promise<number> {
