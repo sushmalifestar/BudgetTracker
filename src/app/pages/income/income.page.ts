@@ -39,7 +39,6 @@ export class IncomePage extends TransactionPageBase implements OnInit {
   async loadIncomeData() {
 
     this.localIncomeArray = await this.inservice.getIncome();
-    console.log(this.localIncomeArray)
     this.totalIncome = await this.inservice.getTotalIncome();
   }
 
@@ -107,7 +106,6 @@ export class IncomePage extends TransactionPageBase implements OnInit {
   }
 
   async deleteIncome(id: number) {
-    console.log("inside delete of income page")
     await this.inservice.deleteIncome(id);
     this.localIncomeArray = await this.inservice.getIncome();
     this.totalIncome = await this.inservice.getTotalIncome();

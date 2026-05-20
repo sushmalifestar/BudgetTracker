@@ -22,8 +22,6 @@ exports.getAllIncomes = (req, res) => {
 
 exports.addIncome = (req, res) => {
     const { source, amount, date } = req.body;
-    console.log(req.body);
-    console.log(source, amount, date);
     if (!source || !amount) {
         return res.status(400).json({
             success: false,
@@ -37,8 +35,6 @@ exports.addIncome = (req, res) => {
         amount,
         date
     };
-
-    console.log("added new income is", newIncome)
 
     income.push(newIncome);
 
@@ -69,7 +65,6 @@ exports.updateIncome = (req, res) => {
 }
 
 exports.deleteIncome = (req, res) => {
-    console.log("inside the delete income in the backend")
     const id = parseInt(req.params.id);
     income = income.filter(inc => inc.id !== id);
     res.json({ message: 'Deleted' });

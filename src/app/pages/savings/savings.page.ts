@@ -43,6 +43,7 @@ export class SavingsPage extends TransactionPageBase {
 
   onAddSavingsClick() {
     this.openForm();
+    this.isEditMode = false;
   }
 
   ionViewWillEnter() {
@@ -63,6 +64,7 @@ export class SavingsPage extends TransactionPageBase {
         this.selectedSaving.id!,
         formData
       );
+      await this.loadSavingData();
   
     } else {
     await this.savingsService.addSavings({
@@ -79,10 +81,9 @@ export class SavingsPage extends TransactionPageBase {
 
   async onDeleteClick(saving: any) {
 
-    console.log('CONFIRM DELETE CLICKED', saving.id);
     const alert = await this.alertCtrl.create({
-      header: 'Delete Expense',
-      message: 'Are you sure you want to delete this expense?',
+      header: 'Delete Saving',
+      message: 'Are you sure you want to delete this Saving?',
       buttons: [
         {
           text: 'Cancel',

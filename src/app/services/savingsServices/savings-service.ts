@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DataService } from '../dataServices/data-service';
 import { Savings } from 'src/app/models/savings.model';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 
 @Injectable({
@@ -8,20 +9,45 @@ import { Savings } from 'src/app/models/savings.model';
 })
 export class SavingsService {
 
-  constructor(private dataService:DataService){
+  private baseUrl = 'http://localhost:3000/savings'
+
+  constructor(private http:HttpClient){
   }
 
-  getSavings():Promise<Savings[]>{
-    return this.dataService.getSavings();
+  async getSavings():Promise<Savings[]>{
+    const res: any = await firstValueFrom(this.http.get(this.baseUrl));
+    return res.data.map((row:any)=>({
+      id: row.id,
+      amount: row.amount,
+      source: row.source,   
+      note: row.note || '',
+      date: row.date || '',
+      createdAt: row.createdAt || ''
+    }))
   }
 
-  addSavings(saving: Savings): Promise<void>{
-    return this.dataService.addSavings(saving);
+  async addSavings(saving:Savings): Promise<void> {
+  await firstValueFrom(this.http.post(this.baseUrl,{
+    source:saving.source,
+    date: saving.date,
+    amount: saving.amount
+  }))
   }
 
-  deleteSaving(saving:number): Promise<void>{
-    return this.dataService.deleteSaving(saving);
+  async updateSaving(id: number, saving: Savings): Promise<void> {
+    await firstValueFrom(this.http.put(`${this.baseUrl}/${id}`, {
+          source: saving.source,
+          amount: saving.amount,
+          note: saving.note,
+          date: saving.date
+        }))
   }
+
+  async deleteSaving(id:number): Promise<void>{
+    console.log("inside delete in frontend service")
+    await firstValueFrom(this.http.delete(`${this.baseUrl}/${id}`))
+  }
+  
 
   async getTotalSavings(): Promise<number> {
     const savings = await this.getSavings();
@@ -31,8 +57,5 @@ export class SavingsService {
     );
   }
 
-  updateSaving(id: number, saving: Savings): Promise<void> {
-    return this.dataService.updateSaving(id, saving);
-  }
-  
+ 
 }

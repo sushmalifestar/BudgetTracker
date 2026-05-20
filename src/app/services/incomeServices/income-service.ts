@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { DataService } from '../dataServices/data-service';
 import { Income } from 'src/app/models/income.model';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
@@ -12,8 +11,6 @@ export class IncomeService {
   private baseUrl = 'http://localhost:3000/income';
 
   constructor(private http: HttpClient){}
-  
-// private incomeArray:Income[]=[]
 
 async getIncome():Promise<Income[]>{
 const res: any = await firstValueFrom(this.http.get(this.baseUrl));
