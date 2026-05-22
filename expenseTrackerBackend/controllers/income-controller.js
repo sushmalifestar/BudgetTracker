@@ -1,15 +1,15 @@
 let income = [
     {
         id: 1,
-        source: 'Salary',
+        title: 'Salary',
         amount: 150000,
-        date: new Date().toISOString()
+        incomeDate: new Date().toISOString()
     },
     {
         id: 2,
-        source: 'RD Mature amount',
+        title: 'RD Mature amount',
         amount: 50000,
-        date: new Date().toISOString()
+        incomeDate: new Date().toISOString()
     }
 ]
 
@@ -21,8 +21,8 @@ exports.getAllIncomes = (req, res) => {
 }
 
 exports.addIncome = (req, res) => {
-    const { source, amount, date } = req.body;
-    if (!source || !amount) {
+    const { title, amount, incomeDate } = req.body;
+    if (!title || !amount) {
         return res.status(400).json({
             success: false,
             message: 'Title and amount are required'
@@ -31,9 +31,9 @@ exports.addIncome = (req, res) => {
 
     const newIncome = {
         id: Date.now(),
-        source,
+        title,
         amount,
-        date
+        incomeDate
     };
 
     income.push(newIncome);

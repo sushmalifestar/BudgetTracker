@@ -1,8 +1,7 @@
 export interface Expense{
     id?: number;
+    title: string;
     amount: number;
-    source: string;
-    note?: string;
-    date: string;
+    expenseDate: string;
     createdAt?: string;
 }

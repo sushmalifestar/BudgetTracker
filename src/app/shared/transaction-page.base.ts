@@ -18,13 +18,4 @@ export abstract class TransactionPageBase {
     this.model = createEmptyTransaction();
   }
 
-//   async handleSave(
-//     saveFn: (model: TransactionDraft) => Promise<void>,
-//     refreshFn: () => Promise<void>
-//   ) {
-//     await saveFn(this.model);
-//     await refreshFn();
-//     this.resetForm();
-//     this.closeForm();
-//   }
 }

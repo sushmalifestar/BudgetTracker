@@ -3,13 +3,13 @@ let expenses = [
         id: 1,
         title: 'Food',
         amount: 200,
-        date: new Date().toISOString()
+        expenseDate: new Date().toISOString()
   },
   {
     id: 2,
     title: 'Travel',
     amount: 500,
-    date: new Date().toISOString()
+    expenseDate: new Date().toISOString()
   }
 ];
   
@@ -19,21 +19,10 @@ let expenses = [
       data: expenses
     });
   };
-  
-  // exports.getExpenseById = (req, res) => {
-  //   const id = parseInt(req.params.id);
-  //   const expense = expenses.find(e => e.id === id);
-  
-  //   if (!expense) {
-  //     return res.status(404).json({ message: 'Not found' });
-  //   }
-  
-  //   res.json(expense);
-  // };
 
   exports.addExpense = (req, res) => {
   
-    const { title, amount, date} = req.body;
+    const { title, amount, expenseDate} = req.body;
     
     if (!title || !amount) {
       return res.status(400).json({
@@ -46,7 +35,7 @@ let expenses = [
       id: Date.now(),
       title,
       amount,
-      date
+      expenseDate
     };
   
     expenses.push(newExpense);

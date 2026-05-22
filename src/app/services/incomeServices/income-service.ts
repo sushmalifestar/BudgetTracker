@@ -17,32 +17,29 @@ const res: any = await firstValueFrom(this.http.get(this.baseUrl));
 return res.data.map((row:any)=>({
   id: row.id,
   amount: row.amount,
-  source: row.source,   
-  note: row.note || '',
-  date: row.date || '',
+  title: row.title,  
+  incomeDate: row.incomeDate || '',
   createdAt: row.createdAt || ''
 }))
 }
 
 async addIncome(income:Income): Promise<void> {
 await firstValueFrom(this.http.post(this.baseUrl,{
-  source:income.source,
-  date: income.date,
+  title:income.title,
+  incomeDate: income.incomeDate,
   amount: income.amount
 }))
 }
 
 async updateIncome(id: number, income: Income): Promise<void> {
   await firstValueFrom(this.http.put(`${this.baseUrl}/${id}`, {
-        source: income.source,
+        title: income.title,
         amount: income.amount,
-        note: income.note,
-        date: income.date
+        incomeDate: income.incomeDate
       }))
 }
 
 async deleteIncome(id:number): Promise<void>{
-  console.log("inside delete in frontend service")
   await firstValueFrom(this.http.delete(`${this.baseUrl}/${id}`))
 }
 

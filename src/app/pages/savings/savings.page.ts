@@ -52,6 +52,7 @@ export class SavingsPage extends TransactionPageBase {
 
   onCancelForm() {
     this.closeForm();
+    this.resetForm();
   }
 
   async onSaveClicked(formData: any) {
@@ -62,15 +63,19 @@ export class SavingsPage extends TransactionPageBase {
 
       await this.savingsService.updateSaving(
         this.selectedSaving.id!,
-        formData
+        {
+          amount: formData.amount,
+          savingsDate: formData.date,
+          title: formData.title
+        }
       );
       await this.loadSavingData();
   
     } else {
     await this.savingsService.addSavings({
       amount: formData.amount,
-      date: formData.date,
-      source: formData.source
+      savingsDate: formData.date,
+      title: formData.title
     });
   }
     this.localSavingsArray = await this.savingsService.getSavings();
@@ -190,12 +195,13 @@ export class SavingsPage extends TransactionPageBase {
 
   onEditClick(saving: Savings) {
         console.log("Edit button is clicked");
+        console.log("saving object have this", saving)
         this.selectedSaving = saving;
         this.isEditMode = true;
     
         this.model.amount = saving.amount;
-        this.model.date = saving.date;
-        this.model.source = saving.source;
+        this.model.date = saving.savingsDate.split('T')[0];
+        this.model.title = saving.title;
     
         this.openForm();
       }

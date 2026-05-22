@@ -41,7 +41,7 @@ export class TransactionFormComponent implements OnChanges  {
 
   transactionForm= this.fb.group({
     amount:[null as number | null ,[Validators.required, positiveAmountValidator]],
-    source: ['', Validators.required],
+    title: ['', Validators.required],
     date:['', [Validators.required, noFutureDateValidator]]
   })
 

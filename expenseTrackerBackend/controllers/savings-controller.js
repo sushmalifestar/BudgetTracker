@@ -1,15 +1,15 @@
 let savings = [
     {
         id: 1,
-        source: 'FD',
+        title: 'FD',
         amount: 20000,
-        date: new Date().toISOString()
+        savingsDate: new Date().toISOString()
     },
     {
         id: 2,
-        source: 'RD',
+        title: 'RD',
         amount: 20000,
-        date: new Date().toISOString()
+        savingsDate: new Date().toISOString()
     }
 ]
 
@@ -21,8 +21,8 @@ exports.getAllsavings=(req, res)=>{
 }
 
 exports.addSaving=(req, res)=>{
-    const{source, amount, date}=req.body;
-    if (!source || !amount){
+    const{title, amount, savingsDate}=req.body;
+    if (!title || !amount){
         return res.status(400).json({
             success: false,
             message: 'Title and amount are required'
@@ -30,9 +30,9 @@ exports.addSaving=(req, res)=>{
     }
     const newSaving ={
         id: Date.now(),
-        source, 
+        title, 
         amount,
-        date
+        savingsDate
     }
 
     savings.push(newSaving);

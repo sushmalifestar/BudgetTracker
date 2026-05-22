@@ -1,9 +1,8 @@
 
 export interface Income {
     id?: number;
+    title: string;
     amount: number;
-    source: string;
-    note?: string;
-    date: string;
+    incomeDate: string;
     createdAt?: string;
   }

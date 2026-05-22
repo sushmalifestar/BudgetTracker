@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Savings } from 'src/app/models/savings.model';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 
 @Injectable({
@@ -19,32 +20,29 @@ export class SavingsService {
     return res.data.map((row:any)=>({
       id: row.id,
       amount: row.amount,
-      source: row.source,   
-      note: row.note || '',
-      date: row.date || '',
+      title: row.title,   
+      savingsDate: row.savingsDate || '',
       createdAt: row.createdAt || ''
     }))
   }
 
   async addSavings(saving:Savings): Promise<void> {
   await firstValueFrom(this.http.post(this.baseUrl,{
-    source:saving.source,
-    date: saving.date,
+    title:saving.title,
+    savingsDate: saving.savingsDate,
     amount: saving.amount
   }))
   }
 
   async updateSaving(id: number, saving: Savings): Promise<void> {
     await firstValueFrom(this.http.put(`${this.baseUrl}/${id}`, {
-          source: saving.source,
+          title: saving.title,
           amount: saving.amount,
-          note: saving.note,
-          date: saving.date
+          savingsDate: saving.savingsDate
         }))
   }
 
   async deleteSaving(id:number): Promise<void>{
-    console.log("inside delete in frontend service")
     await firstValueFrom(this.http.delete(`${this.baseUrl}/${id}`))
   }
   

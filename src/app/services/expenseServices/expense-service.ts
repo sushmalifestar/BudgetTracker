@@ -20,21 +20,18 @@ export class ExpenseService {
     return res.data.map((row: any) => ({
       id: row.id,
       amount: row.amount,
-      source: row.title,   
-      note: row.note || '',
-      date: row.date || '',
+      title: row.title,   
+      expenseDate: row.expenseDate || '',
       createdAt: row.createdAt || ''
     }));
   }
 
   async addExpense(expense: Expense): Promise<void> {
-    console.log("inside expense service", expense)
     await firstValueFrom(
       this.http.post(this.baseUrl, {
-        title: expense.source,   
+        title: expense.title,   
         amount: expense.amount,
-        note: expense.note,
-        date: expense.date
+        expenseDate: expense.expenseDate
       })
     );
   }
@@ -46,14 +43,11 @@ export class ExpenseService {
   }
 
   async updateExpense(id: number, expense: Expense): Promise<void> {
-    console.log('UPDATE ID:', id);
-    console.log('UPDATE DATA:', expense);
     const res = await firstValueFrom(
       this.http.put(`${this.baseUrl}/${id}`, {
-        title: expense.source,
+        title: expense.title,
         amount: expense.amount,
-        note: expense.note,
-        date: expense.date
+        expenseDate: expense.expenseDate
       })
     );
   }

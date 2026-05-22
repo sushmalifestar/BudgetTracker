@@ -67,8 +67,8 @@
           (ionChange)="income.id && onIncomeSelectionChange(income.id, $event)">
         </ion-checkbox>
         <div class="details">
-          <p class="title">{{ income.source }}</p>
-          <p class="date">{{ income.date  | date:'mediumDate'}}</p>
+          <p class="title">{{ income.title }}</p>
+          <p class="date">{{ income.incomeDate  | date:'mediumDate'}}</p>
         </div>
       </div>
 

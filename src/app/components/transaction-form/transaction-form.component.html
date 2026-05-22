@@ -19,12 +19,12 @@
   </ion-text>
 
   <ion-item class="form-item">
-    <ion-label position="stacked">Source</ion-label>
-    <ion-input placeholder="Salary / Business" type="text" formControlName="source">
+    <ion-label position="stacked">Transaction title</ion-label>
+    <ion-input placeholder="Salary / Business" type="text" formControlName="title">
     </ion-input>
   </ion-item>
-  <ion-text class="validation-text" *ngIf="fDetails['source'].invalid && fDetails['source'].touched">
-    Source is required
+  <ion-text class="validation-text" *ngIf="fDetails['title'].invalid && fDetails['title'].touched">
+    Transaction title is required
   </ion-text>
 
   <ion-item class="form-item">

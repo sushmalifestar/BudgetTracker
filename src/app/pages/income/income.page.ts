@@ -53,6 +53,7 @@ export class IncomePage extends TransactionPageBase implements OnInit {
 
   onCancelForm() {
     this.closeForm();
+    this.resetForm();
   }
 
   async onSaveClicked(formData: any) {
@@ -63,15 +64,19 @@ export class IncomePage extends TransactionPageBase implements OnInit {
 
       await this.inservice.updateIncome(
         this.selectedIncome.id!,
-        formData
+        {
+          title: formData.title,
+          amount: formData.amount,
+          incomeDate: formData.date
+        }
       );
       await this.loadIncomeData();
   
     } else {
     await this.inservice.addIncome({
       amount: formData.amount,
-      date: formData.date,
-      source: formData.source
+      incomeDate: formData.date,
+      title: formData.title
     });
   }
 
@@ -197,8 +202,8 @@ export class IncomePage extends TransactionPageBase implements OnInit {
     this.isEditMode = true;
 
     this.model.amount = income.amount;
-    this.model.date = income.date;
-    this.model.source = income.source;
+    this.model.date = income.incomeDate;
+    this.model.title = income.title;
 
     this.openForm();
   }

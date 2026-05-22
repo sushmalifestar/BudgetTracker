@@ -61,8 +61,8 @@
         <ion-checkbox *ngIf="isBulkDeleteMode" [checked]="selectedSavingsIds.includes(saving.id!)"  (ionChange)="saving.id && onSavingSelectionChange(saving.id, $event)">
         </ion-checkbox>
         <div class="details">
-          <p class="title">{{ saving.source }}</p>
-          <p class="date">{{ saving.date | date:'mediumDate' }}</p>
+          <p class="title">{{ saving.title }}</p>
+          <p class="date">{{ saving.savingsDate | date:'mediumDate' }}</p>
         </div>
       </div>
 

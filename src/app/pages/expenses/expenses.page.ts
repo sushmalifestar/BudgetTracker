@@ -53,6 +53,7 @@ export class ExpensePage extends TransactionPageBase {
 
   onCancelForm() {
     this.closeForm();
+    this.resetForm();
   }
 
   async onSaveClicked(formData: any) {
@@ -64,15 +65,19 @@ export class ExpensePage extends TransactionPageBase {
 
       await this.expService.updateExpense(
         this.selectedExpense.id!,
-        formData
+        {
+          amount: formData.amount,
+          expenseDate: formData.date,
+          title: formData.title
+        }
       );
       await this.loadExpenseData();
 
     } else {
       await this.expService.addExpense({
         amount: formData.amount,
-        date: formData.date,
-        source: formData.source
+        expenseDate: formData.date,
+        title: formData.title
       });
     }
 
@@ -197,8 +202,8 @@ export class ExpensePage extends TransactionPageBase {
     this.isEditMode = true;
 
     this.model.amount = expense.amount;
-    this.model.date = expense.date.split('T')[0];
-    this.model.source = expense.source;
+    this.model.date = expense.expenseDate.split('T')[0];
+    this.model.title = expense.title;
 
     this.openForm();
   }
