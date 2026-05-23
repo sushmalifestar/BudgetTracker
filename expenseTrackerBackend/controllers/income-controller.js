@@ -1,72 +1,94 @@
-let income = [
-    {
-        id: 1,
-        title: 'Salary',
-        amount: 150000,
-        incomeDate: new Date().toISOString()
-    },
-    {
-        id: 2,
-        title: 'RD Mature amount',
-        amount: 50000,
-        incomeDate: new Date().toISOString()
-    }
-]
+const incomeService = require('../services/income.service');
 
-exports.getAllIncomes = (req, res) => {
-    res.json({
-        success: true,
-        data: income
-    })
-}
+exports.getAllIncomes = async (req, res) => {
 
-exports.addIncome = (req, res) => {
-    const { title, amount, incomeDate } = req.body;
-    if (!title || !amount) {
-        return res.status(400).json({
+    try {
+
+        const income = await incomeService.getAllIncome();
+        res.json({
+            success: true,
+            data: income
+        });
+
+    } catch (err) {
+
+        console.error(err);
+        res.status(500).json({
             success: false,
-            message: 'Title and amount are required'
+            message: 'Failed to fetch income'
+        });
+
+    }
+
+};
+
+exports.addIncome = async(req, res) => {
+
+    try{
+
+        const { title, amount, incomeDate } = req.body;
+        if (!title || !amount) {
+            return res.status(400).json({
+                success: false,
+                message: 'Title and amount are required'
+            });
+        }
+    
+        await incomeService.addIncome({
+            title,
+            amount,
+            incomeDate
+        });
+        res.json({
+            success: true,
+            message: 'Income added Successfully'
+        });
+
+    }catch(err){
+        res.status(500).json({
+            success: false,
+            message: 'Failed to add income'
         });
     }
 
-    const newIncome = {
-        id: Date.now(),
-        title,
-        amount,
-        incomeDate
-    };
+   
+}
 
-    income.push(newIncome);
-
-    res.json({
+exports.updateIncome = async(req, res) => {
+    try{
+        const id = parseInt(req.params.id)
+    await incomeService.updateIncome(id,req.body)
+    res.json({ 
         success: true,
-        data: newIncome,
-        message: 'NEW BACKEND HIT'
+        message: 'Income Updated Successfully' 
     });
-}
+    }catch(err){
 
-exports.updateIncome = (req, res) => {
-    const id = parseInt(req.params.id)
-    const updatedData = req.body;
+        console.error(err);
 
-    const exists = income.some(inc => inc.id === id);
-
-    if (!exists) {
-        return res.status(404).json({
+        res.status(500).json({
             success: false,
-            message: 'Income not found'
+            message: 'Failed to update income'
         });
     }
-    income = income.map(inc =>
-        inc.id === id ? { ...inc, ...updatedData } : inc
-    );
-
-    res.json({ message: 'Updated' });
+    
 }
 
-exports.deleteIncome = (req, res) => {
-    const id = parseInt(req.params.id);
-    income = income.filter(inc => inc.id !== id);
-    res.json({ message: 'Deleted' });
+exports.deleteIncome = async(req, res) => {
+    try{
+        const id = parseInt(req.params.id);
+        await incomeService.deleteIncome(id);
+        res.json({
+             success: true,
+             message: 'Income deleted successfully' });
+    }catch(err){
+        console.error(err);
+
+        res.status(500).json({
+            success: false,
+            message: 'Failed to delete income'
+        });
+    }
+    
 }
 

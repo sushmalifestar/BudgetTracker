@@ -197,12 +197,11 @@ export class IncomePage extends TransactionPageBase implements OnInit {
 
 
   onEditClick(income: Income) {
-    console.log("Edit button is clicked");
     this.selectedIncome = income;
     this.isEditMode = true;
 
     this.model.amount = income.amount;
-    this.model.date = income.incomeDate;
+    this.model.date = income.incomeDate.split('T')[0];
     this.model.title = income.title;
 
     this.openForm();

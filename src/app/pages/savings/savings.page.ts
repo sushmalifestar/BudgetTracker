@@ -194,8 +194,6 @@ export class SavingsPage extends TransactionPageBase {
   }
 
   onEditClick(saving: Savings) {
-        console.log("Edit button is clicked");
-        console.log("saving object have this", saving)
         this.selectedSaving = saving;
         this.isEditMode = true;
     
