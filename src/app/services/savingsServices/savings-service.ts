@@ -15,7 +15,7 @@ export class SavingsService {
   constructor(private http:HttpClient){
   }
 
-  async getSavings():Promise<Savings[]>{
+  async getAllSavings():Promise<Savings[]>{
     const res: any = await firstValueFrom(this.http.get(this.baseUrl));
     return res.data.map((row:any)=>({
       id: row.id,
@@ -34,7 +34,7 @@ export class SavingsService {
   }))
   }
 
-  async updateSaving(id: number, saving: Savings): Promise<void> {
+  async updateSavings(id: number, saving: Savings): Promise<void> {
     await firstValueFrom(this.http.put(`${this.baseUrl}/${id}`, {
           title: saving.title,
           amount: saving.amount,
@@ -42,13 +42,13 @@ export class SavingsService {
         }))
   }
 
-  async deleteSaving(id:number): Promise<void>{
+  async deleteSavings(id:number): Promise<void>{
     await firstValueFrom(this.http.delete(`${this.baseUrl}/${id}`))
   }
   
 
   async getTotalSavings(): Promise<number> {
-    const savings = await this.getSavings();
+    const savings = await this.getAllSavings();
     return savings.reduce(
       (total, saving) => total + saving.amount,
       0

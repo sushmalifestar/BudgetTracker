@@ -1,73 +1,76 @@
-let savings = [
-    {
-        id: 1,
-        title: 'FD',
-        amount: 20000,
-        savingsDate: new Date().toISOString()
-    },
-    {
-        id: 2,
-        title: 'RD',
-        amount: 20000,
-        savingsDate: new Date().toISOString()
-    }
-]
+const savingService = require('../services/savings.service')
 
-exports.getAllsavings=(req, res)=>{
-    res.json({
-        success:true,
-        data:savings
-    })
-}
-
-exports.addSaving=(req, res)=>{
-    const{title, amount, savingsDate}=req.body;
-    if (!title || !amount){
-        return res.status(400).json({
+exports.getAllsavings = async (req, res) => {
+    try {
+        const saving = await savingService.getAllSavings();
+        res.json({
+            success: true,
+            data: saving
+        })
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
             success: false,
-            message: 'Title and amount are required'
+            message: 'Failed to fetch saving'
+        });
+    }
+};
+
+exports.addSavings = async (req, res) => {
+    try {
+        const { title, amount, savingsDate } = req.body;
+        if (!title || !amount) {
+            return res.status(400).json({
+                success: false,
+                message: 'Title and amount are required'
+            })
+        }
+        await savingService.addSavings({
+            title, amount, savingsDate
         })
+        res.json({
+            success: true,
+            message: 'Saving added Successfully'
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to add saving'
+        });
     }
-    const newSaving ={
-        id: Date.now(),
-        title, 
-        amount,
-        savingsDate
+};
+
+exports.updateSavings = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        await savingService.updateSavings(id, req.body)
+        res.json({
+            success: true,
+            message: 'Saving Updated Successfully'
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to update saving'
+        });
     }
+};
 
-    savings.push(newSaving);
-
-    res.json({
-        success:true,
-        data: newSaving
-    })
-
-} 
-
-exports.updateSaving =(req,res)=>{
-
-    const id = parseInt(req.params.id)
-    const updatedData = req.body;
-
-    const exists = savings.some((sav)=> sav.id ===id)
-
-    if(!exists){
-        return res.status(404).json({
-            success:false,
-            message:'Saving not found'
-        })
+exports.deleteSavings = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        await savingService.deleteSavings(id)
+        res.json({
+            success: true,
+            message: 'Saving deleted successfully'
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to delete Saving'
+        });
     }
-    savings = savings.map(sav=> sav.id === id? {...sav, ...updatedData}: sav)
-
-    res.json({
-        message:'Updated'
-    })
-}
-
-exports.deleteSaving=(req, res)=>{
-    const id = parseInt(req.params.id);
-    savings = savings.filter(sav=>sav.id !== id);
-    res.json({
-        message:'Deleted'
-    })
-}
+};

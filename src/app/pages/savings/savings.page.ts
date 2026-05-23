@@ -37,7 +37,7 @@ export class SavingsPage extends TransactionPageBase {
   }
 
   async loadSavingData() {
-    this.localSavingsArray = await this.savingsService.getSavings();
+    this.localSavingsArray = await this.savingsService.getAllSavings();
     this.totalSavings = await this.savingsService.getTotalSavings();
   }
 
@@ -61,7 +61,7 @@ export class SavingsPage extends TransactionPageBase {
     }
     if (this.isEditMode && this.selectedSaving) {
 
-      await this.savingsService.updateSaving(
+      await this.savingsService.updateSavings(
         this.selectedSaving.id!,
         {
           amount: formData.amount,
@@ -78,7 +78,7 @@ export class SavingsPage extends TransactionPageBase {
       title: formData.title
     });
   }
-    this.localSavingsArray = await this.savingsService.getSavings();
+    this.localSavingsArray = await this.savingsService.getAllSavings();
     this.totalSavings = await this.savingsService.getTotalSavings();
     this.resetForm();
     this.closeForm();
@@ -99,7 +99,7 @@ export class SavingsPage extends TransactionPageBase {
           role: 'destructive',
           handler: async () => {
             console.log('DELETE CONFIRMED', saving.id);
-            await this.deleteSaving(saving.id);
+            await this.deleteSavings(saving.id);
           }
         }
       ]
@@ -108,9 +108,9 @@ export class SavingsPage extends TransactionPageBase {
     await alert.present();
   }
 
-  async deleteSaving(id: number) {
-    await this.savingsService.deleteSaving(id);
-    this.localSavingsArray = await this.savingsService.getSavings();
+  async deleteSavings(id: number) {
+    await this.savingsService.deleteSavings(id);
+    this.localSavingsArray = await this.savingsService.getAllSavings();
     this.totalSavings = await this.savingsService.getTotalSavings();
   }
 
@@ -142,7 +142,6 @@ export class SavingsPage extends TransactionPageBase {
 
   async confirmBulkDelete() {
     const count = this.selectedSavingsIds.length;
-
     const alert = await this.alertCtrl.create({
       header: 'Delete Savings',
       message: `Delete ${count} selected Saving transaction(s)?`,
@@ -167,9 +166,9 @@ export class SavingsPage extends TransactionPageBase {
 
   async bulkDeleteSavings() {
     for (const id of this.selectedSavingsIds) {
-      await this.savingsService.deleteSaving(id);
+      await this.savingsService.deleteSavings(id);
     }
-    this.localSavingsArray = await this.savingsService.getSavings();
+    this.localSavingsArray = await this.savingsService.getAllSavings();
     this.totalSavings = await this.savingsService.getTotalSavings();
     this.cancelBulkDeleteMode();
   }
@@ -183,7 +182,6 @@ export class SavingsPage extends TransactionPageBase {
 
   onToggleSelectAllSavings(event: any) {
     const checked = event.detail.checked;
-
     if (checked) {
       this.selectedSavingsIds = this.localSavingsArray
         .filter(i => i.id !== undefined)
@@ -196,11 +194,9 @@ export class SavingsPage extends TransactionPageBase {
   onEditClick(saving: Savings) {
         this.selectedSaving = saving;
         this.isEditMode = true;
-    
         this.model.amount = saving.amount;
         this.model.date = saving.savingsDate.split('T')[0];
         this.model.title = saving.title;
-    
         this.openForm();
       }
 

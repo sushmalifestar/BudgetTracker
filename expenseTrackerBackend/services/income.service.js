@@ -1,7 +1,6 @@
 const { sql, config } = require('../config/db.config');
 
-exports.getAllIncome = async () => {
-
+exports.getAllIncomes = async () => {
     try {
         await sql.connect(config);
         const result = await sql.query(`
@@ -14,11 +13,9 @@ exports.getAllIncome = async () => {
         console.error('Error fetching income:', err);
         throw err;
     }
-
 };
 
 exports.addIncome = async (incomeData) => {
-
     try {
         await sql.connect(config);
         const { title, amount, incomeDate } = incomeData;
@@ -43,7 +40,7 @@ exports.updateIncome = async (id, incomeData)=>{
         await sql.query(
             `UPDATE Income SET
             title='${title}',
-            amount='${amount}',
+            amount=${amount},
             incomeDate='${incomeDate}'
             WHERE id ='${id}'
             `)

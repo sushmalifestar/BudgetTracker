@@ -12,7 +12,7 @@ export class ExpenseService {
 
   constructor(private http: HttpClient) {}
 
-  async getExpenses(): Promise<Expense[]> {
+  async getAllExpenses(): Promise<Expense[]> {
     const res: any = await firstValueFrom(
       this.http.get(this.baseUrl)
     );
@@ -53,7 +53,7 @@ export class ExpenseService {
   }
 
   async getTotalExpenses(): Promise<number> {
-    const expenses = await this.getExpenses();
+    const expenses = await this.getAllExpenses();
     return expenses.reduce(
       (total, expense) => total + expense.amount,
       0

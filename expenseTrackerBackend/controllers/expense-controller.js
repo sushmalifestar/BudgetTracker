@@ -1,74 +1,76 @@
-let expenses = [
-  {
-        id: 1,
-        title: 'Food',
-        amount: 200,
-        expenseDate: new Date().toISOString()
-  },
-  {
-    id: 2,
-    title: 'Travel',
-    amount: 500,
-    expenseDate: new Date().toISOString()
-  }
-];
-  
-  exports.getExpenses = (req, res) => {
+const expenseService = require('../services/expense.service')
+
+exports.getAllExpenses = async (req, res) => {
+  try {
+    const expnese = await expenseService.getAllExpenses()
     res.json({
       success: true,
-      data: expenses
+      data: expnese
     });
-  };
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch income'
+    });
+  }
+};
 
-  exports.addExpense = (req, res) => {
-  
-    const { title, amount, expenseDate} = req.body;
-    
+exports.addExpense = async (req, res) => {
+  try {
+    const { title, amount, expenseDate } = req.body;
     if (!title || !amount) {
       return res.status(400).json({
         success: false,
         message: 'Title and amount are required'
       });
     }
-  
-    const newExpense = {
-      id: Date.now(),
-      title,
-      amount,
-      expenseDate
-    };
-  
-    expenses.push(newExpense);
-  
+    await expenseService.addExpense({
+      title, amount, expenseDate
+    })
     res.json({
       success: true,
-      data: newExpense,
-      message: 'NEW BACKEND HIT'
+      message: 'Expense added Successfully'
     });
-  };
-  
-  exports.updateExpense = (req, res) => {
-    const id = parseInt(req.params.id);
-    const updatedData = req.body;
-  
-    const exists = expenses.some(exp => exp.id === id);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to add expense'
+    });
+  }
+};
 
-if (!exists) {
-  return res.status(404).json({
-    success: false,
-    message: 'Expense not found'
-  });
-} 
-expenses = expenses.map(exp =>
-  exp.id === id ? { ...exp, ...updatedData } : exp
-);
-    res.json({ message: 'Updated' });
-  };
-  
-  exports.deleteExpense = (req, res) => {
+exports.updateExpense = async (req, res) => {
+  try {
     const id = parseInt(req.params.id);
-  
-    expenses = expenses.filter(exp => exp.id !== id);
-  
-    res.json({ message: 'Deleted' });
-  };
+    await expenseService.updateExpense(id, req.body)
+    res.json({
+      success: true,
+      message: 'Expense Updated Successfully'
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update expense'
+    });
+  }
+};
+
+exports.deleteExpense = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    await expenseService.deleteExpense(id)
+    res.json({
+      success: true,
+      message: 'Expense deleted successfully'
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to delete expense'
+    });
+  }
+};

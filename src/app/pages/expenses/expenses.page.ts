@@ -33,16 +33,12 @@ export class ExpensePage extends TransactionPageBase {
     addIcons({ trashOutline, createOutline });
   }
 
-  async ngOnInit() {
-  }
-
   async loadExpenseData() {
-    this.localExpenseArray = await this.expService.getExpenses();
+    this.localExpenseArray = await this.expService.getAllExpenses();
     this.totalExpenses = await this.expService.getTotalExpenses();
   }
 
   onAddExpenseClick() {
-    console.log("inside add expense click")
     this.openForm();
     this.isEditMode = false;
   }
@@ -81,7 +77,7 @@ export class ExpensePage extends TransactionPageBase {
       });
     }
 
-    this.localExpenseArray = await this.expService.getExpenses();
+    this.localExpenseArray = await this.expService.getAllExpenses();
     this.totalExpenses = await this.expService.getTotalExpenses();
     this.resetForm();
     this.closeForm();
@@ -113,7 +109,7 @@ export class ExpensePage extends TransactionPageBase {
 
   async deleteExpense(id: number) {
     await this.expService.deleteExpense(id);
-    this.localExpenseArray = await this.expService.getExpenses();
+    this.localExpenseArray = await this.expService.getAllExpenses();
     this.totalExpenses = await this.expService.getTotalExpenses();
   }
 
@@ -172,7 +168,7 @@ export class ExpensePage extends TransactionPageBase {
     for (const id of this.selectedExpenseIds) {
       await this.expService.deleteExpense(id);
     }
-    this.localExpenseArray = await this.expService.getExpenses();
+    this.localExpenseArray = await this.expService.getAllExpenses();
     this.totalExpenses = await this.expService.getTotalExpenses();
     this.cancelBulkDeleteMode();
   }
@@ -197,7 +193,6 @@ export class ExpensePage extends TransactionPageBase {
   }
 
   onEditClick(expense: Expense) {
-    console.log('Editing expense:', expense);
     this.selectedExpense = expense;
     this.isEditMode = true;
 
