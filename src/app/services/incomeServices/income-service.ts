@@ -8,9 +8,11 @@ import { firstValueFrom } from 'rxjs';
 })
 export class IncomeService {
 
-  private baseUrl = 'http://localhost:3000/income';
+  private baseUrl = 'http://10.0.2.2:3000/income';
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient){
+    console.log("The base url for testing is",this.baseUrl);
+  }
 
 async getIncome():Promise<Income[]>{
 const res: any = await firstValueFrom(this.http.get(this.baseUrl));

@@ -8,7 +8,7 @@ import { Expense } from 'src/app/models/expense.model';
 })
 export class ExpenseService {
 
-  private baseUrl = 'http://localhost:3000/expenses';
+  private baseUrl = 'http://10.0.2.2:3000/expenses';
 
   constructor(private http: HttpClient) {}
 
