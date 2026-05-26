@@ -1,0 +1,96 @@
+ion-card {
+    margin-bottom: 12px;
+    border-radius: 14px;
+  }
+  
+  .statement-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .statement-header {
+    margin: 1px;
+    text-align: center;
+  }
+  
+  .statement-header h2 {
+    margin: 0 0 4px 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #4f46e5;
+  }
+  
+  .statement-header p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+  }
+  
+  .left-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .type-badge {
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 72px;
+    text-align: center;
+    color: white;
+  }
+  
+  .income-badge {
+    background-color: #66bb6a;
+  }
+  .expense-badge {
+    background-color: #ef5350;
+  }
+  
+  .saving-badge {
+    background-color: #7986cb;
+  }
+  
+  .details {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .date {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--ion-color-medium);
+  }
+  
+  .amount {
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  
+  .income-amount {
+    color: #388e3c;
+  }
+  
+  .expense-amount {
+    color: #d32f2f;
+  }
+  
+  .saving-amount {
+    color: #5c6bc0;
+  }

@@ -1,13 +1,39 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>statement</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-dashboard-link></app-dashboard-link>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">statement</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<div class="statement-header">
+  <h2>Financial Statement </h2>
+  <p> Unified view of income, expenses and savings</p>
+</div>
+
+<ion-content class="ion-padding">
+  <ion-card *ngFor="let item of statementList">
+    <ion-card-content class="statement-row">
+      <div class="left-section">
+        <div class="type-badge" [ngClass]="{
+            'income-badge': item.type === 'income',
+            'expense-badge': item.type === 'expense',
+            'saving-badge': item.type === 'saving'
+          }">
+          {{ item.type | uppercase }}
+        </div>
+        <div class="details">
+          <p class="title">
+            {{ item.title }}
+          </p>
+          <p class="date">
+            {{ item.date | date:'mediumDate' }}
+          </p>
+        </div>
+      </div>
+
+      <div class="amount" [ngClass]="{
+          'income-amount': item.type === 'income',
+          'expense-amount': item.type === 'expense',
+          'saving-amount': item.type === 'saving'
+        }">
+        ₹ {{ item.amount }}
+      </div>
+
+    </ion-card-content>
+  </ion-card>
 </ion-content>

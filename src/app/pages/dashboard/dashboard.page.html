@@ -2,14 +2,28 @@
 <ion-content class="ion-padding">
   
   <ion-card class="balance-card" button (click)="goToStatement()">
-    <ion-card-content class="ion-text-center">
-      <p class="label-text">Current Balance</p>
-      <!-- <h1 class="balance-amount truncate-amount">₹ {{ formatAmount(balance) }}</h1> -->
-      <div class="amount-text">
+
+    <ion-card-content class="balance-content">
+
+      <div class="balance-left">
+    
+        <p class="balance-label">
+          Current Balance
+        </p>
+    
+        <p class="statement-link">
+          View Statement →
+        </p>
+    
+      </div>
+    
+      <div class="balance-amount">
         <span class="currency">₹</span>
         <span class="value">{{ balance | formatAmount }}</span>
       </div>
+    
     </ion-card-content>
+
   </ion-card>
 
   <ion-grid>
