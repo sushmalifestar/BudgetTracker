@@ -12,26 +12,47 @@
 .transaction-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 12px;
 }
 
+.edit-btn,
 .delete-btn {
-  --padding-start: 4px;
-  --padding-end: 4px;
-  min-width: auto;
+  --padding-start: 0;
+  --padding-end: 0;
+
+  width: 22px;
+  height: 22px;
+
+  margin: 0;
 }
 
 .right {
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.icon-row {
+  display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 2px;
+}
+
+.right ion-button {
+  margin: 0;
 }
 
 .left {
   display: flex;
-  align-items: center; 
-  gap: 12px;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
 }
+  
 
 .left ion-checkbox {
   margin: 0;             
@@ -39,29 +60,32 @@
 }
 
 .amount {
-  font-size: 18px;      
-  font-weight: 700;     
-  color: var(--ion-color-primary);
-  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ion-color-success);
+  margin: 0;
 }
 
+
 .details {
-  display: flex;
-  flex-direction: column;
-  gap: 4px; 
+  flex: 1;
+  min-width: 0;
 }
 
 .title {
-  font-weight: 700;
+  font-weight: 600;
   margin: 0;
-  font-size: 18px;
+  font-size: 15px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .date {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--ion-color-medium);
-  margin: 0;
-  opacity: 0.8;
+  margin-top: 2px;
 }
 
 .bulk-trigger {
@@ -128,5 +152,24 @@
   font-size: 14px;
   color: #444;
 }
+
+@media (max-width: 400px) {
+
+  .transaction-row {
+    align-items: flex-start;
+  }
+
+  .right {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
+  }
+
+  .amount {
+    font-size: 14px;
+  }
+
+}
+
 
 

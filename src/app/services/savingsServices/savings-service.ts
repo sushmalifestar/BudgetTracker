@@ -10,7 +10,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class SavingsService {
 
-  private baseUrl = 'http://10.0.2.2:3000/savings'
+  private baseUrl = 'http://10.53.204.183:3000/savings'
 
   constructor(private http:HttpClient){
   }

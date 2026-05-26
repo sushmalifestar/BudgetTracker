@@ -14,8 +14,9 @@
 
       <ion-button expand="block" (click)="onAddSavingsClick()"> + Add Savings</ion-button>
 
-            <app-transaction-form *ngIf="isFormOpen" [model]="model" [submitLabel]="isEditMode ? 'Update Saving' : 'Save Saving'"
-        (save)="onSaveClicked($event)" (cancel)="onCancelForm()">
+      <app-transaction-form *ngIf="isFormOpen" [model]="model"
+        [submitLabel]="isEditMode ? 'Update Saving' : 'Save Saving'" (save)="onSaveClicked($event)"
+        (cancel)="onCancelForm()">
       </app-transaction-form>
 
     </ion-card-content>
@@ -58,7 +59,8 @@
 
     <ion-card-content class="transaction-row">
       <div class="left">
-        <ion-checkbox *ngIf="isBulkDeleteMode" [checked]="selectedSavingsIds.includes(saving.id!)"  (ionChange)="saving.id && onSavingSelectionChange(saving.id, $event)">
+        <ion-checkbox *ngIf="isBulkDeleteMode" [checked]="selectedSavingsIds.includes(saving.id!)"
+          (ionChange)="saving.id && onSavingSelectionChange(saving.id, $event)">
         </ion-checkbox>
         <div class="details">
           <p class="title">{{ saving.title }}</p>
@@ -69,18 +71,20 @@
       <div class="right">
         <p class="amount">₹ {{ saving.amount }}</p>
 
-        <ion-button *ngIf="!isBulkDeleteMode" fill="clear" size="small" color="primary" class="edit-btn"
-        (click)="onEditClick(saving)" (mousedown)="$event.stopPropagation()" (touchstart)="$event.stopPropagation()">
-        <ion-icon name="create-outline"></ion-icon>
-      </ion-button>
+        <div class="icon-row">
+          <ion-button *ngIf="!isBulkDeleteMode" fill="clear" size="small" color="primary" class="edit-btn"
+            (click)="onEditClick(saving)" (mousedown)="$event.stopPropagation()"
+            (touchstart)="$event.stopPropagation()">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
 
-        <ion-button *ngIf="!isBulkDeleteMode" fill="clear" size="small" color="danger" class="delete-btn"
-          (click)="onDeleteClick(saving)" (mousedown)="$event.stopPropagation()"
-          (touchstart)="$event.stopPropagation()">
-          <ion-icon name="trash-outline"></ion-icon>
-        </ion-button>
+          <ion-button *ngIf="!isBulkDeleteMode" fill="clear" size="small" color="danger" class="delete-btn"
+            (click)="onDeleteClick(saving)" (mousedown)="$event.stopPropagation()"
+            (touchstart)="$event.stopPropagation()">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </div>
       </div>
-
     </ion-card-content>
 
   </ion-card>

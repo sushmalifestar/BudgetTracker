@@ -77,7 +77,8 @@
 
         <p class="amount">₹ {{ expense.amount }}</p>
 
-        <ion-button *ngIf="!isBulkDeleteMode" fill="clear" size="small" color="primary" class="edit-btn"
+        <div class="icon-row">
+          <ion-button *ngIf="!isBulkDeleteMode" fill="clear" size="small" color="primary" class="edit-btn"
         (click)="onEditClick(expense)" (mousedown)="$event.stopPropagation()" (touchstart)="$event.stopPropagation()">
         <ion-icon name="create-outline"></ion-icon>
       </ion-button>
@@ -87,6 +88,8 @@
           (touchstart)="$event.stopPropagation()">
           <ion-icon name="trash-outline"></ion-icon>
         </ion-button>
+
+        </div>
         
       </div>
 
