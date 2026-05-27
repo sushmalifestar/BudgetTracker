@@ -1,8 +1,10 @@
+const { use } = require('../routes/expense-routes');
 const savingService = require('../services/savings.service')
 
 exports.getAllsavings = async (req, res) => {
     try {
-        const saving = await savingService.getAllSavings();
+        const userId = req.user.userId;
+        const saving = await savingService.getAllSavings(userId);
         res.json({
             success: true,
             data: saving
@@ -18,6 +20,7 @@ exports.getAllsavings = async (req, res) => {
 
 exports.addSavings = async (req, res) => {
     try {
+        const userId = req.user.userId;
         const { title, amount, savingsDate } = req.body;
         if (!title || !amount) {
             return res.status(400).json({
@@ -26,7 +29,7 @@ exports.addSavings = async (req, res) => {
             })
         }
         await savingService.addSavings({
-            title, amount, savingsDate
+            title, amount, savingsDate,userId
         })
         res.json({
             success: true,
@@ -43,8 +46,9 @@ exports.addSavings = async (req, res) => {
 
 exports.updateSavings = async (req, res) => {
     try {
+        const userId = req.user.userId;
         const id = parseInt(req.params.id);
-        await savingService.updateSavings(id, req.body)
+        await savingService.updateSavings(id, userId, req.body)
         res.json({
             success: true,
             message: 'Saving Updated Successfully'
@@ -60,8 +64,9 @@ exports.updateSavings = async (req, res) => {
 
 exports.deleteSavings = async (req, res) => {
     try {
+        const userId = req.user.userId;
         const id = parseInt(req.params.id);
-        await savingService.deleteSavings(id)
+        await savingService.deleteSavings(id,userId)
         res.json({
             success: true,
             message: 'Saving deleted successfully'

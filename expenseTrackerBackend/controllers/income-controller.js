@@ -2,7 +2,8 @@ const incomeService = require('../services/income.service');
 
 exports.getAllIncomes = async (req, res) => {
     try {
-        const income = await incomeService.getAllIncomes();
+        const userId = req.user.userId;
+        const income = await incomeService.getAllIncomes(userId);
         res.json({
             success: true,
             data: income
@@ -18,6 +19,7 @@ exports.getAllIncomes = async (req, res) => {
 
 exports.addIncome = async (req, res) => {
     try {
+        const userId = req.user.userId;
         const { title, amount, incomeDate } = req.body;
         if (!title || !amount) {
             return res.status(400).json({
@@ -26,7 +28,7 @@ exports.addIncome = async (req, res) => {
             });
         }
         await incomeService.addIncome({
-            title, amount, incomeDate
+            title, amount, incomeDate,userId
         });
         res.json({
             success: true,
@@ -43,8 +45,9 @@ exports.addIncome = async (req, res) => {
 
 exports.updateIncome = async (req, res) => {
     try {
+        const userId = req.user.userId;
         const id = parseInt(req.params.id)
-        await incomeService.updateIncome(id, req.body)
+        await incomeService.updateIncome(id, userId, req.body)
         res.json({
             success: true,
             message: 'Income Updated Successfully'
@@ -60,8 +63,9 @@ exports.updateIncome = async (req, res) => {
 
 exports.deleteIncome = async (req, res) => {
     try {
+        const userId = req.user.userId;
         const id = parseInt(req.params.id);
-        await incomeService.deleteIncome(id);
+        await incomeService.deleteIncome(id,userId);
         res.json({
             success: true,
             message: 'Income deleted successfully'

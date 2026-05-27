@@ -2,7 +2,8 @@ const expenseService = require('../services/expense.service')
 
 exports.getAllExpenses = async (req, res) => {
   try {
-    const expnese = await expenseService.getAllExpenses()
+    const userId = req.user.userId;
+    const expnese = await expenseService.getAllExpenses(userId)
     res.json({
       success: true,
       data: expnese
@@ -17,6 +18,7 @@ exports.getAllExpenses = async (req, res) => {
 };
 
 exports.addExpense = async (req, res) => {
+  const userId = req.user.userId;
   try {
     const { title, amount, expenseDate } = req.body;
     if (!title || !amount) {
@@ -26,7 +28,7 @@ exports.addExpense = async (req, res) => {
       });
     }
     await expenseService.addExpense({
-      title, amount, expenseDate
+      title, amount, expenseDate,userId
     })
     res.json({
       success: true,
@@ -43,8 +45,9 @@ exports.addExpense = async (req, res) => {
 
 exports.updateExpense = async (req, res) => {
   try {
+    const userId = req.user.userId;
     const id = parseInt(req.params.id);
-    await expenseService.updateExpense(id, req.body)
+    await expenseService.updateExpense(id, userId, req.body)
     res.json({
       success: true,
       message: 'Expense Updated Successfully'
@@ -60,8 +63,9 @@ exports.updateExpense = async (req, res) => {
 
 exports.deleteExpense = async (req, res) => {
   try {
+    const userId = req.user.userId;
     const id = parseInt(req.params.id);
-    await expenseService.deleteExpense(id)
+    await expenseService.deleteExpense(id,userId)
     res.json({
       success: true,
       message: 'Expense deleted successfully'

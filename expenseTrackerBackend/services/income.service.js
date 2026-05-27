@@ -1,10 +1,11 @@
 const { sql, config } = require('../config/db.config');
 
-exports.getAllIncomes = async () => {
+exports.getAllIncomes = async (userId) => {
     try {
         await sql.connect(config);
         const result = await sql.query(`
             SELECT * FROM Income
+            WHERE userId = ${userId}
             ORDER BY createdAt DESC
         `);
         return result.recordset;
@@ -18,13 +19,14 @@ exports.getAllIncomes = async () => {
 exports.addIncome = async (incomeData) => {
     try {
         await sql.connect(config);
-        const { title, amount, incomeDate } = incomeData;
+        const { title, amount, incomeDate,userId } = incomeData;
         await sql.query(`
-            INSERT INTO Income (title, amount, incomeDate)
+            INSERT INTO Income (title, amount, incomeDate,userId)
             VALUES (
                 '${title}',
                 ${amount},
-                '${incomeDate}'
+                '${incomeDate}',
+                ${userId}
             )
         `);
     } catch (err) {
@@ -33,7 +35,7 @@ exports.addIncome = async (incomeData) => {
     }
 };
 
-exports.updateIncome = async (id, incomeData)=>{
+exports.updateIncome = async (id,userId, incomeData)=>{
     try{
         await sql.connect(config);
         const {title,amount,incomeDate}=incomeData;
@@ -43,6 +45,7 @@ exports.updateIncome = async (id, incomeData)=>{
             amount=${amount},
             incomeDate='${incomeDate}'
             WHERE id ='${id}'
+            AND userId = ${userId}
             `)
     }catch(err){
         console.log('Error updating the income', err)
@@ -50,11 +53,11 @@ exports.updateIncome = async (id, incomeData)=>{
     }
 }
 
-exports.deleteIncome=async (id)=>{
+exports.deleteIncome=async (id, userId)=>{
     try{
         await sql.connect(config);
         await sql.query(`
-            DELETE FROM Income WHERE id= ${id}
+            DELETE FROM Income WHERE id= ${id} AND userId = ${userId}
             `)
     }catch(err){
         console.log('Error deleting Income',err)

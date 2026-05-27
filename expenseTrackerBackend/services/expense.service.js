@@ -1,10 +1,11 @@
 const { sql, config } = require('../config/db.config');
 
-exports.getAllExpenses=async()=>{
+exports.getAllExpenses=async(userId)=>{
     try{
         await sql.connect(config);
         const result = await sql.query(`
             SELECT * FROM Expenses
+            WHERE userId = ${userId}
             ORDER BY createdAt DESC
         `);
         return result.recordset;
@@ -17,13 +18,14 @@ exports.getAllExpenses=async()=>{
 exports.addExpense=async(expenseData)=>{
     try{
         await sql.connect(config);
-        const { title, amount, expenseDate } = expenseData;
+        const { title, amount, expenseDate,userId } = expenseData;
         await sql.query(`
-            INSERT INTO Expenses (title, amount, expenseDate)
+            INSERT INTO Expenses (title, amount, expenseDate,userId)
             VALUES (
                 '${title}',
                 ${amount},
-                '${expenseDate}'
+                '${expenseDate}',
+                ${userId}
             )
         `);
     }catch(err){
@@ -32,7 +34,7 @@ exports.addExpense=async(expenseData)=>{
     }
 }
 
-exports.updateExpense=async(id, expenseData)=>{
+exports.updateExpense=async(id, userId, expenseData)=>{
     try{
         await sql.connect(config);
         const {title,amount,expenseDate}=expenseData;
@@ -41,7 +43,8 @@ exports.updateExpense=async(id, expenseData)=>{
             title='${title}',
             amount=${amount},
             expenseDate='${expenseDate}'
-            WHERE id ='${id}'
+            WHERE id =${id}
+            AND userId = ${userId}
             `)
     }catch(err){
         console.error('Error updating expense:', err);
@@ -49,11 +52,13 @@ exports.updateExpense=async(id, expenseData)=>{
     }
 }
 
-exports.deleteExpense=async(id)=>{
+exports.deleteExpense=async(id, userId)=>{
     try{
         await sql.connect(config);
         await sql.query(`
-            DELETE FROM Expenses WHERE id= ${id}
+            DELETE FROM Expenses
+            WHERE id = ${id}
+            AND userId = ${userId}
             `)
     }catch(err){
         console.error('Error deleting expense:', err);
