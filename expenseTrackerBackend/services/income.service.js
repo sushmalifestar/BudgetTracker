@@ -4,16 +4,13 @@ exports.getAllIncomes = async (userId) => {
     try {
         const pool = await sql.connect(config);
         const request = pool.request();
-
         request.input('userId', sql.Int, userId);
-
         const result = await request.query(`
             SELECT * FROM Income
             WHERE userId = @userId
             ORDER BY createdAt DESC
         `);
         return result.recordset;
-
     } catch (err) {
         console.error('Error fetching income:', err);
         throw err;

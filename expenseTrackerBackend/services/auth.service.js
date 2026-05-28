@@ -14,7 +14,6 @@ const registerUser = async (userData) => {
             SELECT * FROM Users
             WHERE email = @email
         `);
-
         if (existingUser.recordset.length > 0) {
             throw new Error('Email already exists');
         }
@@ -29,7 +28,6 @@ const registerUser = async (userData) => {
         return {
             message: 'User registered successfully'
         };
-
     } catch (err) {
         console.log(err);
         throw err;
@@ -51,7 +49,6 @@ const loginUser = async (usersData) => {
         }
         const user = userResult.recordset[0];
         const isPasswordValid = await bcrypt.compare(password, user.passwordHash)
-
         if (!isPasswordValid) {
             throw new Error('Invalid email or password');
         }

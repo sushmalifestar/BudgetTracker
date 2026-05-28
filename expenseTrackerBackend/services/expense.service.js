@@ -4,9 +4,7 @@ exports.getAllExpenses=async(userId)=>{
     try{
         const pool = await sql.connect(config);
         const request = pool.request();
-
         request.input('userId', sql.Int, userId);
-
         const result = await request.query(`
             SELECT * FROM Expenses
             WHERE userId = @userId
@@ -28,7 +26,6 @@ exports.addExpense=async(expenseData)=>{
         request.input('amount', sql.Decimal(10,2), amount);
         request.input('expenseDate', sql.Date, expenseDate);
         request.input('userId', sql.Int, userId);
-
         await request.query(`
             INSERT INTO Expenses (title, amount, expenseDate,userId)
             VALUES (@title, @amount, @expenseDate, @userId)
@@ -49,7 +46,6 @@ exports.updateExpense=async(id, userId, expenseData)=>{
         request.input ('expenseDate', sql.Date, expenseDate);
         request.input('id', sql.Int, id);
         request.input('userId', sql.Int, userId);
-
         await request.query(
             `UPDATE Expenses SET
             title=@title,
@@ -68,7 +64,6 @@ exports.deleteExpense=async(id, userId)=>{
     try{
         const pool = await sql.connect(config);
         const request = pool.request();
-
         request.input ('id',sql.Int, id);
         request.input('userId',sql.Int, userId);
         await request.query(`
