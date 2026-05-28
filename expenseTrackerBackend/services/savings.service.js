@@ -2,10 +2,12 @@ const { sql, config } = require('../config/db.config');
 
 exports.getAllSavings=async(userId)=>{
     try{
-        await sql.connect(config);
-        const result = await sql.query(`
+        const pool = await sql.connect(config);
+        const request = pool.request();
+        request.input('userId', sql.Int, userId);
+        const result = await request.query(`
             SELECT * FROM Savings
-            WHERE userId = ${userId}
+            WHERE userId = @userId
             ORDER BY createdAt DESC
         `);
         return result.recordset;
@@ -17,16 +19,16 @@ exports.getAllSavings=async(userId)=>{
 
 exports.addSavings=async(savingData)=>{
     try{
-        await sql.connect(config);
+        const pool = await sql.connect(config);
+        const request = pool.request();
         const { title, amount, savingsDate,userId } = savingData;
-        await sql.query(`
+        request.input('title',sql.VarChar, title);
+        request.input ('amount', sql.Int, amount);
+        request.input('savingsDate', sql.Date, savingsDate);
+        request.input('userId', sql.Int, userId);
+        await request.query(`
             INSERT INTO Savings (title, amount, savingsDate, userId)
-            VALUES (
-                '${title}',
-                ${amount},
-                '${savingsDate}',
-                ${userId}
-            )
+            VALUES (@title, @amount, @savingsDate, @userId)
         `);
     }catch(err){
         console.error('Error adding saving:', err);
@@ -36,15 +38,21 @@ exports.addSavings=async(savingData)=>{
 
 exports.updateSavings=async(id,userId,savingData)=>{
     try{
-        await sql.connect(config);
+        const pool = await sql.connect(config);
+        const request = pool.request();
         const {title,amount,savingsDate}=savingData;
-        await sql.query(
+        request.input('title',sql.VarChar, title);
+        request.input('amount',sql.Int, amount);
+        request.input('savingsDate', sql.Date, savingsDate);
+        request.input('id',sql.Int,id);
+        request.input('userId',sql.Int,userId);
+        await request.query(
             `UPDATE Savings SET
-            title='${title}',
-            amount=${amount},
-            savingsDate='${savingsDate}'
-            WHERE id ='${id}'
-            AND userId = ${userId}
+            title=@title,
+            amount=@amount,
+            savingsDate=@savingsDate
+            WHERE id =@id
+            AND userId = @userId
             `)
     }catch(err){
         console.error('Error updating saving:', err);
@@ -54,9 +62,12 @@ exports.updateSavings=async(id,userId,savingData)=>{
 
 exports.deleteSavings=async(id,userId)=>{
     try{
-        await sql.connect(config);
-        await sql.query(`
-            DELETE FROM Savings WHERE id= ${id} AND userId = ${userId}
+        const pool = await sql.connect(config);
+        const request = pool.request();
+        request.input('id',sql.Int, id);
+        request.input('userId', sql.Int, userId);
+        await request.query(`
+            DELETE FROM Savings WHERE id=@id AND userId =@userId
             `)
     }catch(err){
         console.error('Error deleting saving:', err);

@@ -1,6 +1,8 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT;
 const cors = require('cors');
 
 app.use(cors());
@@ -9,6 +11,7 @@ const expenseRoutes = require('./routes/expense-routes');
 const incomeRoutes = require ('./routes/income-routes');
 const savingRoutes = require ('./routes/savings-routes');
 const authRoutes = require ('./routes/auth-routes');
+
 
 app.use(express.json());
 app.use('/', expenseRoutes);

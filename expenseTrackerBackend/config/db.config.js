@@ -1,10 +1,11 @@
+require('dotenv').config();
 const sql = require('mssql');
 
 const config = {
-    user: 'budgetadmin',
-    password: 'Budget@123',
-    server: 'SUSHMA',
-    database: 'BudgetTrackerDB',
+    user: process.env.DB_USER ,
+    password: process.env.DB_PASSWORD,
+    server: process.env.DB_SERVER,
+    database: process.env.DB_NAME,
     options: {
         trustServerCertificate: true
     }

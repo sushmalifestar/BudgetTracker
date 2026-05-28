@@ -2,10 +2,14 @@ const { sql, config } = require('../config/db.config');
 
 exports.getAllExpenses=async(userId)=>{
     try{
-        await sql.connect(config);
-        const result = await sql.query(`
+        const pool = await sql.connect(config);
+        const request = pool.request();
+
+        request.input('userId', sql.Int, userId);
+
+        const result = await request.query(`
             SELECT * FROM Expenses
-            WHERE userId = ${userId}
+            WHERE userId = @userId
             ORDER BY createdAt DESC
         `);
         return result.recordset;
@@ -17,16 +21,17 @@ exports.getAllExpenses=async(userId)=>{
 
 exports.addExpense=async(expenseData)=>{
     try{
-        await sql.connect(config);
+        const pool = await sql.connect(config);
+        const request = pool.request();
         const { title, amount, expenseDate,userId } = expenseData;
-        await sql.query(`
+        request.input('title', sql.VarChar, title);
+        request.input('amount', sql.Decimal(10,2), amount);
+        request.input('expenseDate', sql.Date, expenseDate);
+        request.input('userId', sql.Int, userId);
+
+        await request.query(`
             INSERT INTO Expenses (title, amount, expenseDate,userId)
-            VALUES (
-                '${title}',
-                ${amount},
-                '${expenseDate}',
-                ${userId}
-            )
+            VALUES (@title, @amount, @expenseDate, @userId)
         `);
     }catch(err){
         console.error('Error adding expense:', err);
@@ -36,15 +41,22 @@ exports.addExpense=async(expenseData)=>{
 
 exports.updateExpense=async(id, userId, expenseData)=>{
     try{
-        await sql.connect(config);
+        const pool = await sql.connect(config);
+        const request = pool.request();
         const {title,amount,expenseDate}=expenseData;
-        await sql.query(
+        request.input('title',sql.VarChar, title);
+        request.input ('amount', sql.Decimal(10,2), amount);
+        request.input ('expenseDate', sql.Date, expenseDate);
+        request.input('id', sql.Int, id);
+        request.input('userId', sql.Int, userId);
+
+        await request.query(
             `UPDATE Expenses SET
-            title='${title}',
-            amount=${amount},
-            expenseDate='${expenseDate}'
-            WHERE id =${id}
-            AND userId = ${userId}
+            title=@title,
+            amount=@amount,
+            expenseDate=@expenseDate
+            WHERE id =@id
+            AND userId = @userId
             `)
     }catch(err){
         console.error('Error updating expense:', err);
@@ -54,11 +66,15 @@ exports.updateExpense=async(id, userId, expenseData)=>{
 
 exports.deleteExpense=async(id, userId)=>{
     try{
-        await sql.connect(config);
-        await sql.query(`
+        const pool = await sql.connect(config);
+        const request = pool.request();
+
+        request.input ('id',sql.Int, id);
+        request.input('userId',sql.Int, userId);
+        await request.query(`
             DELETE FROM Expenses
-            WHERE id = ${id}
-            AND userId = ${userId}
+            WHERE id = @id
+            AND userId = @userId
             `)
     }catch(err){
         console.error('Error deleting expense:', err);
