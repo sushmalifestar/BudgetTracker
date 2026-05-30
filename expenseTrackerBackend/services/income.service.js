@@ -2,6 +2,7 @@ const { sql, config } = require('../config/db.config');
 
 exports.getAllIncomes = async (userId) => {
     try {
+        console.log("Current userId is", userId);
         const pool = await sql.connect(config);
         const request = pool.request();
         request.input('userId', sql.Int, userId);

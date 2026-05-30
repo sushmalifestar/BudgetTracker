@@ -44,11 +44,13 @@ const loginUser = async (usersData) => {
         SELECT * FROM Users
         WHERE email = @email
         `)
+        // console.log("This is userResult verification" ,userResult.recordset)
         if (userResult.recordset.length === 0) {
             throw new Error('Invalid email or password');
         }
         const user = userResult.recordset[0];
-        const isPasswordValid = await bcrypt.compare(password, user.passwordHash)
+        const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+        // console.log("This is Is password valid verification" , isPasswordValid);
         if (!isPasswordValid) {
             throw new Error('Invalid email or password');
         }
@@ -64,7 +66,9 @@ const loginUser = async (usersData) => {
         );
         return {
             message: 'Login successful',
-            token
+            token,
+            name: user.name,
+            email: user.email
         };
     } catch (err) {
         console.log(err);

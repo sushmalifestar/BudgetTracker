@@ -1,5 +1,18 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title class="ion-text-center">BUDGET TRACKER</ion-title>
+    <div class="header-container">
+      <div class="app-title">
+        BUDGET TRACKER
+      </div>
+      <div class="user-section">
+        <div class="user-name">
+          <ion-icon name="person-circle-outline"></ion-icon>
+          <span>{{ userName }}</span>
+        </div>
+        <ion-button  size="small" color="danger" (click)="onLogoutClick()">
+          Logout
+        </ion-button>
+      </div>
+    </div>
   </ion-toolbar>
 </ion-header>

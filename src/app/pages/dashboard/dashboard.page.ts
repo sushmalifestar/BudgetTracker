@@ -41,9 +41,11 @@ export class DashboardPage {
     private savingsService: SavingsService,
     private router: Router,
   ) {
+      console.log("Dashboard constructor called");
   }
 
   ionViewWillEnter() {
+    console.log("Dashboard ionViewWillEnter called");
     this.calculate();
   }
 
@@ -68,7 +70,4 @@ export class DashboardPage {
   goToStatement() {
     this.router.navigate(['/tabs/statement']);
   }
-
-
-
 }
